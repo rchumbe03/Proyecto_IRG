@@ -30,6 +30,7 @@ Sigue estos pasos para configurar el proyecto en tu entorno local.
 Primero, clona este repositorio en tu máquina local usando el siguiente comando:
 
 git clone https://github.com/rchumbe03/Proyecto_IRG.git
+
 cd IRGInmobiliaria
 
 2. Instalar dependencias de PHP (Laravel)
