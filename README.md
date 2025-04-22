@@ -33,41 +33,42 @@ git clone https://github.com/rchumbe03/Proyecto_IRG.git
 
 cd IRGInmobiliaria
 
-2. Instalar dependencias de PHP (Laravel)
+### 2. Instalar dependencias de PHP (Laravel)
 En la raíz del proyecto, ejecuta el siguiente comando para instalar las dependencias de PHP mediante Composer:
 
 composer install
 // Esto descargará las dependencias necesarias para el backend de Laravel.
 
-3. Configurar el entorno
+### 3. Configurar el entorno
 Copia el archivo .env.example a un nuevo archivo .env:
 
 cp .env.example .env
+
 Luego, configura tu base de datos y otras variables de entorno en el archivo .env.
 
-4. Generar la clave de la aplicación
+### 4. Generar la clave de la aplicación
 Ejecuta el siguiente comando para generar la clave de la aplicación de Laravel:
 
 php artisan key:generate
 
-5. Migrar la base de datos (si es necesario)
+### 5. Migrar la base de datos (si es necesario)
 Si tienes migraciones pendientes, ejecuta:
 
 php artisan migrate
 
-6. Instalar dependencias de JavaScript (React)
+### 6. Instalar dependencias de JavaScript (React)
 En la raíz del proyecto, navega a la carpeta resources/js y ejecuta el siguiente comando para instalar las dependencias de JavaScript mediante npm:
 
 npm install
 
-7. Compilar los assets
+### 7. Compilar los assets
 Usa el siguiente comando para compilar los assets de React usando Vite:
 
 npm run dev
 
 Esto compilará tu proyecto frontend en modo desarrollo y se mantendrá escuchando cambios.
 
-8. Ejecutar el servidor de desarrollo de Laravel
+### 8. Ejecutar el servidor de desarrollo de Laravel
 Finalmente, en otro terminal, ejecuta el servidor de Laravel:
 
 php artisan serve
