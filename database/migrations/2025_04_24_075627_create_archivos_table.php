@@ -6,20 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('archivos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_modulo');
+            $table->foreign('id_modulo')
+                ->references('id')
+                ->on('modulos')
+                ->onDelete('cascade');
+            $table->enum('tipo', ['pdf', 'video', 'diapositiva', 'otro']);
+            $table->string('url', 255);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('archivos');
