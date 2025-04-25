@@ -12,8 +12,8 @@ class Modulo extends Model
     protected $table = 'modulos';
 
     protected $fillable = [
-        'id_curso',
         'titulo',
+        'id_curso',
     ];
 
     public function curso()

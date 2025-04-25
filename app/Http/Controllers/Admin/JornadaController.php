@@ -21,7 +21,7 @@ class JornadaController extends Controller {
         $request->validate([
             'tipo' => 'required|in:virtual,presencial',
             'fecha' => 'required|date',
-            'curso_id' => 'required|exists:cursos,id'
+            'id_curso' => 'required|exists:cursos,id'
         ]);
 
         $jornada = Jornada::create($request->all());
