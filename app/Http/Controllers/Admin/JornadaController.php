@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Admin\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Jornada;
 use Illuminate\Http\Request;
 

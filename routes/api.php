@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Admin\Controllers\ArchivoController;
-use App\Http\Admin\Controllers\CursoController;
-use App\Http\Admin\Controllers\ExpedienteController;
-use App\Http\Admin\Controllers\NotificacionController;
+use App\Http\Controllers\Admin\ArchivoController;
+use App\Http\Controllers\Admin\CursoController;
+use App\Http\Controllers\Admin\NotificacionController;
+use App\Http\Controllers\ExpedienteController;
 use Illuminate\Support\Facades\Route;
 
 
