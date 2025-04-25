@@ -22,7 +22,7 @@ class CursoController extends Controller
         $request->validate([
             'titulo' => 'required|string|max:100',
             'tema' => 'required|string|max:100',
-            'admin_id' => 'required|exists:admins,id'
+            'id_admin' => 'required|exists:admins,id'
         ]);
 
         $curso = Curso::create($request->all());
