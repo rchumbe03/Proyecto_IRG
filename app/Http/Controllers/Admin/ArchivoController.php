@@ -12,20 +12,25 @@ class ArchivoController extends Controller
      * Display a listing of the resource.
      */
     public function index() {
-        return response()->json(Archivo::all(), 200);
+        // Devolver todos los archivos
+        return response()->json(Archivo::all());
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
+        // Validar los datos de entrada
         $request->validate([
             'tipo' => 'required|in:pdf,video,imagen,ppt,otros',
-            'url' => 'required|string',
-            'modulo_id' => 'required|exists:modulos,id'
+            'url' => 'required|url|max:255',
+            'id_modulo' => 'required|exists:modulos,id'
         ]);
 
+        // Crear el archivo
         $archivo = Archivo::create($request->all());
+
+        // Devolver el archivo creado
         return response()->json($archivo, 201);
     }
 
@@ -33,23 +38,60 @@ class ArchivoController extends Controller
      * Display the specified resource.
      */
     public function show(string $id) {
-        return response()->json(Archivo::findOrFail($id), 200);
+        // Encontrar el archivo por ID
+        $archivo = Archivo::find($id);
+
+        // Si el archivo no existe, devolver un error 404
+        if (!$archivo) {
+            return response()->json(['error' => 'Archivo no encontrado'], 404);
+        }
+
+        // Devolver el archivo encontrado
+        return response()->json($archivo);
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id) {
-        $archivo = Archivo::findOrFail($id);
+        // Encontrar el archivo por ID
+        $archivo = Archivo::find($id);
+
+        // Si el archivo no existe, devolver un error 404
+        if (!$archivo) {
+            return response()->json(['error' => 'Archivo no encontrado'], 404);
+        }
+
+        // Validar ID del archivo
+        $request->validate([
+            'tipo' => 'required|in:pdf,video,imagen,ppt,otros',
+            'url' => 'required|string',
+            'id_modulo' => 'required|exists:modulos,id'
+        ]);
+
+        // Actualizar el archivo
         $archivo->update($request->all());
-        return response()->json($archivo, 200);
+
+        // Devolver el archivo actualizado
+        return response()->json($archivo);
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id) {
-        Archivo::destroy($id);
-        return response()->json(null, 204);
+        // Encontrar el archivo por ID
+        $archivo = Archivo::find($id);
+
+        // Si el archivo no existe, devolver un error 404
+        if (!$archivo) {
+            return response()->json(['error' => 'Archivo no encontrado'], 404);
+        }
+
+        // Eliminar el archivo
+        $archivo->delete();
+
+        // Devolver una respuesta
+        return response()->json(['message' => 'Archivo eliminado correctamente']);
     }
 }

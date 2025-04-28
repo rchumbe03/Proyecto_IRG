@@ -12,7 +12,7 @@ class NotificacionController extends Controller
      * Display a listing of the resource.
      */
     public function index() {
-        return response()->json(Notificacion::all(), 200);
+        return response()->json(Notificacion::all());
     }
 
     /**
@@ -20,8 +20,8 @@ class NotificacionController extends Controller
      */
     public function store(Request $request) {
         $request->validate([
-            'titulo' => 'required|string|max:100',
-            'contenido' => 'required|string',
+            'titulo' => 'required|string|min:5|max:100',
+            'contenido' => 'required|string|min:10',
             'id_admin' => 'required|exists:admins,id'
         ]);
 
@@ -33,23 +33,57 @@ class NotificacionController extends Controller
      * Display the specified resource.
      */
     public function show(string $id) {
-        return response()->json(Notificacion::findOrFail($id), 200);
+        // Encontrar la notificación por ID
+        $notificacion = Notificacion::find($id);
+
+        // Si la notificación no existe, devolver un error 404
+        if (!$notificacion) {
+            return response()->json(['error' => 'Notificación no encontrada'], 404);
+        }
+
+        // Devolver la notificación encontrada
+        return response()->json($notificacion);
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id) {
-        $notificacion = Notificacion::findOrFail($id);
+        // Validar ID de la notificación
+        $notificacion = Notificacion::find($id);
+
+        // Si la notificación no existe, devolver un error 404
+        if (!$notificacion) {
+            return response()->json(['error' => 'Notificación no encontrada'], 404);
+        }
+
+        // Validar los datos de entrada
+        $request->validate([
+            'titulo' => 'required|string|min:5|max:100',
+            'contenido' => 'required|string|min:10',
+            'id_admin' => 'required|exists:admins,id'
+        ]);
+
+        // Actualizar la notificación
         $notificacion->update($request->all());
-        return response()->json($notificacion, 200);
+
+        // Devolver la notificación actualizada
+        return response()->json($notificacion);
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id) {
-        Notificacion::destroy($id);
-        return response()->json(null, 204);
+        // Encontrar la notificación por ID
+        $notificacion = Notificacion::find($id);
+        // Si la notificación no existe, devolver un error 404
+        if (!$notificacion) {
+            return response()->json(['error' => 'Notificación no encontrada'], 404);
+        }
+        // Eliminar la notificación
+        $notificacion->delete();
+        // Devolver una respuesta
+        return response()->json(['message' => 'Notificación eliminada']);
     }
 }

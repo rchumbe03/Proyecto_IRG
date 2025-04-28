@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->enum('tipo', ['virtual', 'presencial']);
             $table->date('fecha');
-            $table->unsignedBigInteger('curso_id');
-            $table->foreign('curso_id')->references('id')->on('cursos')->onDelete('cascade');
+            $table->unsignedBigInteger('id_curso');
+            $table->foreign('id_curso')->references('id')->on('cursos')->onDelete('cascade');
             $table->timestamps();
         });
     }

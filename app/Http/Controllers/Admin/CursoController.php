@@ -12,6 +12,7 @@ class CursoController extends Controller
      * Display a listing of the resource.
      */
     public function index() {
+        // Devolver todos los cursos
         return response()->json(Curso::all(), 200);
     }
 
@@ -19,13 +20,16 @@ class CursoController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
+        // Validar los datos de entrada
         $request->validate([
-            'titulo' => 'required|string|max:100',
-            'tema' => 'required|string|max:100',
+            'titulo' => 'required|string|min:5|max:100',
+            'tema' => 'required|string|min:3|max:100',
             'id_admin' => 'required|exists:admins,id'
         ]);
 
+        // Crear el curso
         $curso = Curso::create($request->all());
+        // Devolver el curso creado
         return response()->json($curso, 201);
     }
 
@@ -33,23 +37,59 @@ class CursoController extends Controller
      * Display the specified resource.
      */
     public function show(string $id) {
-        return response()->json(Curso::findOrFail($id), 200);
+
+        // Encontrar el curso por ID
+        $curso = Curso::find($id);
+
+        // Si el curso no existe, devolver un error 404
+        if (!$curso) {
+            return response()->json(['error' => 'Curso no encontrado'], 404);
+        }
+
+        // Devolver el curso encontrado
+        return response()->json($curso);
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id) {
-        $curso = Curso::findOrFail($id);
+        // Validar ID del curso
+        $curso = Curso::find($id);
+
+        // Si el curso no existe, devolver un error 404
+        if (!$curso) {
+            return response()->json(['error' => 'Curso no encontrado'], 404);
+        }
+
+        // Validar los datos de entrada
+        $request->validate([
+            'titulo' => 'required|string|min:5|max:100',
+            'tema' => 'required|string|min:3|max:100',
+            'id_admin' => 'required|exists:admins,id'
+        ]);
+
+        // Actualizar el curso
         $curso->update($request->all());
-        return response()->json($curso, 200);
+        // Devolver el curso actualizado
+        return response()->json($curso);
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id) {
-        Curso::destroy($id);
-        return response()->json(null, 204);
+        // Encontrar el curso por ID
+        $curso = Curso::find($id);
+        // Si el curso no existe, devolver un error 404
+        if (!$curso) {
+            return response()->json(['error' => 'Curso no encontrado'], 404);
+        }
+
+        // Eliminar el curso
+        $curso->delete();
+
+        // Devolver una respuesta vacía con código 204
+        return response()->json(['message' => 'Curso eliminado', 204]);
     }
 }
