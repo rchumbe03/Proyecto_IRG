@@ -12,15 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('usuarios', function (Blueprint $table) {
-            $table->id(); // Cambiado de id('id_usuario')
-            $table->string('nombre', 50);
-            $table->string('email', 100)->unique();
-            $table->string('contraseña');
-            $table->string('telefono', 15)->nullable();
-            $table->integer('edad')->nullable();
-            $table->string('dni', 20)->nullable();
+            $table->id(); // Esto crea un bigint unsigned auto_increment primary key
+            $table->string('nombre', 25)->nullable();
+            $table->string('email', 20)->nullable();
+            $table->string('contraseña', 255)->nullable();
+            $table->tinyInteger('edad')->nullable();
+            $table->string('DNI', 20)->nullable();
+            $table->string('direccion', 255)->nullable();
+            $table->tinyInteger('telefono')->nullable(); // Cambiado de auto_increment
+            $table->tinyInteger('antiguedad')->nullable(); // Cambiado de auto_increment
+            $table->string('fase_actual', 100)->nullable();
+            $table->string('fase_proxima', 100)->nullable();
+            $table->tinyInteger('jornadas_realizadas')->nullable(); // Cambiado de auto_increment
+            $table->tinyInteger('cursos_realizados')->nullable(); // Cambiado de auto_increment
             $table->timestamps();
         });
+
     }
 
     /**

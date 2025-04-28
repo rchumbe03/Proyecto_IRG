@@ -11,14 +11,19 @@ class Empresa extends Model
 
     protected $table = 'empresas';
 
+    protected $primaryKey = 'id_empresa';
+
     protected $fillable = [
-        'nombre',
-        'email',
+        'nombre_empresa',
+        'email_contacto',
         'telefono',
+        'direccion',
+        'cif',
     ];
 
-    public function direccion()
+    // Relación: Una empresa puede tener varios usuarios relacionados
+    public function empresaUsuarios()
     {
-        return $this->hasOne(DireccionEmpresa::class, 'id_empresa');
+        return $this->hasMany(EmpresaUsuario::class, 'id_empresa');
     }
 }

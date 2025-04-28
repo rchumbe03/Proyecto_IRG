@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('empresas', function (Blueprint $table) {
             $table->id(); // Cambiado de id('id_empresa')
             $table->string('nombre', 100);
-            $table->string('email', 100)->unique();
+            $table->string('email_contacto', 100)->unique();
             $table->string('telefono', 15)->nullable();
-            $table->string('dni', 20)->nullable();
+            $table->string('direccion', 255)->nullable();
+            $table->string('cif', 9)->nullable();
             $table->timestamps();
         });
     }
