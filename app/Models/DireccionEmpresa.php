@@ -15,12 +15,12 @@ class DireccionEmpresa extends Model
         'id_empresa',
         'direccion',
         'ciudad',
-        'provincia',
+        'pais',
         'codigo_postal',
     ];
 
     public function empresa()
     {
-        return $this->belongsTo(Empresa::class, 'id_empresa');
+        return $this->belongsTo(Empresa::class, 'id_empresa', 'id');
     }
 }

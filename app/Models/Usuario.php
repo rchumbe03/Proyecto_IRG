@@ -17,18 +17,17 @@ class Usuario extends Model
         'contraseña',
         'edad',
         'DNI',
-        'direccion',
         'telefono',
-        'antiguedad',
-        'fase_actual',
-        'fase_proxima',
-        'jornadas_realizadas',
-        'cursos_realizados',
     ];
 
     // Relación: Un usuario puede estar relacionado con varias empresas
-    public function empresaUsuarios()
+    public function empresa_usuario()
     {
         return $this->hasMany(EmpresaUsuario::class, 'id_usuario');
+    }
+    // Relación: Un usuario puede estar relacionado con una direccion
+    public function direccion()
+    {
+        return $this->hasOne(Direccion::class, 'id_usuario');
     }
 }

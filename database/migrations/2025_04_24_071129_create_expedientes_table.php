@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('expedientes', function (Blueprint $table) {
-            $table->id('id_expediente');
+            $table->id();
             $table->foreignId('id_usuario')->constrained('usuarios')->onDelete('cascade');
             $table->foreignId('id_curso')->constrained('cursos')->onDelete('cascade');
-            $table->tinyInteger('progreso')->default(0);
-            $table->integer('antiguedad')->default(0);
+            $table->tinyInteger('progreso')->default(0); // en %
+            $table->integer('antiguedad')->default(0);   // en meses
             $table->string('fase_actual', 50)->nullable();
             $table->string('fase_proxima', 50)->nullable();
             $table->timestamps();

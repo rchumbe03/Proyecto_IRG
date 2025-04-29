@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('direccion_usuarios', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_usuario')->constrained('usuarios')->onDelete('cascade');
-            $table->string('direccion', 255);
-            $table->string('ciudad', 100);
-            $table->string('estado', 100);
-            $table->string('codigo_postal', 10);
+            $table->string('direccion', 100)->nullable();
+            $table->string('ciudad', 100)->nullable();
+            $table->string('pais', 100)->nullable();
+            $table->string('codigo_postal', 20)->nullable();
             $table->timestamps();
         });
     }

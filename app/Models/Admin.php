@@ -18,12 +18,6 @@ class Admin extends Model
         'contraseña',
     ];
 
-    // Un Administrador tiene muchos cursos
-    public function cursos()
-    {
-        return $this->hasMany(Curso::class, 'id_admin');
-    }
-
     // Un Administrador tiene muchas notificaciones
     public function notificaciones()
     {

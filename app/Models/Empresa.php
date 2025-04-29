@@ -17,7 +17,6 @@ class Empresa extends Model
         'nombre_empresa',
         'email_contacto',
         'telefono',
-        'direccion',
         'cif',
     ];
 
@@ -25,5 +24,11 @@ class Empresa extends Model
     public function empresaUsuarios()
     {
         return $this->hasMany(EmpresaUsuario::class, 'id_empresa');
+    }
+
+    // Relación: Una empresa puede tener varias direcciones
+    public function direccion()
+    {
+        return $this->hasOne(DireccionEmpresa::class, 'id_empresa');
     }
 }
