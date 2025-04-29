@@ -28,6 +28,6 @@ class Usuario extends Model
     // Relación: Un usuario puede estar relacionado con una direccion
     public function direccion()
     {
-        return $this->hasOne(Direccion::class, 'id_usuario');
+        return $this->hasOne(DireccionUsuario::class, 'id_usuario');
     }
 }
