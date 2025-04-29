@@ -18,11 +18,11 @@ class Modulo extends Model
 
     public function curso()
     {
-        return $this->belongsTo(Curso::class, 'id_curso');
+        return $this->belongsTo(Curso::class, foreignKey: 'id_curso', 'id');
     }
 
     public function archivos()
     {
-        return $this->hasMany(Archivo::class, 'id_modulo');
+        return $this->hasMany(Archivo::class, foreignKey: 'id_modulo');
     }
 }

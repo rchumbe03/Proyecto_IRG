@@ -21,4 +21,5 @@ class Empresa extends Model
     {
         return $this->hasOne(DireccionEmpresa::class, 'id_empresa');
     }
+    
 }

@@ -22,7 +22,7 @@ class ArchivoController extends Controller
         $request->validate([
             'tipo' => 'required|in:pdf,video,imagen,ppt,otros',
             'url' => 'required|string',
-            'modulo_id' => 'required|exists:modulos,id'
+            'id_modulo' => 'required|exists:modulos,id'
         ]);
 
         $archivo = Archivo::create($request->all());

@@ -21,7 +21,7 @@ class ModuloController extends Controller
     public function store(Request $request) {
         $request->validate([
             'titulo' => 'required|string|max:100',
-            'curso_id' => 'required|exists:cursos,id'
+            'id_curso' => 'required|exists:cursos,id'
         ]);
 
         $modulo = Modulo::create($request->all());

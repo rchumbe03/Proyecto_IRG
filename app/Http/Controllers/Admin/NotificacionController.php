@@ -22,7 +22,7 @@ class NotificacionController extends Controller
         $request->validate([
             'titulo' => 'required|string|max:100',
             'contenido' => 'required|string',
-            'admin_id' => 'required|exists:admins,id'
+            'id_admin' => 'required|exists:admins,id'
         ]);
 
         $notificacion = Notificacion::create($request->all());

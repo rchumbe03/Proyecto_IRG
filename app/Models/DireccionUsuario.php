@@ -21,6 +21,6 @@ class DireccionUsuario extends Model
 
     public function usuario()
     {
-        return $this->belongsTo(Usuario::class, 'id_usuario');
+        return $this->belongsTo(Usuario::class, 'id_usuario', 'id');
     }
 }

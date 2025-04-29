@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\ArchivoController;
 use App\Http\Controllers\Admin\CursoController;
 use App\Http\Controllers\Admin\NotificacionController;
-use App\Http\Controllers\ExpedienteController;
+use App\Http\Controllers\Admin\JornadaController;
+use App\Http\Controllers\Admin\ModuloController;
+use App\Http\Controllers\Admin\ExpedienteController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -34,3 +36,17 @@ Route::get('/notificaciones/{id}',[NotificacionController::class, 'show']);
 Route::post('/notificaciones',[NotificacionController::class, 'store']);
 Route::put('/notificaciones/{id}',[NotificacionController::class, 'update']);
 Route::delete('/notificaciones/{id}',[NotificacionController::class, 'destroy']);
+
+//JORNADAS
+Route::get('/jornadas',[JornadaController::class, 'index']);
+Route::get('/jornadas/{id}',[JornadaController::class, 'show']);
+Route::post('/jornadas',[JornadaController::class, 'store']);
+Route::put('/jornadas/{id}',[JornadaController::class, 'update']);
+Route::delete('/jornadas/{id}',[JornadaController::class, 'destroy']);
+
+//MODULOS
+Route::get('/modulos',[ModuloController::class, 'index']);
+Route::get('/modulos/{id}',[ModuloController::class, 'show']);
+Route::post('/modulos',[ModuloController::class, 'store']);
+Route::put('/modulos/{id}',[ModuloController::class, 'update']);
+Route::delete('/modulos/{id}',[ModuloController::class, 'destroy']);

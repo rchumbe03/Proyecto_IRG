@@ -19,6 +19,7 @@ class Archivo extends Model
 
     public function modulo()
     {
-        return $this->belongsTo(Modulo::class, 'id_modulo');
+        return $this->belongsTo(Modulo::class, foreignKey: 'id_modulo');
     }
+    
 }
