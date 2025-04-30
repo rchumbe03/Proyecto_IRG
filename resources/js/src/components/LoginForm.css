@@ -1,0 +1,150 @@
+html, body {
+    background-color: #f7f7f7;
+}
+/* Layout general */
+.login-wrapper {
+    display: flex;
+    height: 100%;
+}
+
+.intro-container {
+    position: relative;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+.half-circle {
+    position: fixed;
+    width: 640px;
+    height: 742px;
+    background-color: #E6D00A;
+    border-top-right-radius: 70%;
+    border-bottom-right-radius: 70%;
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.intro-text {
+    position: relative;
+    z-index: 3;
+    padding-left: 4rem;
+    width: 520px;
+    height: 225px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.intro-title {
+    font-size: 82px;
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    margin: 0;
+}
+
+.intro-subtitle {
+    font-size: 48px;
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    margin: 0;
+}
+
+.login-container {
+    height: 100%;
+    display: flex;
+    justify-content: flex-end; /* derecha eje X */
+    align-items: center;       /* centro eje Y */
+    padding-right: 5rem;
+    background: none;
+}
+
+.login-form {
+    width: 647px;
+    height: 326px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2rem;
+}
+
+.login-title {
+    font-size: 48px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    margin: 0;
+    align-self: flex-start;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.form-label {
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+}
+
+.form-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background-color: #FFFFFF;
+    border-radius: 6px;
+    box-shadow: inset 0 0 0 2px #CBD2E0;
+}
+
+.form-input input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+}
+
+.password-input {
+    justify-content: space-between;
+}
+
+.icon-button {
+    width: 24px;
+    height: 24px;
+    background: none;
+    color: #E6D00A;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-button {
+    width: 238px;
+    height: 40px;
+    padding: 5px 24px;
+    background-color: #E6D00A;
+    box-shadow: inset 0 0 0 2px #333333;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    align-self: center;
+}
