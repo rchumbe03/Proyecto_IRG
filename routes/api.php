@@ -7,6 +7,13 @@ use App\Http\Controllers\Admin\ModuloController;
 use App\Http\Controllers\Admin\NotificacionController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Admin\AuthController;
+
+
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout']); // Opcional
+
 
 // CURSOS
 Route::get('/cursos', [CursoController::class, 'index']);

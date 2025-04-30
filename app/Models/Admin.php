@@ -15,7 +15,7 @@ class Admin extends Model
         'nombre',
         'apellido',
         'email',
-        'contraseña',
+        'password',
     ];
 
     // Un Administrador tiene muchas notificaciones
