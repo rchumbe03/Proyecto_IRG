@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id(); // Esto crea un bigint unsigned auto_increment primary key
             $table->string('nombre', 25)->nullable();
             $table->string('email', 20)->nullable()->unique();
-            $table->string('contraseña', 255)->nullable();
+            $table->string('password', 255)->nullable();
             $table->tinyInteger('edad')->nullable();
             $table->string('DNI', 20)->nullable();
             $table->string('telefono', 15)->nullable();

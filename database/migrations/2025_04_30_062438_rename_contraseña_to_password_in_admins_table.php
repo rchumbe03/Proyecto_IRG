@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admins', function (Blueprint $table) {
-            $table->id(); // Cambiado de id('id_admin') a id()
-            $table->string('nombre', 50);
-            $table->string('email', 100)->unique();
-            $table->string('password');
-            $table->timestamps();
+        Schema::table('admins', function (Blueprint $table) {
+            $table->renameColumn('contraseña', 'password');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admins');
+        Schema::table('admins', function (Blueprint $table) {
+            $table->renameColumn('password', 'contraseña');
+        });
     }
 };
