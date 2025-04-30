@@ -19,18 +19,17 @@ class Curso extends Model
         'id_admin'
     ];
 
-    public function admin()
-    {
-        return $this->belongsTo(Admin::class, 'id_admin', 'id');
-    }
-
     public function modulos()
     {
-        return $this->hasMany(Modulo::class, 'id_curso');
+        return $this->hasMany(Modulo::class, foreignKey: 'id_curso');
     }
 
     public function jornadas()
     {
-        return $this->hasMany(Expediente::class, 'id_curso');
+        return $this->hasMany(Jornada::class, foreignKey: 'id_curso');  
+    }
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class, foreignKey: 'id_admin');
     }
 }
