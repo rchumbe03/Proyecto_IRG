@@ -5,7 +5,6 @@
     box-sizing: border-box;
 }
 
-/* Asegura que el header ocupe todo el ancho y esté alineado arriba */
 header {
     display: flex;
     justify-content: space-between;
@@ -14,11 +13,11 @@ header {
     background-color: #F3F3F5;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid black;
-    top: 0;  /* Alineado a la parte superior */
-    left: 0;  /* Alineado a la parte izquierda */
-    right: 0;  /* Alineado a la parte derecha */
-    width: 100%;  /* Asegura que ocupe todo el ancho de la página */
-    z-index: 100;  /* Asegura que el header esté encima del contenido */
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;  
+    z-index: 100;
 }
 
 /* Logo en el header */
