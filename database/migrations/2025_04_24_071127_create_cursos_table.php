@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('titulo', 100);
             $table->string('tema', 100);
             $table->text('descripcion')->nullable();
+            $table->string('imagen');
             $table->text('requisitos')->nullable();
             $table->foreignId('id_admin')->constrained('admins')->onDelete('cascade');
             $table->timestamps();

@@ -1,26 +1,15 @@
-html, body {
-    background-color: #f7f7f7;
-}
-/* Layout general */
-.login-wrapper {
-    display: flex;
-    height: 100%;
-}
-
 .intro-container {
-    position: relative;
-    width: 50%;
+    position: fixed;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    overflow: hidden;
 }
 
 .half-circle {
     position: fixed;
     width: 640px;
-    height: 742px;
+    height: 100%;
     background-color: #E6D00A;
     border-top-right-radius: 70%;
     border-bottom-right-radius: 70%;
@@ -30,7 +19,6 @@ html, body {
 }
 
 .intro-text {
-    position: relative;
     z-index: 3;
     padding-left: 4rem;
     width: 520px;
@@ -57,6 +45,8 @@ html, body {
 }
 
 .login-container {
+    position: fixed;
+    width: 95%;
     height: 100%;
     display: flex;
     justify-content: flex-end; /* derecha eje X */

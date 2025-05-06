@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './LoginForm.css'
+import './FormLogin.css'
 
-function LoginForm() {
+function FormLogin() {
     const [email, setEmail] = useState('');
     const [contrasena, setContrasena] = useState('');
     const [mostrarContrasena, setMostrarContrasena] = useState(false);
@@ -28,7 +28,7 @@ function LoginForm() {
                     <h1 className="login-title">Iniciar Sesión</h1>
 
                     {/* Correo */}
-            <div className="form-group">
+                    <div className="form-group">
                         <label className="form-label">Correo</label>
                         <div className="form-input">
                             <input
@@ -71,4 +71,4 @@ function LoginForm() {
     );
 }
 
-export default LoginForm;
+export default FormLogin;
