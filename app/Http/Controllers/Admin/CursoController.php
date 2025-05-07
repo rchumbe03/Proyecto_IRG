@@ -11,9 +11,10 @@ class CursoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() {
-        // Devolver todos los cursos
-        return response()->json(Curso::all(), 200);
+    public function index()
+    {
+        $cursos = Curso::all();
+        return response()->json($cursos); // ✅ obligatorio para APIs
     }
 
     /**
@@ -90,6 +91,6 @@ class CursoController extends Controller
         $curso->delete();
 
         // Devolver una respuesta vacía con código 204
-        return response()->json(['message' => 'Curso eliminado', 204]);
+        return response()->json(['message' => 'Curso eliminado'], 204);
     }
 }

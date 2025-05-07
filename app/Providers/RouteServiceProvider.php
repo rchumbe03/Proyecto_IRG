@@ -12,7 +12,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string|null
      */
-    protected $namespace = 'App\\Http\\Controllers';
+    // protected $namespace = 'App\\Http\\Controllers';
 
     /**
      * Define las rutas de tu aplicación.
@@ -46,7 +46,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('api')
             ->middleware('api')
-            ->namespace($this->namespace)
+            // ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
     }
 
@@ -60,7 +60,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::middleware('web')
-            ->namespace($this->namespace)
+            // ->namespace($this->namespace)
             ->group(base_path('routes/web.php'));
     }
 }

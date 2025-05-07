@@ -16,7 +16,8 @@ class Curso extends Model
         'tema',
         'descripcion',
         'requisitos',
-        'id_admin'
+        'id_admin',
+        'imagen'
     ];
 
     public function modulos()
@@ -26,7 +27,7 @@ class Curso extends Model
 
     public function jornadas()
     {
-        return $this->hasMany(Jornada::class, foreignKey: 'id_curso');  
+        return $this->hasMany(Jornada::class, foreignKey: 'id_curso');
     }
     public function admin()
     {
