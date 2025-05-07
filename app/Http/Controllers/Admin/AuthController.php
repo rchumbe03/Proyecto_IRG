@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 use App\Models\Admin;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
 
@@ -13,44 +13,40 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => [
-                'required',
-                'email',
-                'regex:/^[\w\.\-]+@([\w\-]+\.)+[\w\-]{2,4}$/i'
-            ],
+        $request->validate([
+            'email' => ['required', 'email'],
             'password' => [
                 'required',
-                Password::min(8)
-                    ->mixedCase()
-                    ->letters()
-                    ->numbers()
-                    ->symbols()
-//                    ->uncompromised(), // ✅ Fuga de datos
+                Password::min(8)->mixedCase()->letters()->numbers()->symbols(),
             ],
         ]);
 
-        if ($validator->fails()) {
+        // 🔍 Buscar en admins
+        $admin = Admin::where('email', $request->email)->first();
+        if ($admin && Hash::check($request->password, $admin->password)) {
             return response()->json([
-                'success' => false,
-                'errors' => $validator->errors(),
-            ], 422);
+                'success' => true,
+                'message' => 'Login exitoso como admin',
+                'tipo' => 'admin',
+                'data' => $admin,
+            ]);
         }
 
-        $admin = Admin::where('email', $request->email)->first();
-
-        if (!$admin || !Hash::check($request->password, $admin->password)) {
+        // 🔍 Buscar en usuarios
+        $usuario = Usuario::where('email', $request->email)->first();
+        if ($usuario && Hash::check($request->password, $usuario->password)) {
             return response()->json([
-                'success' => false,
-                'message' => 'Credenciales inválidas',
-            ], 401);
+                'success' => true,
+                'message' => 'Login exitoso como usuario',
+                'tipo' => 'usuario',
+                'data' => $usuario,
+            ]);
         }
 
         return response()->json([
-            'success' => true,
-            'message' => 'Login exitoso',
-            'admin' => $admin,
-        ]);
+            'success' => false,
+            'message' => 'Credenciales inválidas',
+        ], 401);
     }
 
     public function logout(Request $request)
