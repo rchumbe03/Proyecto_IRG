@@ -1,14 +1,45 @@
 import React, { useState } from 'react';
-import './FormLogin.css'
+import './FormLogin.css';
+import { useNavigate } from 'react-router-dom';
 
 function FormLogin() {
     const [email, setEmail] = useState('');
     const [contrasena, setContrasena] = useState('');
     const [mostrarContrasena, setMostrarContrasena] = useState(false);
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log({ email, contrasena });
+        setError('');
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: contrasena
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                setError(data.message || 'Credenciales incorrectas');
+                return;
+            }
+
+            // Redirigir si el login fue exitoso
+            navigate('/cursos');
+
+            // eslint-disable-next-line no-unused-vars
+        } catch (err) {
+            setError('Error al conectar con el servidor.');
+        }
     };
 
     return (
@@ -61,6 +92,9 @@ function FormLogin() {
                             </button>
                         </div>
                     </div>
+
+                    {/* Error de login */}
+                    {error && <div className="form-error">{error}</div>}
 
                     <button type="submit" className="login-button">
                         Iniciar sesión

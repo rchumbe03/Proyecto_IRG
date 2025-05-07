@@ -5,24 +5,40 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        // Validar campos requeridos
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
+        $validator = Validator::make($request->all(), [
+            'email' => [
+                'required',
+                'email',
+                'regex:/^[\w\.\-]+@([\w\-]+\.)+[\w\-]{2,4}$/i'
+            ],
+            'password' => [
+                'required',
+                Password::min(8)
+                    ->mixedCase()
+                    ->letters()
+                    ->numbers()
+                    ->symbols()
+//                    ->uncompromised(), // ✅ Fuga de datos
+            ],
         ]);
 
-        // Buscar admin por email
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
         $admin = Admin::where('email', $request->email)->first();
 
-
-        // Verificar si el admin existe y la contraseña es correcta
         if (!$admin || !Hash::check($request->password, $admin->password)) {
             return response()->json([
                 'success' => false,
@@ -30,7 +46,6 @@ class AuthController extends Controller
             ], 401);
         }
 
-        // Autenticación exitosa (puedes generar token si usas sanctum o passport)
         return response()->json([
             'success' => true,
             'message' => 'Login exitoso',
