@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './Header.css';
+import './HeaderIn.css';
+
+// Importa los iconos de React Icons
+import { FaWallet, FaFileAlt, FaBell, FaSun, FaMoon } from 'react-icons/fa';
 
 export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);  // Para el cambio de tema
   const profileRef = useRef(null);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    document.body.classList.toggle('dark-theme', isDarkMode);  // Cambiar el tema a oscuro
   };
 
   useEffect(() => {
@@ -33,12 +42,32 @@ export default function Header() {
         <img src="logo.png" alt="Logo" className="logo" />
       </div>
       <div className="right">
-        <nav className="tabs">
-          <a href="#inicio">Inicio</a>
-          <a href="#cursos">Cursos</a>
-          <a href="#mis-compras">Mis compras</a>
-          <a href="#contacto">Contacto</a>
-        </nav>
+        <div className="icons">
+          {/* Billetera */}
+          <button className="icon-text-button">
+            <span>Billetera</span>
+            <FaWallet />
+          </button>
+
+          {/* Expediente */}
+          <button className="icon-text-button">
+            <span>Expediente</span>
+            <FaFileAlt />
+          </button>
+
+          {/* Notificaciones */}
+          <button className="icon-text-button">
+            <span>Notificaciones</span>
+            <FaBell />
+          </button>
+
+          {/* Modo Día/Noche */}
+          <button className="icon-text-button" onClick={toggleTheme}>
+            <span>Modo</span>
+            {isDarkMode ? <FaSun /> : <FaMoon />}
+          </button>
+        </div>
+
         <div className="profile" ref={profileRef}>
           <img
             src="profile-icon.png"
@@ -61,7 +90,3 @@ export default function Header() {
   );
 }
 
-// function toggleDropdown() {
-//     const dropdown = document.querySelector('.dropdown');
-//     dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-//   }
