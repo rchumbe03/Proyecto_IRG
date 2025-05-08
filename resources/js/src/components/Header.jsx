@@ -1,12 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Header.css';
+import { FaHome, FaBookOpen, FaBuilding, FaEnvelope, FaSun, FaMoon } from 'react-icons/fa';
 
 export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   const profileRef = useRef(null);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const toggleDarkMode = () => {
+    setDarkMode(prevMode => {
+      const newMode = !prevMode;
+      if (newMode) {
+        document.body.classList.add('dark-mode');
+      } else {
+        document.body.classList.remove('dark-mode');
+      }
+      return newMode;
+    });
   };
 
   useEffect(() => {
@@ -34,11 +48,14 @@ export default function Header() {
       </div>
       <div className="right">
         <nav className="tabs">
-          <a href="#inicio">Inicio</a>
-          <a href="#cursos">Cursos</a>
-          <a href="#mis-compras">Mis compras</a>
-          <a href="#contacto">Contacto</a>
+          <a href="#inicio"><FaHome className="tab-icon" />Inicio</a>
+          <a href="#cursos"><FaBookOpen className="tab-icon" />Cursos</a>
+          <a href="#sobre-nosotros"><FaBuilding className="tab-icon" />Sobre Nosotros</a>
+          <a href="#contacto"><FaEnvelope className="tab-icon" />Contacto</a>
         </nav>
+        <div className="mode-toggle" onClick={toggleDarkMode}>
+          {darkMode ? <FaSun className="mode-icon" /> : <FaMoon className="mode-icon" />}
+        </div>
         <div className="profile" ref={profileRef}>
           <img
             src="profile-icon.png"
@@ -60,8 +77,3 @@ export default function Header() {
     </header>
   );
 }
-
-function toggleDropdown() {
-    const dropdown = document.querySelector('.dropdown');
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-  }
