@@ -39,7 +39,7 @@ export default function Header() {
     return (
         <header>
             <div className="left">
-                <img src="logo.png" alt="Logo" className="logo" />
+                <img src="" alt="Logo" className="logo" />
             </div>
             <div className="right">
                 <div className="icons">
@@ -70,7 +70,7 @@ export default function Header() {
 
                 <div className="profile" ref={profileRef}>
                     <img
-                        src="profile-icon.png"
+                        src=""
                         alt="Perfil"
                         className="profile-icon"
                         onClick={toggleDropdown}
@@ -78,9 +78,9 @@ export default function Header() {
                     {isDropdownOpen && (
                         <div className="dropdown">
                             <ul>
-                                <li><a href="#perfil">Ver perfil</a></li>
-                                <li><a href="#configuracion">Configuración</a></li>
-                                <li><a href="#logout">Cerrar sesión</a></li>
+                                <li><a href="#">Ver perfil</a></li>
+                                <li><a href="#">Configuración</a></li>
+                                <li><a href="#">Cerrar sesión</a></li>
                             </ul>
                         </div>
                     )}

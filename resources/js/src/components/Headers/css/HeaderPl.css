@@ -14,7 +14,6 @@ header {
     background-color: #F3F3F5;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid black;
-    position: fixed;  /* Fija el header en la parte superior */
     top: 0;
     left: 0;
     right: 0;

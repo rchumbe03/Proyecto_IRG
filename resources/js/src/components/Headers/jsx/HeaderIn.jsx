@@ -44,21 +44,21 @@ export default function Header() {
     return (
         <header>
             <div className="left">
-                <img src="logo.png" alt="Logo" className="logo" />
+                <img src="" alt="Logo" className="logo" />
             </div>
             <div className="right">
                 <nav className="tabs">
-                    <a href="#inicio"><FaHome className="tab-icon" />Inicio</a>
-                    <a href="#cursos"><FaBookOpen className="tab-icon" />Cursos</a>
-                    <a href="#sobre-nosotros"><FaBuilding className="tab-icon" />Sobre Nosotros</a>
-                    <a href="#contacto"><FaEnvelope className="tab-icon" />Contacto</a>
+                    <a href="#"><FaHome className="tab-icon" />Inicio</a>
+                    <a href="#"><FaBookOpen className="tab-icon" />Cursos</a>
+                    <a href="#"><FaBuilding className="tab-icon" />Sobre Nosotros</a>
+                    <a href="#"><FaEnvelope className="tab-icon" />Contacto</a>
                 </nav>
                 <div className="mode-toggle" onClick={toggleDarkMode}>
                     {darkMode ? <FaSun className="mode-icon" /> : <FaMoon className="mode-icon" />}
                 </div>
                 <div className="profile" ref={profileRef}>
                     <img
-                        src="profile-icon.png"
+                        src=""
                         alt="Perfil"
                         className="profile-icon"
                         onClick={toggleDropdown}
@@ -66,9 +66,9 @@ export default function Header() {
                     {isDropdownOpen && (
                         <div className="dropdown">
                             <ul>
-                                <li><a href="#perfil">Ver perfil</a></li>
-                                <li><a href="#configuracion">Configuración</a></li>
-                                <li><a href="#logout">Cerrar sesión</a></li>
+                                <li><a href="#">Ver perfil</a></li>
+                                <li><a href="#">Configuración</a></li>
+                                <li><a href="#">Cerrar sesión</a></li>
                             </ul>
                         </div>
                     )}
