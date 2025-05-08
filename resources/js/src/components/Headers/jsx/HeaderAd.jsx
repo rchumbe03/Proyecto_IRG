@@ -39,7 +39,7 @@ const HeaderAd = () => {
   return (
     <header className="header">
       <div className="logo">
-        <img src="/ruta-del-logo.png" alt="Logo" className="logo-img" />
+        <img src="" alt="Logo" className="logo-img" />
       </div>
 
       <div className="right-section">
@@ -67,7 +67,7 @@ const HeaderAd = () => {
         {/* Perfil */}
         <div className="profile" ref={profileRef}>
           <img
-            src="/profile-icon.png"
+            src=""
             alt="Perfil"
             className="profile-icon"
             onClick={toggleDropdown}
