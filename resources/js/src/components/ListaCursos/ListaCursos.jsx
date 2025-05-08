@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './ListaCursos.css';
-import HeaderPl from './HeaderPl';
-import Footer from './Footer';
+import HeaderPl from '../Headers/jsx/HeaderPl.jsx';
+import Footer from '../Footer.jsx';
 
 const ListaCursos = () => {
     const [cursos, setCursos] = useState([]);

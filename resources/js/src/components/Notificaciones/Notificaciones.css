@@ -1,11 +1,10 @@
 .notificaciones-container {
     display: flex;
-    margin-top: 85px;
-    height: calc(100vh - 100px); 
+    height: calc(100vh - 100px);
     background-color: #f3f3f5;
-    
+
   }
-  
+
   .mensajes-lista {
     width: 300px;
     background-color: #fff;
@@ -13,7 +12,7 @@
     overflow-y: auto;
     padding: 20px;
   }
-  
+
   .mensaje-card {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
@@ -22,23 +21,23 @@
     border-radius: 8px;
     position: relative;
   }
-  
+
   .mensaje-info strong {
     display: block;
     font-size: 16px;
   }
-  
+
   .mensaje-info span {
     font-size: 12px;
     color: #777;
   }
-  
+
   .mensaje-info p {
     margin-top: 8px;
     font-size: 14px;
     color: #333;
   }
-  
+
   .mensaje-acciones {
     position: absolute;
     bottom: 8px;
@@ -46,43 +45,43 @@
     display: flex;
     gap: 8px;
   }
-  
+
   .accion-icono {
     cursor: pointer;
     color: #333;
   }
-  
+
   .accion-icono:hover {
     color: #E6D00A;
   }
-  
+
   .agregar-btn {
-    position: absolute; 
-    top: 20px; 
-    right: 20px; 
+    position: absolute;
+    top: 20px;
+    right: 20px;
     background-color: #E6D00A;
     border: none;
     color: black;
     font-weight: bold;
     padding: 10px 20px;
-    width: auto; 
+    width: auto;
     border-radius: 5px;
     cursor: pointer;
   }
-  
+
   .agregar-btn:hover {
     background-color: #d4be09;
   }
-  
+
   .mensaje-vacio {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative; 
+    position: relative;
   }
-  
+
   .formulario-flotante {
     position: fixed;
     top: 100px;
@@ -97,7 +96,7 @@
     flex-direction: column;
     gap: 10px;
   }
-  
+
   .formulario-flotante input,
   .formulario-flotante textarea {
     width: 100%;
@@ -105,16 +104,16 @@
     border: 1px solid #ccc;
     border-radius: 5px;
   }
-  
+
   .formulario-flotante textarea {
     height: 100px;
   }
-  
+
   .formulario-botones {
     display: flex;
     justify-content: space-between;
   }
-  
+
   .formulario-botones button {
     background-color: #E6D00A;
     border: none;
@@ -124,7 +123,7 @@
     border-radius: 5px;
     cursor: pointer;
   }
-  
+
   .formulario-botones button:hover {
     background-color: #d4be09;
   }
@@ -133,6 +132,5 @@
   .sobre-icono{
     font-size: 150px;
     color: #2f3a4e;
-    margin-bottom: 20px;  
+    margin-bottom: 20px;
     }
-  

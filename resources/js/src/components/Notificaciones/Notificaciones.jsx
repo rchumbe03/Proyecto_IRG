@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FaEdit, FaTrash, FaPlus, FaEnvelope } from 'react-icons/fa';
 import './Notificaciones.css';
+import HeaderPl from '../Headers/jsx/HeaderAd.jsx';
+import Footer from '../Footer.jsx';
 
 const Notificaciones = () => {
   const [mensajes, setMensajes] = useState([
@@ -51,6 +53,8 @@ const Notificaciones = () => {
   };
 
   return (
+    <div className="container">
+    <HeaderPl />
     <div className="notificaciones-container">
       <div className="mensajes-lista">
         {mensajes.map((mensaje) => (
@@ -116,6 +120,8 @@ const Notificaciones = () => {
           </div>
         </div>
       )}
+    </div>
+    <Footer />
     </div>
   );
 };
