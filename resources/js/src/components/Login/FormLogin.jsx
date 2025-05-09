@@ -1,23 +1,13 @@
 import React, { useState } from 'react';
-<<<<<<< Updated upstream:resources/js/src/components/LoginForm.jsx
-import './LoginForm.css'
-=======
 import './FormLogin.css';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
->>>>>>> Stashed changes:resources/js/src/components/Login/FormLogin.jsx
 
-function LoginForm() {
+function FormLogin() {
     const [email, setEmail] = useState('');
     const [contrasena, setContrasena] = useState('');
     const [mostrarContrasena, setMostrarContrasena] = useState(false);
-<<<<<<< Updated upstream:resources/js/src/components/LoginForm.jsx
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log({ email, contrasena });
-=======
     const [error, setError] = useState('');
     const [darkMode, setDarkMode] = useState(false); // Estado para controlar el modo oscuro
     const navigate = useNavigate();
@@ -60,7 +50,6 @@ function LoginForm() {
         } catch (err) {
             setError('Error al conectar con el servidor.');
         }
->>>>>>> Stashed changes:resources/js/src/components/Login/FormLogin.jsx
     };
 
     return (
@@ -80,7 +69,7 @@ function LoginForm() {
                     <h1 className="login-title">Iniciar Sesión</h1>
 
                     {/* Correo */}
-            <div className="form-group">
+                    <div className="form-group">
                         <label className="form-label">Correo</label>
                         <div className="form-input">
                             <input
@@ -114,6 +103,9 @@ function LoginForm() {
                         </div>
                     </div>
 
+                    {/* Error de login */}
+                    {error && <div className="form-error">{error}</div>}
+
                     <button type="submit" className="login-button">
                         Iniciar sesión
                     </button>
@@ -130,10 +122,6 @@ function LoginForm() {
     );
 }
 
-<<<<<<< Updated upstream:resources/js/src/components/LoginForm.jsx
-export default LoginForm;
-=======
 export default FormLogin;
 
 
->>>>>>> Stashed changes:resources/js/src/components/Login/FormLogin.jsx

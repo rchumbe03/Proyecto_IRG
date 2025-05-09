@@ -1,14 +1,3 @@
-<<<<<<< Updated upstream:resources/js/src/components/LoginForm.css
-html, body {
-    background-color: #f7f7f7;
-}
-/* Layout general */
-.login-wrapper {
-    display: flex;
-    height: 100%;
-}
-
-=======
 /* Estilos generales */
 body {
     font-family: 'Inter', sans-serif;
@@ -31,22 +20,19 @@ body.dark-mode {
 }
 
 /* Sección de la introducción (izquierda) */
->>>>>>> Stashed changes:resources/js/src/components/Login/FormLogin.css
 .intro-container {
-    position: relative;
-    width: 50%;
+    position: fixed;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    overflow: hidden;
 }
 
 /* Estilos para el círculo */
 .half-circle {
     position: fixed;
     width: 640px;
-    height: 742px;
+    height: 100%;
     background-color: #E6D00A;
     border-top-right-radius: 70%;
     border-bottom-right-radius: 70%;
@@ -57,7 +43,6 @@ body.dark-mode {
 
 /* Texto de bienvenida */
 .intro-text {
-    position: relative;
     z-index: 3;
     padding-left: 4rem;
     width: 520px;
@@ -85,6 +70,8 @@ body.dark-mode {
 
 /* Sección de login (derecha) */
 .login-container {
+    position: fixed;
+    width: 95%;
     height: 100%;
     display: flex;
     justify-content: flex-end;
