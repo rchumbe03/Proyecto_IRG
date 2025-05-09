@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('notificaciones', function (Blueprint $table) {
             $table->id(); // Cambiado de id('id_notificacion')
             $table->foreignId('id_admin')->constrained('admins')->onDelete('cascade');
+            $table->string('nombre_admin', 100);
             $table->string('titulo', 100);
             $table->text('contenido');
             $table->timestamps();

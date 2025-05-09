@@ -4,7 +4,6 @@
     box-sizing: border-box;
 }
 
-/* Asegura que el header ocupe todo el ancho y esté alineado arriba */
 header {
     position: relative;
     display: flex;

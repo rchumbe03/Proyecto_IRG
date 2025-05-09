@@ -22,7 +22,8 @@ class NotificacionController extends Controller
         $request->validate([
             'titulo' => 'required|string|min:5|max:100',
             'contenido' => 'required|string|min:10',
-            'id_admin' => 'required|exists:admins,id'
+            'id_admin' => 'required|exists:admins,id',
+            'nombre_admin' => 'required|string|max:100'
         ]);
 
         $notificacion = Notificacion::create($request->all());
@@ -61,7 +62,8 @@ class NotificacionController extends Controller
         $request->validate([
             'titulo' => 'required|string|min:5|max:100',
             'contenido' => 'required|string|min:10',
-            'id_admin' => 'required|exists:admins,id'
+            'id_admin' => 'required|exists:admins,id',
+            'nombre_admin' => 'required|string|max:100'
         ]);
 
         // Actualizar la notificación
