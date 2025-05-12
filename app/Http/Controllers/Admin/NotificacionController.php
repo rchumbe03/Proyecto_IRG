@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Notificacion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class NotificacionController extends Controller
 {
@@ -19,15 +20,29 @@ class NotificacionController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'titulo' => 'required|string|min:5|max:100',
             'contenido' => 'required|string|min:10',
-            'id_admin' => 'required|exists:admins,id',
+            'id_admin' => 'required|integer',
             'nombre_admin' => 'required|string|max:100'
         ]);
 
-        $notificacion = Notificacion::create($request->all());
-        return response()->json($notificacion, 201);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $notificacion = Notificacion::create($request->all());
+            return response()->json($notificacion, 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al crear la notificación',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

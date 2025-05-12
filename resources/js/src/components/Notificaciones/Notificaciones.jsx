@@ -48,23 +48,40 @@ const Notificaciones = () => {
                 const datosNuevoMensaje = {
                     titulo: nuevoMensaje.titulo,
                     contenido: nuevoMensaje.contenido,
-                    id_admin: 1, // Esto debería venir de tu estado de autenticación
-                    nombre_admin: 'Admin' // Esto debería venir de tu estado de autenticación
+                    id_admin: 1, // Asegúrate de que este ID exista en tu tabla de admins
+                    nombre_admin: 'Administrador'
                 };
 
                 const response = await axios.post(
                     'http://localhost:8000/api/notificaciones',
                     datosNuevoMensaje,
-                    { withCredentials: true }
+                    {
+                        withCredentials: true,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    }
                 );
 
-                setMensajes([...mensajes, response.data]);
-                setNuevoMensaje({ titulo: '', contenido: '' });
-                setMostrarFormulario(false);
+                if (response.data) {
+                    setMensajes([...mensajes, response.data]);
+                    setNuevoMensaje({ titulo: '', contenido: '' });
+                    setMostrarFormulario(false);
+                    setError(null);
+                }
             } catch (error) {
                 console.error('Error al agregar notificación:', error);
-                setError('Error al agregar la notificación. Por favor, intente nuevamente.');
+                if (error.response && error.response.data && error.response.data.errors) {
+                    // Mostrar errores de validación específicos
+                    const errorMessages = Object.values(error.response.data.errors).flat();
+                    setError(errorMessages.join(', '));
+                } else {
+                    setError('Error al agregar la notificación. Por favor, intente nuevamente.');
+                }
             }
+        } else {
+            setError('Por favor, complete todos los campos requeridos.');
         }
     };
 

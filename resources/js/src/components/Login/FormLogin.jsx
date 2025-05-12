@@ -47,6 +47,7 @@ function FormLogin() {
 
             // Redirigir si el login fue exitoso
             navigate('/cursos');
+            // eslint-disable-next-line no-unused-vars
         } catch (err) {
             setError('Error al conectar con el servidor.');
         }
