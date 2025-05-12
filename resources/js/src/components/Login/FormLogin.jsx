@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
 import './FormLogin.css';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 
 function FormLogin() {
     const [email, setEmail] = useState('');
     const [contrasena, setContrasena] = useState('');
     const [mostrarContrasena, setMostrarContrasena] = useState(false);
     const [error, setError] = useState('');
+    const [darkMode, setDarkMode] = useState(false); // Estado para controlar el modo oscuro
     const navigate = useNavigate();
+
+    const toggleDarkMode = () => {
+        setDarkMode(!darkMode);
+        if (!darkMode) {
+            document.body.classList.add('dark-mode'); // Agregar la clase dark-mode al body
+        } else {
+            document.body.classList.remove('dark-mode'); // Quitar la clase dark-mode del body
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -35,8 +47,6 @@ function FormLogin() {
 
             // Redirigir si el login fue exitoso
             navigate('/cursos');
-
-            // eslint-disable-next-line no-unused-vars
         } catch (err) {
             setError('Error al conectar con el servidor.');
         }
@@ -100,6 +110,13 @@ function FormLogin() {
                         Iniciar sesión
                     </button>
                 </form>
+            </div>
+
+            {/* Botón para cambiar el modo oscuro */}
+            <div className="mode-toggle">
+                <button className="mode-toggle-button" onClick={toggleDarkMode}>
+                    <FontAwesomeIcon icon={darkMode ? faMoon : faSun} />
+                </button>
             </div>
         </div>
     );
