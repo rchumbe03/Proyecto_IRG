@@ -15,7 +15,13 @@ export default function Header() {
 
     const toggleTheme = () => {
         setIsDarkMode(!isDarkMode);
-        document.body.classList.toggle('dark-theme', isDarkMode);  // Cambiar el tema a oscuro
+
+        // Cambiar la clase 'dark-theme' en el body y header
+        if (!isDarkMode) {
+            document.body.classList.add('dark-theme');
+        } else {
+            document.body.classList.remove('dark-theme');
+        }
     };
 
     useEffect(() => {
@@ -37,7 +43,7 @@ export default function Header() {
     }, [isDropdownOpen]);
 
     return (
-        <header>
+        <header className={isDarkMode ? 'dark-theme' : ''}>
             <div className="left">
                 <img src="" alt="Logo" className="logo" />
             </div>
@@ -63,7 +69,6 @@ export default function Header() {
 
                     {/* Modo Día/Noche */}
                     <button className="icon-text-button" onClick={toggleTheme}>
-                        <span>Modo</span>
                         {isDarkMode ? <FaSun /> : <FaMoon />}
                     </button>
                 </div>
@@ -89,4 +94,5 @@ export default function Header() {
         </header>
     );
 }
+
 
