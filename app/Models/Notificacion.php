@@ -15,6 +15,12 @@ class Notificacion extends Model
         'titulo',
         'contenido',
         'id_admin',
+        'nombre_admin',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function admin()

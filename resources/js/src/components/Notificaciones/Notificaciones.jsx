@@ -1,60 +1,77 @@
-import React, { useState } from 'react';
 import { FaEdit, FaTrash, FaPlus, FaEnvelope, FaTimes, FaPaperclip } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './Notificaciones.css';
 import HeaderAd from '../Headers/jsx/HeaderAd.jsx';
 import Footer from '../Footer.jsx';
 
 const Notificaciones = () => {
-  const [mensajes, setMensajes] = useState([
-    { id: 1, autor: 'Juan Pérez', fecha: '03/05/2025', contenido: 'Primer mensaje', archivo: null },
-    { id: 2, autor: 'Jorge Torres', fecha: '03/05/2025', contenido: 'Segundo mensaje', archivo: null },
-  ]);
+    const [mensajes, setMensajes] = useState([]);
+    const [mostrarFormulario, setMostrarFormulario] = useState(false);
+    const [nuevoMensaje, setNuevoMensaje] = useState({ titulo: '', contenido: '' });
+    const [editandoMensajeId, setEditandoMensajeId] = useState(null);
+    const [mensajeEditado, setMensajeEditado] = useState({});
+    const [mensajeSeleccionado, setMensajeSeleccionado] = useState(null);
+    const [error, setError] = useState(null);
 
-  const [mostrarFormulario, setMostrarFormulario] = useState(false);
-  const [nuevoMensaje, setNuevoMensaje] = useState({ asunto: '', descripcion: '', archivo: null });
-  const [editandoMensajeId, setEditandoMensajeId] = useState(null);
-  const [mensajeEditado, setMensajeEditado] = useState('');
-  const [mensajeSeleccionado, setMensajeSeleccionado] = useState(null);
+    // Efecto para cargar los mensajes al montar el componente
+    useEffect(() => {
+        fetchMensajes();
+    }, []);
 
-  const handleAgregarMensaje = () => {
-    if (nuevoMensaje.asunto.trim() && nuevoMensaje.descripcion.trim()) {
-      const nuevo = {
-        id: Date.now(),
-        autor: 'Nuevo Autor',
-        fecha: new Date().toLocaleDateString(),
-        contenido: nuevoMensaje.descripcion,
-        archivo: nuevoMensaje.archivo,
-      };
-      setMensajes([...mensajes, nuevo]);
-      setNuevoMensaje({ asunto: '', descripcion: '', archivo: null });
-      setMostrarFormulario(false);
-    }
-  };
+    // Función para obtener mensajes de la API
+    const fetchMensajes = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/api/notificaciones', {
+                withCredentials: true
+            });
+            setMensajes(response.data);
+            setError(null); // Limpiar error si la operación es exitosa
+        } catch (error) {
+            console.error('Error al obtener notificaciones:', error);
+            setError('Error al cargar las notificaciones. Por favor, intente nuevamente.');
+        }
+    };
 
-  const handleEliminarMensaje = (id) => {
-    setMensajes(mensajes.filter((msg) => msg.id !== id));
-    if (mensajeSeleccionado && mensajeSeleccionado.id === id) {
-      setMensajeSeleccionado(null);
-    }
-  };
+    const formatearFecha = (fecha) => {
+        return fecha.split('T')[0];
+    };
 
-  const handleEditarMensaje = (id) => {
-    const mensaje = mensajes.find((m) => m.id === id);
-    if (mensaje) {
-      setEditandoMensajeId(id);
-      setMensajeEditado(mensaje.contenido);
-    }
-  };
+    const handleMensajeClick = (mensaje) => {
+        setMensajeSeleccionado(mensaje);
+    };
 
-  const handleGuardarEdicion = (id) => {
-    setMensajes(
-      mensajes.map((m) =>
-        m.id === id ? { ...m, contenido: mensajeEditado } : m
-      )
-    );
-    setEditandoMensajeId(null);
-    setMensajeEditado('');
-  };
+    // Función para agregar mensaje
+    const handleAgregarMensaje = async () => {
+        if (nuevoMensaje.titulo.trim() && nuevoMensaje.contenido.trim()) {
+            try {
+                const datosNuevoMensaje = {
+                    titulo: nuevoMensaje.titulo,
+                    contenido: nuevoMensaje.contenido,
+                    id_admin: 1, // Asegúrate de que este ID exista en tu tabla de admins
+                    nombre_admin: 'Administrador'
+                };
+
+                const response = await axios.post(
+                    'http://localhost:8000/api/notificaciones',
+                    datosNuevoMensaje,
+                    {
+                        withCredentials: true,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    }
+                );
+                fetchMensajes(); // Refresh the messages list after adding a new message
+                setNuevoMensaje({ titulo: '', contenido: '' });
+                setMostrarFormulario(false);
+            } catch (error) {
+                console.error('Error al agregar mensaje:', error);
+                setError('Error al agregar el mensaje. Por favor, intente nuevamente.');
+            }
+        }
+    };
 
   const handleArchivoChange = (e) => {
     setNuevoMensaje({ ...nuevoMensaje, archivo: e.target.files[0] });

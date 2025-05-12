@@ -1,8 +1,13 @@
+/* Agregar Flexbox al contenedor */
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Flex en .course-page para que ocupe todo el espacio disponible */
 .course-page {
-    width: fit-content;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: 'Inter', sans-serif;
+    flex: 1;
 }
 
 .description {

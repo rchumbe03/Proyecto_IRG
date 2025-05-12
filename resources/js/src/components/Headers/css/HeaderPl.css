@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 /* Asegura que el header ocupe todo el ancho y esté alineado arriba */
 header {
     position: relative;
@@ -74,7 +78,7 @@ header {
     color: #E6D00A;                /* Mismo color hover que los iconos */
 }
 
-/* Resto de los estilos */
+/* Estilos para el perfil */
 .profile {
     position: relative;
 }
@@ -89,6 +93,7 @@ header {
     cursor: pointer;
 }
 
+/* Estilos del dropdown */
 .dropdown {
     position: absolute;
     top: 50px;
@@ -117,6 +122,7 @@ header {
     color: #333;
 }
 
+/* Animación para el dropdown */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -127,3 +133,55 @@ header {
         transform: translateY(0);
     }
 }
+
+/* --- Estilos para el modo oscuro --- */
+
+/* Estilo para el body cuando está en modo oscuro */
+body.dark-theme {
+    background-color: #333; /* Fondo oscuro */
+    color: #f5f5f5; /* Texto claro */
+}
+
+/* Estilo para el header en modo oscuro */
+header.dark-theme {
+    background-color: #333;  /* Fondo oscuro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);  /* Sombra más marcada */
+}
+
+/* Estilo para los iconos en el modo oscuro */
+header.dark-theme .icon-text-button {
+    color: #f5f5f5;  /* Iconos claros */
+}
+
+/* Estilo para los botones en el modo oscuro */
+button.icon-text-button {
+    color: black;
+}
+
+button.icon-text-button:hover {
+    color: #E6D00A;
+}
+
+button.icon-text-button.dark-theme {
+    color: #f5f5f5;  /* Color claro en el botón en modo oscuro */
+}
+
+/* Estilo para el icono de perfil en el modo oscuro */
+header.dark-theme .profile-icon {
+    background-color: #333; /* Fondo oscuro en el ícono del perfil */
+}
+
+/* Estilos para el fondo de los cursos en modo oscuro */
+.course-card.dark-theme {
+    background-color: #333;
+    border: 1px solid #555;
+}
+
+.course-title.dark-theme {
+    color: #f5f5f5;
+}
+
+.course-theme.dark-theme {
+    color: #b0b0b0;
+}
+
