@@ -10,10 +10,10 @@ const Footer = () => {
             </div>
 
             <div className="footer-right">
-                <a href="">Privacy Policy</a>
-                <a href="">Terms & Conditions</a>
-                <a href="">Cookie Policy</a>
-                <a href="">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Cookie Policy</a>
+                <a href="#">Contact</a>
             </div>
         </footer>
     );

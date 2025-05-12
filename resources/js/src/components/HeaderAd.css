@@ -1,12 +1,10 @@
 .header {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #F3F3F5;
   padding: 10px 20px;
-  font-family: sans-serif;
-} 
+}
 
 .logo {
   display: flex;
@@ -141,7 +139,7 @@ body.dark-mode .icon {
 }
 
 body.dark-mode .icon-label {
-  color: #e5d8d8;
+  color: #ddd;
 }
 
 body.dark-mode .profile-icon {
@@ -160,26 +158,3 @@ body.dark-mode .dropdown a {
 body.dark-mode .dropdown li:hover {
   background-color: #3a3a3a;
 }
-
-/* NOTIFICACIONES: icono y texto alineados en fila */
-.notification-section {
-  flex-direction: row;
-  gap: 8px;
-  transition: transform 0.5s ease, color 0.3s ease; /* para suavizar animaciones */
-  cursor: pointer; /* que aparezca la manito */
-}
-
-.notification-section:hover .icon,
-.notification-section:hover .icon-label {
-  color: #f1c40f; /* Cambia el color al pasar el mouse */
-
-}
-
-/* Íconos generales */
-.icon {
-  color: #000;
-  font-size: 22px;
-  transition: transform 0.5s ease, color 0.3s ease;
-}
-
-/* Ya no hace falta que roten sólo al click */
