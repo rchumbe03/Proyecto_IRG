@@ -1,55 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
-import './Notificaciones.css';
-import HeaderAd from '../Headers/jsx/HeaderAd.jsx';
-import Footer from '../Footer.jsx';
+import React, { useEffect, useState } from 'react'; // Importa React y hooks necesarios
+import axios from 'axios'; // Cliente HTTP para interactuar con la API
+import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa'; // Iconos de edición, eliminación y agregar
+import './Notificaciones.css'; // Estilos CSS del componente
+import HeaderAd from '../Headers/jsx/HeaderAd.jsx'; // Componente del encabezado
+import Footer from '../Footer.jsx'; // Componente del pie de página
 
 const Notificaciones = () => {
-    const [mensajes, setMensajes] = useState([]);
-    const [mostrarFormulario, setMostrarFormulario] = useState(false);
-    const [nuevoMensaje, setNuevoMensaje] = useState({ titulo: '', contenido: '' });
-    const [editandoMensajeId, setEditandoMensajeId] = useState(null);
-    const [mensajeEditado, setMensajeEditado] = useState({});
-    const [mensajeSeleccionado, setMensajeSeleccionado] = useState(null);
-    const [error, setError] = useState(null);
+    // Estados para controlar las notificaciones y sus interacciones
+    const [mensajes, setMensajes] = useState([]); // Lista de mensajes/notificaciones
+    const [mostrarFormulario, setMostrarFormulario] = useState(false); // Muestra/oculta el formulario de agregar
+    const [nuevoMensaje, setNuevoMensaje] = useState({ titulo: '', contenido: '' }); // Datos del nuevo mensaje
+    const [editandoMensajeId, setEditandoMensajeId] = useState(null); // ID del mensaje en edición
+    const [mensajeEditado, setMensajeEditado] = useState({}); // Datos modificados de edición
+    const [mensajeSeleccionado, setMensajeSeleccionado] = useState(null); // Mensaje que se muestra en detalle
+    const [error, setError] = useState(null); // Mensaje de error
 
-    // Efecto para cargar los mensajes al montar el componente
+    // Carga inicial de mensajes al montar el componente
     useEffect(() => {
         fetchMensajes();
     }, []);
 
-    // Función para obtener mensajes de la API
+    // Función para obtener mensajes desde la API
     const fetchMensajes = async () => {
         try {
             const response = await axios.get('http://localhost:8000/api/notificaciones', {
                 withCredentials: true
             });
-            setMensajes(response.data);
-            setError(null); // Limpiar error si la operación es exitosa
+            setMensajes(response.data); // Guardamos los mensajes recibidos
+            setError(null);
         } catch (error) {
             console.error('Error al obtener notificaciones:', error);
             setError('Error al cargar las notificaciones. Por favor, intente nuevamente.');
         }
     };
 
+    // Formatea una fecha en formato corto (YYYY-MM-DD)
     const formatearFecha = (fecha) => {
         return fecha.split('T')[0];
     };
 
+    // Selecciona un mensaje para mostrar en detalle
     const handleMensajeClick = (mensaje) => {
         setMensajeSeleccionado(mensaje);
     };
 
-    // Función para agregar mensaje
+    // Agrega un nuevo mensaje
     const handleAgregarMensaje = async () => {
         if (nuevoMensaje.titulo.trim() && nuevoMensaje.contenido.trim()) {
             try {
                 const datosNuevoMensaje = {
                     titulo: nuevoMensaje.titulo,
                     contenido: nuevoMensaje.contenido,
-                    id_admin: 1, // Asegúrate de que este ID exista en tu tabla de admins
-                    nombre_admin: 'Administrador'
+                    id_admin: 1,
+                    nombre_admin: 'Administrador' // Datos fijos por ahora
                 };
 
                 const response = await axios.post(
@@ -65,15 +68,14 @@ const Notificaciones = () => {
                 );
 
                 if (response.data) {
-                    setMensajes([...mensajes, response.data]);
-                    setNuevoMensaje({ titulo: '', contenido: '' });
-                    setMostrarFormulario(false);
+                    setMensajes([...mensajes, response.data]); // Añade el nuevo mensaje a la lista
+                    setNuevoMensaje({ titulo: '', contenido: '' }); // Limpia el formulario
+                    setMostrarFormulario(false); // Oculta el formulario
                     setError(null);
                 }
             } catch (error) {
                 console.error('Error al agregar notificación:', error);
-                if (error.response && error.response.data && error.response.data.errors) {
-                    // Mostrar errores de validación específicos
+                if (error.response?.data?.errors) {
                     const errorMessages = Object.values(error.response.data.errors).flat();
                     setError(errorMessages.join(', '));
                 } else {
@@ -85,7 +87,7 @@ const Notificaciones = () => {
         }
     };
 
-    // Función para eliminar mensaje
+    // Elimina un mensaje existente
     const handleEliminarMensaje = async (id, e) => {
         e.stopPropagation();
         try {
@@ -93,10 +95,13 @@ const Notificaciones = () => {
                 withCredentials: true
             });
 
+            // Filtra el mensaje eliminado
             setMensajes(mensajes.filter((msg) => msg.id !== id));
+
+            // Limpia el detalle si se está mostrando el mensaje eliminado
             if (mensajeSeleccionado?.id === id) {
                 setMensajeSeleccionado(null);
-                setError(null); // Limpiar error si la operación es exitosa
+                setError(null);
             }
         } catch (error) {
             console.error('Error al eliminar notificación:', error);
@@ -104,6 +109,7 @@ const Notificaciones = () => {
         }
     };
 
+    // Inicia la edición de un mensaje
     const handleEditarMensaje = (id, e) => {
         e.stopPropagation();
         const mensaje = mensajes.find((m) => m.id === id);
@@ -116,15 +122,15 @@ const Notificaciones = () => {
         }
     };
 
-    // Función para guardar edición
+    // Guarda los cambios realizados a un mensaje
     const handleGuardarEdicion = async (id, e) => {
         e.stopPropagation();
         try {
             const datosActualizados = {
                 titulo: mensajeEditado.titulo,
                 contenido: mensajeEditado.contenido,
-                id_admin: 1, // Esto debería venir de tu estado de autenticación
-                nombre_admin: 'Admin' // Esto debería venir de tu estado de autenticación
+                id_admin: 1,
+                nombre_admin: 'Admin'
             };
 
             const response = await axios.put(
@@ -133,12 +139,13 @@ const Notificaciones = () => {
                 { withCredentials: true }
             );
 
+            // Actualiza el mensaje en el estado
             setMensajes(
                 mensajes.map((m) => m.id === id ? response.data : m)
             );
-            setEditandoMensajeId(null);
+            setEditandoMensajeId(null); // Cierra el modo edición
             setMensajeEditado({});
-            setError(null); // Limpiar error si la operación es exitosa
+            setError(null);
         } catch (error) {
             console.error('Error al actualizar notificación:', error);
             setError('Error al actualizar la notificación. Por favor, intente nuevamente.');
@@ -147,13 +154,13 @@ const Notificaciones = () => {
 
     return (
         <div className="container">
-            <HeaderAd />
-            {error && (
-                <div className="error-mensaje">
-                    {error}
-                </div>
-            )}
+            <HeaderAd /> {/* Encabezado de administrador */}
+
+            {/* Muestra el error si existe */}
+            {error && <div className="error-mensaje">{error}</div>}
+
             <div className="notificaciones-container">
+                {/* Lista de mensajes */}
                 <div className="mensajes-lista">
                     {mensajes.map((mensaje) => (
                         <div
@@ -166,6 +173,7 @@ const Notificaciones = () => {
                                 <span className="mensaje-fecha">{formatearFecha(mensaje.created_at)}</span>
                                 <span className="mensaje-admin">{mensaje.nombre_admin}</span>
 
+                                {/* Modo edición */}
                                 {editandoMensajeId === mensaje.id ? (
                                     <>
                                         <input
@@ -204,6 +212,7 @@ const Notificaciones = () => {
                                 )}
                             </div>
 
+                            {/* Acciones: Editar y Eliminar */}
                             <div className="mensaje-acciones">
                                 <FaEdit
                                     className={`accion-icono ${mensajeSeleccionado?.id === mensaje.id ? 'seleccionado' : ''}`}
@@ -218,8 +227,9 @@ const Notificaciones = () => {
                     ))}
                 </div>
 
+                {/* Vista detallada del mensaje */}
                 <div className="mensaje-detalle">
-                    {mensajeSeleccionado ? (
+                    {mensajeSeleccionado && (
                         <div className="detalle-frame">
                             <div className="detalle-titulo-frame">
                                 <h1 className="detalle-titulo">{mensajeSeleccionado.titulo}</h1>
@@ -228,13 +238,15 @@ const Notificaciones = () => {
                             </div>
                             <p className="detalle-contenido">{mensajeSeleccionado.contenido}</p>
                         </div>
-                    ) : null}
+                    )}
 
+                    {/* Botón para mostrar el formulario de nuevo mensaje */}
                     <button className="agregar-btn" onClick={() => setMostrarFormulario(true)}>
                         Agregar <FaPlus style={{ marginLeft: '5px' }} />
                     </button>
                 </div>
 
+                {/* Formulario flotante para agregar notificación */}
                 {mostrarFormulario && (
                     <div className="formulario-flotante">
                         <h2>Nueva Notificación</h2>
@@ -256,9 +268,11 @@ const Notificaciones = () => {
                     </div>
                 )}
             </div>
-            <Footer />
+
+            <Footer /> {/* Pie de página */}
         </div>
     );
 };
 
 export default Notificaciones;
+
