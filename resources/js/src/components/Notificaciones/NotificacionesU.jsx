@@ -91,4 +91,3 @@ const NotificacionesU = () => {
 };
 
 export default NotificacionesU;
-
