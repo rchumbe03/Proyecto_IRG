@@ -1,0 +1,145 @@
+.contenidos {
+  width: 100%;
+  margin: 0;
+  padding: 40px;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  flex: 1;
+}
+
+.tabs {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  font-weight: bold;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+
+.tab.active {
+  border-color: black;
+}
+
+.search {
+  margin-left: auto;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.contenido-lista {
+  list-style: none;
+  padding: 0;
+}
+
+.contenido-item {
+  background: #f9f9f9;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-left: 5px solid #ffd700;
+  border-radius: 5px;
+}
+
+.item-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.numero {
+  background: #ffd700;
+  color: black;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.titulo {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.estado {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.estado.completado {
+  color: green;
+}
+
+.estado.proceso {
+  color: orange;
+}
+
+.estado.bloqueado {
+  color: red;
+}
+
+.toggle {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.item-body {
+  margin-top: 10px;
+  padding-left: 30px;
+}
+
+/* Modo oscuro (opcional si usas dark-theme) */
+.container.dark-theme {
+  background-color: #1e1e1e;
+  color: #f4f4f4;
+}
+
+.container.dark-theme .contenido-item {
+  background-color: #2c2c2c;
+}
+
+.container.dark-theme .titulo {
+  color: #ffffff;
+}
+
+.container.dark-theme .search {
+  background-color: #333;
+  color: #f4f4f4;
+  border: 1px solid #555;
+}
+
+
+.item-body a {
+  color: #000; /* Color negro */
+  text-decoration: none; /* Quita el subrayado */
+}
+
+.item-body a:hover {
+  color: #555; /* Color gris oscuro al pasar el mouse */
+  text-decoration: underline; /* Subrayado al pasar el mouse */
+}
