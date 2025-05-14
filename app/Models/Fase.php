@@ -13,13 +13,12 @@ class Fase extends Model
 
     protected $fillable = [
         'nombre',
-        'descripcion',
         'requisitos',
     ];
 
     // Relación: Una fase puede estar relacionada con varios usuarios
-    public function usuario()
+    public function temas()
     {
-        return $this->hasMany(Usuario::class, 'fase_actual', 'id');
+        return $this->hasMany(Tema::class, 'id_fase');
     }
 }

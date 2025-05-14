@@ -12,19 +12,13 @@ class Notificacion extends Model
     protected $table = 'notificaciones';
 
     protected $fillable = [
-        'titulo',
-        'contenido',
         'id_admin',
         'nombre_admin',
-    ];
-
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'contenido',
     ];
 
     public function admin()
     {
-        return $this->belongsTo(Admin::class, 'id_admin', 'id');
+        return $this->belongsTo(Admin::class, 'id_admin');
     }
 }

@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admins', function (Blueprint $table) {
+        Schema::create('compras', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 50);
-            $table->string('email', 100)->unique();
-            $table->string('password');
+            $table->foreignId('id_usuario')->constrained('usuarios');
+            $table->foreignId('id_curso')->constrained('cursos');
+            $table->decimal('precio', 8, 2);
+            $table->enum('metodo_pago', ['stripe', 'paypal', 'apple pay']);
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admins');
+        Schema::dropIfExists('compras');
     }
 };

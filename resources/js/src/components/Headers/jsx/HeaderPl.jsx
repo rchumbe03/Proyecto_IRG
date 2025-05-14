@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../css/HeaderPl.css';
 
 // Importa los iconos de React Icons
@@ -8,6 +9,7 @@ export default function Header() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(false);  // Para el cambio de tema
     const profileRef = useRef(null);
+    const navigate = useNavigate();
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -62,7 +64,7 @@ export default function Header() {
                     </button>
 
                     {/* Notificaciones */}
-                    <button className="icon-text-button">
+                    <button className="icon-text-button" onClick={() => navigate('/notificaciones')}>
                         <span>Notificaciones</span>
                         <FaBell />
                     </button>
