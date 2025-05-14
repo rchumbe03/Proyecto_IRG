@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cursos', function (Blueprint $table) {
-            $table->id(); // Cambiado de id('id_curso') a id()
-            $table->string('titulo', 100);
-            $table->string('tema', 100);
+        Schema::create('temas', function (Blueprint $table) {
+            $table->id();
+            $table->string('titulo');
             $table->text('descripcion')->nullable();
-            $table->string('imagen');
-            $table->text('requisitos')->nullable();
-            $table->foreignId('id_admin')->constrained('admins')->onDelete('cascade');
+            $table->foreignId('id_fase')->constrained('fases')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cursos');
+        Schema::dropIfExists('temas');
     }
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'; // Importa React y hooks necesarios
 import axios from 'axios'; // Cliente HTTP para interactuar con la API
-import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa'; // Iconos de edición, eliminación y agregar
+import {FaEdit, FaTrash, FaPlus, FaEnvelope, FaTimes} from 'react-icons/fa'; // Iconos de edición, eliminación y agregar
 import './Notificaciones.css'; // Estilos CSS del componente
 import HeaderAd from '../Headers/jsx/HeaderAd.jsx'; // Componente del encabezado
 import Footer from '../Footer.jsx'; // Componente del pie de página
@@ -51,7 +51,7 @@ const Notificaciones = () => {
                 const datosNuevoMensaje = {
                     titulo: nuevoMensaje.titulo,
                     contenido: nuevoMensaje.contenido,
-                    id_admin: 1,
+                    id_admin: 4,
                     nombre_admin: 'Administrador' // Datos fijos por ahora
                 };
 
@@ -129,7 +129,7 @@ const Notificaciones = () => {
             const datosActualizados = {
                 titulo: mensajeEditado.titulo,
                 contenido: mensajeEditado.contenido,
-                id_admin: 1,
+                id_admin: 4,
                 nombre_admin: 'Admin'
             };
 
@@ -175,40 +175,48 @@ const Notificaciones = () => {
 
                                 {/* Modo edición */}
                                 {editandoMensajeId === mensaje.id ? (
-                                    <>
+                                    <div className="edicion-flotante">
+                                        <div className="edicion-header">
+                                            <FaTimes
+                                                className="cerrar-edicion"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setEditandoMensajeId(null);
+                                                }}
+                                            />
+                                        </div>
                                         <input
                                             type="text"
+                                            placeholder="Título"
                                             value={mensajeEditado.titulo || ''}
                                             onChange={(e) => setMensajeEditado({
                                                 ...mensajeEditado,
                                                 titulo: e.target.value
                                             })}
-                                            className="editar-titulo"
+                                            className="edicion-titulo-input"
                                             onClick={(e) => e.stopPropagation()}
                                         />
                                         <textarea
+                                            placeholder="Contenido"
                                             value={mensajeEditado.contenido || ''}
                                             onChange={(e) => setMensajeEditado({
                                                 ...mensajeEditado,
                                                 contenido: e.target.value
                                             })}
-                                            className="editar-contenido"
+                                            className="edicion-contenido-input"
                                             onClick={(e) => e.stopPropagation()}
                                         />
-                                        <div className="botones-edicion">
-                                            <button onClick={(e) => handleGuardarEdicion(mensaje.id, e)}>
-                                                Guardar
-                                            </button>
-                                            <button onClick={(e) => {
-                                                e.stopPropagation();
-                                                setEditandoMensajeId(null);
-                                            }}>
-                                                Cancelar
-                                            </button>
-                                        </div>
-                                    </>
+                                        <button
+                                            className="guardar-edicion-btn"
+                                            onClick={(e) => handleGuardarEdicion(mensaje.id, e)}
+                                        >
+                                            Guardar
+                                        </button>
+                                    </div>
                                 ) : (
-                                    <p className="mensaje-contenido">{mensaje.contenido}</p>
+                                <div className="mensaje-contenido">
+                                        <p>{mensaje.contenido}</p>
+                                    </div>
                                 )}
                             </div>
 
@@ -229,7 +237,7 @@ const Notificaciones = () => {
 
                 {/* Vista detallada del mensaje */}
                 <div className="mensaje-detalle">
-                    {mensajeSeleccionado && (
+                    {mensajeSeleccionado ? (
                         <div className="detalle-frame">
                             <div className="detalle-titulo-frame">
                                 <h1 className="detalle-titulo">{mensajeSeleccionado.titulo}</h1>
@@ -237,6 +245,20 @@ const Notificaciones = () => {
                                 <h2 className="detalle-admin">{mensajeSeleccionado.nombre_admin}</h2>
                             </div>
                             <p className="detalle-contenido">{mensajeSeleccionado.contenido}</p>
+                            <FaTimes className="cerrar-chat" onClick={() => setMensajeSeleccionado(null)} />
+                        </div>
+                    ) : (
+                        <div className="mensaje-vacio-contenido">
+                            <div className="mensaje-header">
+                                <div></div>
+                                <button className="agregar-btn" onClick={() => setMostrarFormulario(true)}>
+                                    Agregar <FaPlus style={{ marginLeft: '5px' }} />
+                                </button>
+                            </div>
+                            <div className="mensaje-vacio-body">
+                                <FaEnvelope className="sobre-icono" />
+                                <p>No se ha seleccionado ninguna conversación.</p>
+                            </div>
                         </div>
                     )}
 
@@ -275,4 +297,3 @@ const Notificaciones = () => {
 };
 
 export default Notificaciones;
-

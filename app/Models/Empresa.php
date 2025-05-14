@@ -17,18 +17,13 @@ class Empresa extends Model
         'nombre_empresa',
         'email_contacto',
         'telefono',
+        'direccion',
         'cif',
     ];
 
     // Relación: Una empresa puede tener varios usuarios relacionados
-    public function empresaUsuarios()
+    public function usuarios()
     {
-        return $this->hasMany(EmpresaUsuario::class, 'id_empresa');
-    }
-
-    // Relación: Una empresa puede tener varias direcciones
-    public function direccion()
-    {
-        return $this->hasOne(DireccionEmpresa::class, 'id_empresa');
+        return $this->hasMany(Usuario::class, 'id_empresa');
     }
 }

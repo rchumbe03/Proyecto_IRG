@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('fases', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 50)->nullable();
-            $table->text('descripcion')->nullable();
-            $table->text('requisitos')->nullable();
+            $table->string('nombre');
+            $table->foreignId('curso_id')->constrained('cursos');
+            $table->string('requisitos')->nullable();
             $table->timestamps();
         });
     }

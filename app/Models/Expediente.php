@@ -13,20 +13,16 @@ class Expediente extends Model
 
     protected $fillable = [
         'id_usuario',
-        'id_curso',
         'progreso',
-        'antiguedad',
+        'tiempo',
         'fase_actual',
         'fase_proxima',
+        'jornadas_realizadas',
+        'indice'
     ];
 
     public function usuario()
     {
-        return $this->belongsTo(Usuario::class, 'id_usuario', 'id');
-    }
-
-    public function curso()
-    {
-        return $this->belongsTo(Curso::class, 'id_curso', 'id');
+        return $this->belongsTo(Usuario::class, 'id_usuario');
     }
 }

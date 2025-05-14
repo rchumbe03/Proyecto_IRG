@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('modulos', function (Blueprint $table) {
+        Schema::create('compras', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_curso');
-            $table->foreign('id_curso')->references('id')->on('cursos')->onDelete('cascade');
-            $table->string('titulo', 100);
+            $table->foreignId('id_usuario')->constrained('usuarios');
+            $table->foreignId('id_curso')->constrained('cursos');
+            $table->decimal('precio', 8, 2);
+            $table->enum('metodo_pago', ['stripe', 'paypal', 'apple pay']);
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('modulos');
+        Schema::dropIfExists('compras');
     }
 };
