@@ -16,15 +16,16 @@ class ClaseFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
-    {
-        $tipo = $this->faker->randomElement(['virtual', 'presencial', 'video']);
+public function definition(): array
+{
+    $tema = Tema::factory()->create();
+    $tipo = $tema->tipo;
 
-        return [
-            'titulo' => $this->faker->sentence(4),
-            'tipo' => $tipo,
-            'url' => $tipo === 'video' ? $this->faker->url() : null,
-            'id_tema' => Tema::factory(),
-        ];
-    }
+    return [
+        'titulo' => $this->faker->sentence(4),
+        'tipo' => $tipo,
+        'url' => $this->faker->url(),
+        'id_tema' => $tema->id,
+    ];
+}
 }

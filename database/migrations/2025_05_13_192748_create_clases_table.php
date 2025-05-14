@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('clases', function (Blueprint $table) {
             $table->id();
             $table->string('titulo');
-            $table->enum('tipo', ['virtual', 'presencial', 'video']);
             $table->string('url')->nullable();
             $table->foreignId('id_tema')->constrained('temas');
             $table->timestamps();
