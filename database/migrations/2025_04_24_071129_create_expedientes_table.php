@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('expedientes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->constrained('usuarios')->onDelete('cascade');
-            $table->foreignId('id_curso')->constrained('cursos')->onDelete('cascade');
-            $table->tinyInteger('progreso')->default(0); // en %
-            $table->integer('antiguedad')->default(0);   // en meses
-            $table->string('fase_actual', 50)->nullable();
-            $table->string('fase_proxima', 50)->nullable();
+            $table->foreignId('usuario_id')->constrained('usuarios');
+            $table->float('progreso', 3, 2)->default(0);
+            $table->integer('tiempo')->default(0);
+            $table->string('fase_actual')->nullable();
+            $table->string('tema_actual')->nullable();
+            $table->integer('jornadas_realizadas')->default(0);
+            $table->text('notas')->nullable();
             $table->timestamps();
         });
     }

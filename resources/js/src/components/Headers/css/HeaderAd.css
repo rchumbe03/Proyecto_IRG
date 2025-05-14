@@ -6,7 +6,7 @@
   background-color: #F3F3F5;
   padding: 10px 20px;
   font-family: sans-serif;
-} 
+}
 
 .logo {
   display: flex;
@@ -134,6 +134,7 @@ body.dark-mode {
 
 body.dark-mode .header {
   background-color: #1f1f1f;
+  border-bottom: 1px solid white;
 }
 
 body.dark-mode .icon {

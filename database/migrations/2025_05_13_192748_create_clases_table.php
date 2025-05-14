@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fases', function (Blueprint $table) {
+        Schema::create('clases', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 50)->nullable();
-            $table->text('descripcion')->nullable();
-            $table->text('requisitos')->nullable();
+            $table->string('titulo');
+            $table->enum('tipo', ['virtual', 'presencial', 'video']);
+            $table->string('url')->nullable();
+            $table->foreignId('id_tema')->constrained('temas');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fases');
+        Schema::dropIfExists('clases');
     }
 };

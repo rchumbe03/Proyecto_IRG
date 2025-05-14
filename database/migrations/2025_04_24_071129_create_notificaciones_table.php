@@ -13,16 +13,11 @@ return new class extends Migration
     {
         Schema::create('notificaciones', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo', 100);
+            $table->foreignId('id_admin')->constrained('admins');
+            $table->string('nombre_admin')->constrained('admins');
+            $table->string('titulo');
             $table->text('contenido');
-            $table->unsignedBigInteger('id_admin');
-            $table->string('nombre_admin', 100);
             $table->timestamps();
-
-            $table->foreign('id_admin')
-                ->references('id')
-                ->on('admins')
-                ->onDelete('cascade');
         });
     }
 

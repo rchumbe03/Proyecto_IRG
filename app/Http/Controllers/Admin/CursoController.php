@@ -23,9 +23,9 @@ class CursoController extends Controller
     public function store(Request $request) {
         // Validar los datos de entrada
         $request->validate([
-            'titulo' => 'required|string|min:5|max:100',
-            'tema' => 'required|string|min:3|max:100',
-            'id_admin' => 'required|exists:admins,id'
+            'titulo' => 'required|string',
+            'descripcion' => 'required|string',
+            'desarrollador' => 'required|string',
         ]);
 
         // Crear el curso
@@ -65,9 +65,9 @@ class CursoController extends Controller
 
         // Validar los datos de entrada
         $request->validate([
-            'titulo' => 'required|string|min:5|max:100',
-            'tema' => 'required|string|min:3|max:100',
-            'id_admin' => 'required|exists:admins,id'
+            'titulo' => 'required|string',
+            'descripcion' => 'required|string',
+            'desarrollador' => 'required|string',
         ]);
 
         // Actualizar el curso

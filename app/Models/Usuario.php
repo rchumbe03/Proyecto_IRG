@@ -14,20 +14,28 @@ class Usuario extends Model
     protected $fillable = [
         'nombre',
         'email',
-        'contraseña',
+        'password',
+        'cv',
+        'foto_perfil',
+        'direccion',
         'edad',
-        'DNI',
+        'dni',
         'telefono',
     ];
 
     // Relación: Un usuario puede estar relacionado con varias empresas
-    public function empresa_usuario()
+    public function expediente()
     {
-        return $this->hasMany(EmpresaUsuario::class, 'id_usuario');
+        return $this->hasOne(Expediente::class, 'id_usuario');
     }
-    // Relación: Un usuario puede estar relacionado con una direccion
-    public function direccion()
+
+    public function compras()
     {
-        return $this->hasOne(DireccionUsuario::class, 'id_usuario');
+        return $this->hasMany(Compra::class, 'id_usuario');
+    }
+
+    public function notificaciones()
+    {
+        return $this->hasMany(Notificacion::class, 'id_usuario');
     }
 }
