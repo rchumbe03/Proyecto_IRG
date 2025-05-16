@@ -1,10 +1,14 @@
+// InicioPl.jsx
 import React, { useState, useEffect } from 'react';
-import './InicioPlc.css';
+import './InicioPl.css';
+import logo from '../../assets/logos/logo.png';
 import HeaderPl from '../Headers/jsx/HeaderPl.jsx';
 import Footer from '../Footer.jsx';
 
+// Constantes
 const niveles = ['Base', 'Profesional', 'Avanzado', 'Experto'];
 
+// Función auxiliar para manejar las peticiones
 const fetchWithErrorHandling = async (url) => {
     const response = await fetch(url, {
         headers: {
@@ -24,15 +28,22 @@ const fetchWithErrorHandling = async (url) => {
     return { data };
 };
 
-const InicioPlc = () => {
+const InicioPl = () => {
+    // Estados compartidos
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    // Estados para la sección de plataforma
+    const [progreso] = useState(90);
+
+    // Estados para la sección de contenidos
     const [nivelActivo, setNivelActivo] = useState('Base');
     const [busqueda, setBusqueda] = useState('');
     const [expandido, setExpandido] = useState([]);
-    const [isDarkMode, setIsDarkMode] = useState(false);
     const [temas, setTemas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Efectos
     useEffect(() => {
         const loadData = async () => {
             setLoading(true);
@@ -64,6 +75,7 @@ const InicioPlc = () => {
         loadData();
     }, []);
 
+    // Funciones auxiliares
     const toggleItem = (id) => {
         setExpandido(prev =>
             prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
@@ -77,12 +89,45 @@ const InicioPlc = () => {
     );
 
     return (
-        <div className={`container ${isDarkMode ? 'dark-theme' : ''}`}>
+        <div className={`inicio-wrapper ${isDarkMode ? 'dark-theme' : ''}`}>
             <HeaderPl
                 toggleDarkMode={() => setIsDarkMode(prev => !prev)}
                 isDarkMode={isDarkMode}
             />
 
+            {/* Sección de Plataforma */}
+            <div className="plataforma-container">
+                <div className="plataforma-left">
+                    <button className="volver-btn">← Volver</button>
+                    <h1 className="plataforma-titulo">¡Pasa al siguiente nivel!</h1>
+
+                    <div className="barras">
+                        <div ><h3>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            Provident, assumenda voluptatibus placeat optio quod adipisci nemo sequi labore,
+                            incidunt soluta vitae accusamus quia neque, perspiciatis iure quasi omnis porro ipsam.</h3></div>
+                        <div ><h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident,
+                            assumenda voluptatibus placeat optio quod adipisci nemo sequi labore,
+                            incidunt soluta vitae accusamus quia neque, perspiciatis iure quasi omnis porro ipsam.</h3></div>
+                        <div ><h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident,
+                            assumenda voluptatibus placeat optio quod adipisci nemo sequi labore,
+                            incidunt soluta vitae accusamus quia neque, perspiciatis iure quasi omnis porro ipsam.</h3></div>
+                        <div className="barra-progreso-contenedor">
+                            <span className="porcentaje">{progreso}%</span>
+                            <div className="barra-progreso">
+                                <div className="relleno" style={{ width: `${progreso}%` }}></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button className="ver-btn">Ver de nuevo</button>
+                </div>
+
+                <div className="plataforma-right">
+                    <img src={logo} alt="Logo" className="logo-img" />
+                </div>
+            </div>
+
+            {/* Sección de Contenidos */}
             <section className="contenidos">
                 <h2>Contenidos</h2>
 
@@ -115,7 +160,7 @@ const InicioPlc = () => {
                                 <div className="item-header">
                                     <div className="numero">{index + 1}</div>
                                     <div className="info">
-                                        <div className="titulo">{item.titulo}</div>
+                                        <div className="contenido-titulo">{item.titulo}</div>
                                         {item.estado && (
                                             <div className={`estado ${item.estado === 'Completado' ? 'completado' : 'proceso'}`}>
                                                 {item.estado === 'Completado' ? '✔ Completado' : '⏳ En proceso'}
@@ -140,8 +185,8 @@ const InicioPlc = () => {
                                                     <li key={clase.id} className="clase-item">
                                                         <span className="clase-titulo">{clase.titulo}</span>
                                                         <span className={`clase-tipo tipo-${clase.tipo?.toLowerCase()}`}>
-                              {clase.tipo}
-                            </span>
+                                                            {clase.tipo}
+                                                        </span>
                                                         {clase.url && (
                                                             <a
                                                                 href={clase.url}
@@ -171,4 +216,4 @@ const InicioPlc = () => {
     );
 };
 
-export default InicioPlc;
+export default InicioPl;

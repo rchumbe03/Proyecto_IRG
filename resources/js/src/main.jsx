@@ -4,8 +4,7 @@ import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import FormLogin from './components/Login/FormLogin.jsx';
 import ListaCursos from './components/ListaCursos/ListaCursos.jsx';
 import Notificaciones from "./components/Notificaciones/Notificaciones.jsx";
-import InicioPlc from './components/Inicio/InicioPlc.jsx';
-import Plataforma from "./components/banner/plataforma.jsx";
+import InicioPl from './components/Inicio/InicioPl.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
@@ -15,8 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path="/admin/cursos" element={<ListaCursos />} />
             <Route path="/admin/notificaciones" element={<Notificaciones />} />
             <Route path="/notificaciones" element={<Notificaciones />} />
-            <Route path="/plataforma" element={<Plataforma />} />
-            <Route path="/inicio" element={<InicioPlc />} />
+            <Route path="/iniciopl" element={<InicioPl />} />
             <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
     </BrowserRouter>
