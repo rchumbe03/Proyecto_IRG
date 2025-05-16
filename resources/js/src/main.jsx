@@ -13,6 +13,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path="/login" element={<FormLogin />} />
             <Route path="/cursos" element={<ListaCursos />} />
             <Route path="/admin/cursos" element={<ListaCursos />} />
+            <Route path="/admin/notificaciones" element={<Notificaciones />} />
             <Route path="/notificaciones" element={<Notificaciones />} />
             <Route path="/plataforma" element={<Plataforma />} />
             <Route path="/inicio" element={<InicioPlc />} />

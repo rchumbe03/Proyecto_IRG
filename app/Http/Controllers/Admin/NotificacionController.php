@@ -3,41 +3,52 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\Notificacion;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class NotificacionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index() {
-        return response()->json(Notificacion::all());
+    public function index()
+    {
+        try {
+            $notificaciones = Notificacion::with('admin')
+                ->orderBy('created_at', 'desc')
+                ->get();
+            return response()->json($notificaciones);
+        } catch (\Exception $e) {
+            Log::error('Error en NotificacionController@index: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Error al obtener notificaciones',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'titulo' => 'required|string|min:5|max:100',
-            'contenido' => 'required|string|min:10',
-            'id_admin' => 'required|integer',
-            'nombre_admin' => 'required|string|max:100'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Error de validación',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
+    public function store(Request $request)
+    {
         try {
-            $notificacion = Notificacion::create($request->all());
+            /** @var Admin $admin */
+            $admin = Auth::guard('admin')->user();
+
+            $request->validate([
+                'titulo' => 'required|string|max:255',
+                'contenido' => 'required|string'
+            ]);
+
+            $notificacion = Notificacion::create([
+                'titulo' => $request->titulo,
+                'contenido' => $request->contenido,
+                'id_admin' => $admin ? $admin->id : 1, // ID por defecto si no hay admin
+                'nombre_admin' => $admin ? $admin->nombre : 'Administrador', // Nombre por defecto si no hay admin
+                'created_at' => now()
+            ]);
+
             return response()->json($notificacion, 201);
         } catch (\Exception $e) {
+            Log::error('Error creando notificación: ' . $e->getMessage());
             return response()->json([
                 'message' => 'Error al crear la notificación',
                 'error' => $e->getMessage()
@@ -45,62 +56,35 @@ class NotificacionController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id) {
-        // Encontrar la notificación por ID
-        $notificacion = Notificacion::find($id);
-
-        // Si la notificación no existe, devolver un error 404
-        if (!$notificacion) {
-            return response()->json(['error' => 'Notificación no encontrada'], 404);
-        }
-
-        // Devolver la notificación encontrada
-        return response()->json($notificacion);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id) {
-        // Validar ID de la notificación
-        $notificacion = Notificacion::find($id);
-
-        // Si la notificación no existe, devolver un error 404
-        if (!$notificacion) {
-            return response()->json(['error' => 'Notificación no encontrada'], 404);
+        if (!Auth::guard('admin')->check())
+        {
+            return response()->json(['message' => 'No autorizado'], 403);
         }
 
-        // Validar los datos de entrada
+        $notificacion = Notificacion::findOrFail($id);
+
         $request->validate([
-            'titulo' => 'required|string|min:5|max:100',
-            'contenido' => 'required|string|min:10',
-            'id_admin' => 'required|exists:admins,id',
-            'nombre_admin' => 'required|string|max:100'
+            'titulo' => 'required|string|max:255',
+            'contenido' => 'required|string'
         ]);
 
-        // Actualizar la notificación
-        $notificacion->update($request->all());
+        $notificacion->titulo = $request->titulo;
+        $notificacion->contenido = $request->contenido;
+        $notificacion->save();
 
-        // Devolver la notificación actualizada
         return response()->json($notificacion);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {
-        // Encontrar la notificación por ID
-        $notificacion = Notificacion::find($id);
-        // Si la notificación no existe, devolver un error 404
-        if (!$notificacion) {
-            return response()->json(['error' => 'Notificación no encontrada'], 404);
+    public function destroy($id)
+    {
+        if (!Auth::guard('admin')->check()) {
+            return response()->json(['message' => 'No autorizado'], 403);
         }
-        // Eliminar la notificación
+
+        $notificacion = Notificacion::findOrFail($id);
         $notificacion->delete();
-        // Devolver una respuesta
-        return response()->json(['message' => 'Notificación eliminada']);
+
+        return response()->json(null, 204);
     }
 }

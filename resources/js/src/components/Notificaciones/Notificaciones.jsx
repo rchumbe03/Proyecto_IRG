@@ -17,6 +17,17 @@ const Notificaciones = () => {
 
     // Carga inicial de mensajes al montar el componente
     useEffect(() => {
+        const getCsrfToken = async () => {
+            try {
+                await axios.get('http://localhost:8000/sanctum/csrf-cookie', {
+                    withCredentials: true
+                });
+            } catch (error) {
+                console.error('Error al obtener el token CSRF:', error);
+            }
+        };
+
+        getCsrfToken();
         fetchMensajes();
     }, []);
 
@@ -24,9 +35,13 @@ const Notificaciones = () => {
     const fetchMensajes = async () => {
         try {
             const response = await axios.get('http://localhost:8000/api/notificaciones', {
-                withCredentials: true
+                withCredentials: true,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
             });
-            setMensajes(response.data); // Guardamos los mensajes recibidos
+            setMensajes(response.data);
             setError(null);
         } catch (error) {
             console.error('Error al obtener notificaciones:', error);
@@ -51,8 +66,7 @@ const Notificaciones = () => {
                 const datosNuevoMensaje = {
                     titulo: nuevoMensaje.titulo,
                     contenido: nuevoMensaje.contenido,
-                    id_admin: 1,
-                    nombre_admin: 'Juan Pérez' // Datos fijos por ahora
+                    // La información del admin se manejará en el backend
                 };
 
                 const response = await axios.post(
@@ -68,26 +82,21 @@ const Notificaciones = () => {
                 );
 
                 if (response.data) {
-                    setMensajes([...mensajes, response.data]); // Añade el nuevo mensaje a la lista
-                    setNuevoMensaje({ titulo: '', contenido: '' }); // Limpia el formulario
-                    setMostrarFormulario(false); // Oculta el formulario
+                    setMensajes([response.data, ...mensajes]); // Agregar al principio de la lista
+                    setNuevoMensaje({ titulo: '', contenido: '' });
+                    setMostrarFormulario(false);
                     setError(null);
                 }
             } catch (error) {
                 console.error('Error al agregar notificación:', error);
-                if (error.response?.data?.errors) {
-                    const errorMessages = Object.values(error.response.data.errors).flat();
-                    setError(errorMessages.join(', '));
-                } else {
-                    setError('Error al agregar la notificación. Por favor, intente nuevamente.');
-                }
+                setError('Error al agregar la notificación. Por favor, intente nuevamente.');
             }
         } else {
             setError('Por favor, complete todos los campos requeridos.');
         }
     };
 
-    // Elimina un mensaje existente
+// Elimina un mensaje existente
     const handleEliminarMensaje = async (id, e) => {
         e.stopPropagation();
         try {
