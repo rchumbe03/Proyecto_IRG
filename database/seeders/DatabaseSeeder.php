@@ -37,5 +37,10 @@ class DatabaseSeeder extends Seeder
 
         // Crear notificaciones
         Notificacion::factory(5)->create();
+
+        $this->call([
+            // ... otros seeders
+            FasesTemasClasesSeeder::class,
+        ]);
     }
 }
