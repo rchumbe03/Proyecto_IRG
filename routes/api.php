@@ -11,14 +11,15 @@ use App\Http\Controllers\Admin\AuthController;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
-// Rutas para Curso
-Route::apiResource('cursos', CursoController::class);
+// Rutas protegidas para administradores
+Route::middleware(['auth.cookie'])->prefix('admin')->group(function () {
+    Route::apiResource('cursos', CursoController::class);
+    Route::apiResource('temas', TemaController::class);
+    Route::apiResource('clases', ClaseController::class);
+    Route::apiResource('notificaciones', NotificacionController::class);
+});
 
-// Rutas para Tema
-Route::apiResource('temas', TemaController::class);
-
-// Rutas para Clase
-Route::apiResource('clases', ClaseController::class);
-
-// Rutas para Notificación
-Route::apiResource('notificaciones', NotificacionController::class);
+// Rutas protegidas para usuarios normales
+Route::middleware(['auth.cookie'])->prefix('user')->group(function () {
+    // Aquí tus rutas para usuarios normales
+});

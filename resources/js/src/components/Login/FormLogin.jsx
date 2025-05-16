@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './FormLogin.css';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
+
+// Configuración global de axios
+axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.headers.common['Accept'] = 'application/json';
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+axios.defaults.withCredentials = true;
 
 function FormLogin() {
     const [email, setEmail] = useState('');
     const [contrasena, setContrasena] = useState('');
     const [mostrarContrasena, setMostrarContrasena] = useState(false);
     const [error, setError] = useState('');
-    const [darkMode, setDarkMode] = useState(false); // Estado para controlar el modo oscuro
+    const [darkMode, setDarkMode] = useState(false);
     const navigate = useNavigate();
 
     const toggleDarkMode = () => {
@@ -21,35 +28,51 @@ function FormLogin() {
         }
     };
 
+    axios.defaults.withCredentials = true;
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: contrasena
-                })
+            // Obtener el token CSRF
+            await axios.get('/sanctum/csrf-cookie');
+
+            const response = await axios.post('/api/login', {
+                email,
+                password: contrasena
             });
 
-            const data = await response.json();
+            const { data } = response;
+            console.log('Respuesta del servidor:', data); // Para debug
 
-            if (!response.ok) {
-                setError(data.message || 'Credenciales incorrectas');
-                return;
+            if (data.user) {
+                console.log('Datos del usuario:', data.user);
+                localStorage.setItem('user_data', JSON.stringify(data.user));
+
+                // Guardar tema
+                localStorage.setItem('theme', data.user.theme || 'light');
+
+                // Determinar la ruta
+                const route = data.user.type === 'admin' ? '/admin/cursos' : '/cursos';
+                console.log('Intentando redirigir a:', route);
+
+                // Forzar la redirección
+                window.location.href = route;
+
+                // Como respaldo, también usar navigate
+                navigate(route, { replace: true });
+            } else {
+                console.error('No hay datos de usuario en la respuesta');
+                setError('Error: No se recibieron datos del usuario');
             }
-
-            // Redirigir si el login fue exitoso
-            navigate('/cursos');
-            // eslint-disable-next-line no-unused-vars
-        } catch (err) {
-            setError('Error al conectar con el servidor.');
+        } catch (error) {
+            console.error('Error:', error);
+            if (error.response?.status === 401) {
+                setError('Credenciales inválidas');
+            } else {
+                setError('Error al conectar con el servidor');
+            }
         }
     };
 

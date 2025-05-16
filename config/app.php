@@ -128,6 +128,8 @@ return [
         /*
          * Proveedores de Laravel Framework...
          */
+        Illuminate\Cookie\CookieServiceProvider::class,
+        Illuminate\Session\SessionServiceProvider::class,
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
