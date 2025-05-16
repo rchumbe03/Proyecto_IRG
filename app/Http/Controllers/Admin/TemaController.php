@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -11,8 +12,8 @@ class TemaController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        // Devolver todas las jornadas
-        return response()->json(Tema::all());
+        // Devolver todos los temas con su fase asociada
+        return response()->json(Tema::with('fase')->get());
     }
 
     /**
@@ -46,7 +47,7 @@ class TemaController extends Controller {
             return response()->json(['error' => 'Tema no encontrado'], 404);
         }
 
-        // Devolver el tema encontrado
+        // Devolver el tema encontrado con sus clases
         return Tema::with('clases')->findOrFail($id);
     }
 
@@ -54,25 +55,26 @@ class TemaController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id) {
-        // Encontrar la jornada por ID
+        // Encontrar el tema por ID
         $tema = Tema::find($id);
 
-        // Si la jornada no existe, devolver un error 404
+        // Si el tema no existe, devolver un error 404
         if (!$tema) {
             return response()->json(['error' => 'Tema no encontrado'], 404);
         }
 
         // Validar los datos de entrada
         $request->validate([
-            'tipo' => 'required|in:virtual,presencial',
-            'fecha' => 'required|date',
-            'id_curso' => 'required|exists:cursos,id'
+            'titulo' => 'sometimes|required|string',
+            'descripcion' => 'sometimes|required|string',
+            'id_curso' => 'sometimes|required|exists:cursos,id',
+            'id_fase' => 'sometimes|required|exists:fases,id',
         ]);
 
-        // Actualizar la jornada
+        // Actualizar el tema
         $tema->update($request->all());
 
-        // Devolver la jornada actualizada
+        // Devolver el tema actualizado
         return response()->json($tema);
     }
 
@@ -83,12 +85,12 @@ class TemaController extends Controller {
         // Encontrar el tema por ID
         $tema = Tema::find($id);
 
-        // Si la tema no existe, devolver un error 404
+        // Si el tema no existe, devolver un error 404
         if (!$tema) {
             return response()->json(['error' => 'Tema no encontrada'], 404);
         }
 
-        // Eliminar la tema
+        // Eliminar el tema
         $tema->delete();
 
         // Devolver una respuesta

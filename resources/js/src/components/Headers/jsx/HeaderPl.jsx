@@ -57,12 +57,6 @@ export default function Header() {
                         <FaWallet />
                     </button>
 
-                    {/* Expediente */}
-                    <button className="icon-text-button">
-                        <span>Expediente</span>
-                        <FaFileAlt />
-                    </button>
-
                     {/* Notificaciones */}
                     <button className="icon-text-button" onClick={() => navigate('/notificaciones')}>
                         <span>Notificaciones</span>
