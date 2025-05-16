@@ -20,15 +20,6 @@ class Curso extends Model
         'imagen'
     ];
 
-    public function modulos()
-    {
-        return $this->hasMany(Modulo::class, foreignKey: 'id_curso');
-    }
-
-    public function jornadas()
-    {
-        return $this->hasMany(Jornada::class, foreignKey: 'id_curso');
-    }
     public function admin()
     {
         return $this->belongsTo(Admin::class, foreignKey: 'id_admin');

@@ -18,6 +18,9 @@ Route::get('/check-admin', function () {
     ]);
 });
 
+Route::get('/temas', [TemaController::class, 'index']);
+Route::get('/clases', [ClaseController::class, 'index']);
+
 // Rutas protegidas para administradores
 Route::middleware(['auth.cookie'])->prefix('admin')->group(function () {
     Route::apiResource('cursos', CursoController::class);

@@ -14,9 +14,14 @@ class Fase extends Model
 
     protected $fillable = [
         'nombre',
-        'curso_id',   // <-- AGREGA ESTA LÍNEA
+        'curso_id',
         'requisitos',
     ];
+
+    public function curso()
+    {
+        return $this->belongsTo(Curso::class);
+    }
 
     public function temas()
     {

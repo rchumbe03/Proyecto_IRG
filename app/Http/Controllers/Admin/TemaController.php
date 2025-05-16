@@ -5,15 +5,43 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tema;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class TemaController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index() {
-        // Devolver todos los temas con su fase asociada
-        return response()->json(Tema::with('fase')->get());
+    public function index(): JsonResponse
+    {
+        try {
+            $temas = Tema::with(['fase', 'clases'])->get()->map(function ($tema) {
+                return [
+                    'id' => $tema->id,
+                    'titulo' => $tema->titulo,
+                    'descripcion' => $tema->descripcion,
+                    'fase' => [
+                        'id' => $tema->fase->id,
+                        'nombre' => $tema->fase->nombre
+                    ],
+                    'clases' => $tema->clases->map(function ($clase) {
+                        return [
+                            'id' => $clase->id,
+                            'titulo' => $clase->titulo,
+                            'tipo' => $clase->tipo,
+                            'url' => $clase->url
+                        ];
+                    })
+                ];
+            });
+
+            return response()->json($temas, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Error al obtener los temas',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
