@@ -20,8 +20,9 @@ return new class extends Migration
             $table->string('direccion');
             $table->tinyInteger('edad')->nullable();
             $table->string('dni', 20)->nullable();
-            $table->string('telefono', 15)->nullable();
+            $table->string('telefono', 20)->nullable();
             $table->string('cv')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }
