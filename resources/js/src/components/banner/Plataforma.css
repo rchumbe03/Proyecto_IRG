@@ -45,23 +45,46 @@
 .barras {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 30px;
-}
-
-/* Estilo base de las barras */
-.barra {
-  height: 12px;
-  border-radius: 6px;
-  background-color: #aaa;
-  width: 100%;
+  gap: 15px;
+  margin-bottom: 60px;
 }
 
 /* Barra amarilla */
-.amarilla {
-  background-color: #f2cd00;
-  width: 85%;
+.barra-progreso {
+  width: 20%;
+  height: 7px;
+  background-color: #aaa;
+  border-radius: 50px;
+  overflow: hidden;
+  position: relative;
+  right: 15px ;
 }
+.barra-progreso-contenedor {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* espacio entre el número y la barra */
+  
+}
+.relleno {
+  height: 100%;
+  background: #f2cd00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  transition: width 0.5s ease-in-out;
+  position: relative;
+  z-index: 1;
+}
+
+.porcentaje {
+  font-weight: bold;
+  font-size: 15px;
+  color: #000;
+  min-width: 45px; /* para que no se mueva mucho con números más grandes */
+  text-align: left;
+}
+
 
 /* Botón amarillo */
 .ver-btn {

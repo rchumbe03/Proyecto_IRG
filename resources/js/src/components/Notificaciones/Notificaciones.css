@@ -12,6 +12,8 @@
     border-right: 1px solid #ccc;
     overflow-y: auto;
     padding: 20px;
+    flex-shrink: 0;
+    min-width: 250px; /* opcional, para que no baje de este ancho */
 }
 
 /* Estilos de las tarjetas de mensaje */
@@ -24,6 +26,8 @@
     position: relative;
     cursor: pointer;
     transition: background-color 0.2s;
+    word-wrap: break-word; /* NUEVO */
+    overflow-wrap: break-word; /* NUEVO */
 }
 
 .mensaje-card:hover {
@@ -70,6 +74,8 @@ body.dark-mode .mensaje-card.seleccionado span {
 .mensaje-info strong {
     display: block;
     font-size: 16px;
+    word-break: break-word; /* NUEVO */
+    text-align: left; /* NUEVO */
 }
 
 .mensaje-info span {
@@ -78,10 +84,18 @@ body.dark-mode .mensaje-card.seleccionado span {
 }
 
 .mensaje-info p {
-    width: 85%;
+    width: 100%;
     margin-top: 8px;
     font-size: 14px;
     color: #333;
+
+    /* Esto es lo nuevo */
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Muestra solo 3 líneas */
+    line-clamp: 3; /* Standard property for compatibility */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Acciones en las tarjetas */
@@ -331,6 +345,9 @@ body.dark-mode .mensaje-card.seleccionado span {
     position: relative;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
     border-color: #E6D00A;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .detalle-titulo-frame {
