@@ -12,8 +12,10 @@ class Notificacion extends Model
     protected $table = 'notificaciones';
 
     protected $fillable = [
+    
         'id_admin',
         'nombre_admin',
+        'titulo',
         'contenido',
     ];
 

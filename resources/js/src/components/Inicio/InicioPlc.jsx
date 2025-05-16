@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import './InicioPlc.css';
 import HeaderPl from '../Headers/jsx/HeaderPl.jsx';
@@ -6,24 +6,39 @@ import Footer from '../Footer.jsx';
 
 const niveles = ['Base', 'Profesional', 'Avanzado', 'Experto'];
 
-const contenidoEjemplo = [
-  { id: 1, titulo: 'Introducción al curso', estado: 'Completado', nivel: 'Base', archivos: ['Clase1.pdf', 'Guía1.docx'] },
-  { id: 2, titulo: 'Fundamentos básicos', estado: 'Completado', nivel: 'Base', archivos: ['Clase2.pdf'] },
-  { id: 3, titulo: 'Fundamentos básicos ii', estado: 'Completado', nivel: 'Base', archivos: ['Clase2.pdf'] },
-  { id: 4, titulo: 'Fundamentos básicos iii', estado: 'En proceso', nivel: 'Base', archivos: ['Clase2.pdf'] },
-  { id: 5, titulo: 'Ventas', estado: 'Bloqueado', nivel: 'Base', archivos: ['Clase2.pdf'] },
-  { id: 6, titulo: 'Ventas ii', estado: 'Bloqueado', nivel: 'Base', archivos: ['Clase2.pdf'] },
-  { id: 7, titulo: 'Temas intermedios', estado: 'Bloqueado', nivel: 'Profesional', archivos: [] },
-  { id: 8, titulo: 'Conceptos avanzados', estado: 'Bloqueado', nivel: 'Avanzado', archivos: [] },
-  { id: 9, titulo: 'Proyecto final', estado: 'Bloqueado', nivel: 'Experto', archivos: [] },
-  { id: 10, titulo: 'Diseño', estado: 'Bloqueado', nivel: 'Profesional', archivos: [] },
-];
-
 const InicioPlc = () => {
   const [nivelActivo, setNivelActivo] = useState('Base');
   const [busqueda, setBusqueda] = useState('');
   const [expandido, setExpandido] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [temas, setTemas] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTemas = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/temas');
+        if (!response.ok) {
+          throw new Error('Error al obtener los temas');
+        }
+        const data = await response.json();
+        // Adaptar el nivel según el nombre de la fase
+        const temasAdaptados = data.map((tema) => ({
+          id: tema.id,
+          titulo: tema.titulo,
+          estado: tema.estado || '',
+          nivel: tema.fase?.nombre || 'Base', // Aquí se usa el nombre de la fase como nivel
+          archivos: tema.archivos || [],
+        }));
+        setTemas(temasAdaptados);
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTemas();
+  }, []);
 
   const toggleItem = (id) => {
     setExpandido((prev) =>
@@ -31,9 +46,10 @@ const InicioPlc = () => {
     );
   };
 
-  const contenidoFiltrado = contenidoEjemplo.filter(
+  const contenidoFiltrado = temas.filter(
     (item) =>
       item.nivel === nivelActivo &&
+      item.estado !== 'Bloqueado' &&
       item.titulo.toLowerCase().includes(busqueda.toLowerCase())
   );
 
@@ -67,48 +83,52 @@ const InicioPlc = () => {
           />
         </div>
 
-        <ul className="contenido-lista">
-          {contenidoFiltrado.map((item, index) => (
-            <li key={item.id} className={`contenido-item ${isDarkMode ? 'dark-theme' : ''}`}>
-              <div className="item-header">
-                <div className="numero">{index + 1}</div>
+        {loading ? (
+          <p>Cargando temas...</p>
+        ) : (
+          <ul className="contenido-lista">
+            {contenidoFiltrado.map((item, index) => (
+              <li key={item.id} className={`contenido-item ${isDarkMode ? 'dark-theme' : ''}`}>
+                <div className="item-header">
+                  <div className="numero">{index + 1}</div>
 
-                <div className="info">
-                  <div className="titulo">{item.titulo}</div>
-                  <div className={`estado ${item.estado === 'Completado' ? 'completado' : item.estado === 'Bloqueado' ? 'bloqueado' : 'proceso'}`}>
-                    {item.estado === 'Completado'
-                      ? '✔ Completado'
-                      : item.estado === 'Bloqueado'
-                      ? '🚫 Bloqueado'
-                      : '⏳ En proceso'}
+                  <div className="info">
+                    <div className="titulo">{item.titulo}</div>
+                    {item.estado && (
+                      <div className={`estado ${item.estado === 'Completado' ? 'completado' : 'proceso'}`}>
+                        {item.estado === 'Completado'
+                          ? '✔ Completado'
+                          : '⏳ En proceso'}
+                      </div>
+                    )}
                   </div>
+
+                  <button className="toggle" onClick={() => toggleItem(item.id)}>
+                    {expandido.includes(item.id) ? '▲' : '▼'}
+                  </button>
                 </div>
 
-                <button className="toggle" onClick={() => toggleItem(item.id)}>
-                  {expandido.includes(item.id) ? '▲' : '▼'}
-                </button>
-              </div>
-
-              {expandido.includes(item.id) && (
-                <div className="item-body">
-                  {item.archivos.length > 0 ? (
-                    <ul>
-                      {item.archivos.map((archivo, i) => (
-                        <li key={i}>
-                          <a href={`/archivos/${archivo}`} target="_blank" rel="noreferrer">
-                            {archivo}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>No hay archivos disponibles.</p>
-                  )}
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
+                {expandido.includes(item.id) && (
+                  <div className="item-body">
+                    {item.archivos && item.archivos.length > 0 ? (
+                      <ul>
+                        {item.archivos.map((archivo, i) => (
+                          <li key={i}>
+                            <a href={`/archivos/${archivo}`} target="_blank" rel="noreferrer">
+                              {archivo}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No hay archivos disponibles.</p>
+                    )}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       <Footer />
@@ -117,6 +137,7 @@ const InicioPlc = () => {
 };
 
 export default InicioPlc;
+
 
 
 

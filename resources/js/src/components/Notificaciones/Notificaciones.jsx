@@ -51,8 +51,8 @@ const Notificaciones = () => {
                 const datosNuevoMensaje = {
                     titulo: nuevoMensaje.titulo,
                     contenido: nuevoMensaje.contenido,
-                    id_admin: 4,
-                    nombre_admin: 'Administrador' // Datos fijos por ahora
+                    id_admin: 1,
+                    nombre_admin: 'Juan Perez' // Datos fijos por ahora
                 };
 
                 const response = await axios.post(
@@ -129,8 +129,8 @@ const Notificaciones = () => {
             const datosActualizados = {
                 titulo: mensajeEditado.titulo,
                 contenido: mensajeEditado.contenido,
-                id_admin: 4,
-                nombre_admin: 'Admin'
+                id_admin: 1,
+                nombre_admin: 'juan Perez '
             };
 
             const response = await axios.put(

@@ -15,7 +15,11 @@ Route::post('/logout', [AuthController::class, 'logout']);
 Route::apiResource('cursos', CursoController::class);
 
 // Rutas para Tema
-Route::apiResource('temas', TemaController::class);
+
+Route::get('/temas/{id}', [TemaController::class, 'show']);
+Route::get('/temas', [TemaController::class, 'index']);
+
+
 
 // Rutas para Clase
 Route::apiResource('clases', ClaseController::class);
