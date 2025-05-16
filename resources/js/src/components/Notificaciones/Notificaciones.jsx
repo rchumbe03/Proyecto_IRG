@@ -66,7 +66,8 @@ const Notificaciones = () => {
                 const datosNuevoMensaje = {
                     titulo: nuevoMensaje.titulo,
                     contenido: nuevoMensaje.contenido,
-                    // La información del admin se manejará en el backend
+                    id_admin: 1,
+                    nombre_admin: 'Juan Pérez' // Datos fijos por ahora
                 };
 
                 const response = await axios.post(
