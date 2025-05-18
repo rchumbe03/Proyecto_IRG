@@ -18,10 +18,13 @@ class TemaFactory extends Factory
      */
     public function definition(): array
     {
+        // Obtener una fase existente en lugar de crear una nueva
+        $fase = Fase::inRandomOrder()->first() ?? Fase::factory()->create();
+
         return [
             'titulo' => $this->faker->sentence(3),
-            'descripcion' => $this->faker->paragraph(),
-            'id_fase' => Fase::factory(),
+            'id_fase' => $fase->id,
+            'id_curso' => $fase->curso_id,
         ];
     }
 }

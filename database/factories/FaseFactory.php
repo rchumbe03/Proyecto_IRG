@@ -11,16 +11,30 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class FaseFactory extends Factory
 {
+    protected static int $sequence = 1;
+    protected static array $fases = ['Base', 'Profesional', 'Avanzado', 'Experto'];
+
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
+
     public function definition(): array
     {
+        if (static::$sequence > 4) {
+            throw new \RuntimeException('No se pueden crear más de 4 fases');
+        }
+
+        $index = static::$sequence - 1;
+        static::$sequence++;
+
+        // Obtener un curso existente o crear uno si no hay ninguno
+        $curso = Curso::first() ?? Curso::factory()->create();
+
         return [
-            'nombre' => $this->faker->randomElement(['Base', 'Profesional', 'Avanzado', 'Experto']),
-            'curso_id' => Curso::factory(),
+            'nombre' => static::$fases[$index],
+            'curso_id' => $curso->id,
             'requisitos' => $this->faker->sentence(),
         ];
     }

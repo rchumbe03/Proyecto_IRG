@@ -24,12 +24,35 @@ class CursoFactory extends Factory
      */
     public function definition(): array
     {
+        $cursos = [
+            [
+                'titulo' => 'Curso de PHP',
+                'descripcion' => 'Aprende PHP desde cero',
+                'desarrollador' => 'Juan Pérez'
+            ],
+            [
+                'titulo' => 'Curso de Laravel',
+                'descripcion' => 'Domina el framework Laravel',
+                'desarrollador' => 'María García'
+            ]
+        ];
+
         return [
-            'titulo' => fake()->sentence(),
-            'descripcion' => fake()->paragraph(),
-            'desarrollador' => fake()->name(),
+            'titulo' => $this->faker->unique()->randomElement(array_column($cursos, 'titulo')),
+            'descripcion' => $this->faker->paragraph(),
+            'desarrollador' => $this->faker->name(),
             'created_at' => now(),
             'updated_at' => now(),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Curso $curso) {
+             if (Curso::count() > 2) {
+                 Curso::where('id', $curso->id)->delete();
+                 throw new \RuntimeException('No se pueden crear más de 2 cursos');
+            }
+        });
     }
 }
