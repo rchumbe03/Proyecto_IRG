@@ -63,4 +63,9 @@ class Kernel extends HttpKernel
         'auth.cookie' => \App\Http\Middleware\AuthenticateCookie::class,
         'cors.api' => \Illuminate\Http\Middleware\HandleCors::class,
     ];
+
+    protected $routeMiddleware = [
+        // ... otros middlewares
+        'auth.admin' => \App\Http\Middleware\AdminAuthMiddleware::class,
+    ];
 }

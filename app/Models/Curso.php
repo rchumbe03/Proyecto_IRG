@@ -13,11 +13,10 @@ class Curso extends Model
 
     protected $fillable = [
         'titulo',
-        'tema',
         'descripcion',
-        'requisitos',
-        'id_admin',
-        'imagen'
+        'desarrollador',
+        'imagen',
+        'id_admin'
     ];
 
     public function admin()

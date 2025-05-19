@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('titulo');
             $table->text('descripcion')->nullable();
             $table->string('desarrollador')->nullable();
+            $table->string('imagen')->nullable(); // Añadido campo imagen
             $table->timestamps();
         });
     }

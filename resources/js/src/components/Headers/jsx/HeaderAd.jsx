@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../css/HeaderAd.css';
+import { useNavigate } from 'react-router-dom';
 import { FaBell, FaMoon, FaSun } from 'react-icons/fa';
 
 const HeaderAd = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const profileRef = useRef(null);
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -43,8 +45,8 @@ const HeaderAd = () => {
       </div>
 
       <div className="right-section">
-        {/* Notificaciones */}
-        <div className="icon-with-label notification-section">
+        {/* NotificacionesAd */}
+        <div className="icon-with-label notification-section" onClick={() => navigate('/notificacionesad')}>
           <FaBell className="icon" />
           <span className="icon-label">Notificaciones</span>
         </div>

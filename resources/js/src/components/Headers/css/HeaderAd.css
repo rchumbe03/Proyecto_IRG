@@ -53,7 +53,7 @@
   height: 14px; /* Reservamos altura aunque no haya texto */
 }
 
-/* Notificaciones: icono y texto alineados en fila */
+/* NotificacionesAd: icono y texto alineados en fila */
 .notification-section {
   flex-direction: row;
   gap: 8px;

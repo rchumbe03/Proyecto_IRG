@@ -13,9 +13,14 @@ class Notificacion extends Model
 
     protected $fillable = [
         'titulo',
-        'id_admin',
-        'nombre_admin',
         'contenido',
+        'id_admin',
+        'nombre_admin'
+    ];
+
+    protected $dates = [
+        'created_at',
+        'updated_at'
     ];
 
     public function admin()

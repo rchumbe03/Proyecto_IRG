@@ -1,9 +1,9 @@
 // InicioPl.jsx
 import React, { useState, useEffect } from 'react';
 import './InicioPl.css';
-import logo from '../../assets/logos/logo.png';
-import HeaderPl from '../Headers/jsx/HeaderPl.jsx';
-import Footer from '../Footer.jsx';
+import logo from '../assets/logos/logo.png';
+import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';
+import Footer from '../components/Footer/Footer.jsx';
 
 // Constantes
 const niveles = ['Base', 'Profesional', 'Avanzado', 'Experto'];

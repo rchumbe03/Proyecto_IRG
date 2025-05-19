@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './ListaCursos.css';
-import HeaderPl from '../Headers/jsx/HeaderPl.jsx';
-import Footer from '../Footer.jsx';
+import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';
+import Footer from '../components/Footer/Footer.jsx';
 
 const ListaCursos = () => {
     const [cursos, setCursos] = useState([]);
@@ -27,18 +27,20 @@ const ListaCursos = () => {
     }, []);
 
     return (
-        <div className="container">
+        <div className="cursos-container">
             <HeaderPl />
             <div className="course-page">
                 <h1 className="title">Mis Cursos</h1>
                 <div className="course-list">
                     {cursos.map(course => (
                         <div key={course.id} className="course-card">
-                            {course.imagen ? (
-                                <img src={course.imagen} alt={course.titulo} />
-                            ) : null}
+                            <img
+                                src={course.imagen || '/images/default-course.png'}
+                                alt={course.titulo}
+                                className="course-img"
+                            />
                             <h3 className="course-title">{course.titulo}</h3>
-                            <p className="course-theme">{course.tema}</p>
+                            <p className="course-developer">{course.desarrollador}</p>
                             <div className="button-group">
                                 <button className="course-button">Detalles</button>
                                 <button className="course-button">Acceder</button>
