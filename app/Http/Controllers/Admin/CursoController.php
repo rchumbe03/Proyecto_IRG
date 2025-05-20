@@ -24,6 +24,7 @@ class CursoController extends Controller
         // Validar los datos de entrada
         $request->validate([
             'titulo' => 'required|string',
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de imagen
             'descripcion' => 'required|string',
             'desarrollador' => 'required|string',
         ]);
@@ -66,6 +67,7 @@ class CursoController extends Controller
         // Validar los datos de entrada
         $request->validate([
             'titulo' => 'required|string',
+            'imagen' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de imagen
             'descripcion' => 'required|string',
             'desarrollador' => 'required|string',
         ]);

@@ -14,13 +14,18 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::get('/check-admin', function () {
-    return response()->json([
-        'isAdmin' => Auth::guard('admin')->check()
-    ]);
+    if (Auth::guard('admin')->check()) {
+        return response()->json([
+            'isAdmin' => true,
+            'user' => Auth::guard('admin')->user()
+        ]);
+    }
+    return response()->json(['isAdmin' => false]);
 });
 
 Route::get('/temas', [TemaController::class, 'index']);
 Route::get('/clases', [ClaseController::class, 'index']);
+Route::apiResource('cursos', CursoController::class);
 
 // Rutas protegidas para administradores
 Route::middleware(['auth.cookie'])->prefix('admin')->group(function () {
@@ -29,7 +34,7 @@ Route::middleware(['auth.cookie'])->prefix('admin')->group(function () {
     Route::apiResource('clases', ClaseController::class);
 });
 
-// Rutas de notificaciones sin restricciones
+// Rutas de notificaciones
 Route::get('/notificaciones', [NotificacionController::class, 'index']);
 Route::post('/notificaciones', [NotificacionController::class, 'store']);
 Route::put('/notificaciones/{id}', [NotificacionController::class, 'update']);

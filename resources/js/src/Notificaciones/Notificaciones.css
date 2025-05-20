@@ -60,7 +60,7 @@ body.dark-mode .mensaje-card.seleccionado span {
 }
 
 .mensaje-card.seleccionado .cerrar-edicion:hover {
-    color: white;
+    color: #E6D00A;
 }
 
 /* Información del mensaje */
@@ -84,15 +84,11 @@ body.dark-mode .mensaje-card.seleccionado span {
 }
 
 .mensaje-info p {
-    width: 100%;
     margin-top: 8px;
     font-size: 14px;
     color: #333;
-
-    /* Esto es lo nuevo */
     display: -webkit-box;
     -webkit-line-clamp: 3; /* Muestra solo 3 líneas */
-    line-clamp: 3; /* Standard property for compatibility */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -100,12 +96,9 @@ body.dark-mode .mensaje-card.seleccionado span {
 
 /* Acciones en las tarjetas */
 .mensaje-acciones {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
     display: flex;
+    margin-top: 5px;
     gap: 8px;
-    z-index: 2;
 }
 
 .accion-icono {

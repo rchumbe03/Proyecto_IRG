@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../css/HeaderPl.css';
 
 // Importa los iconos de React Icons
-import { FaWallet, FaFileAlt, FaBell, FaSun, FaMoon } from 'react-icons/fa';
+import { FaWallet, FaBell, FaSun, FaMoon } from 'react-icons/fa';
 
 export default function Header() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -57,8 +57,8 @@ export default function Header() {
                         <FaWallet />
                     </button>
 
-                    {/* Notificaciones */}
-                    <button className="icon-text-button" onClick={() => navigate('/notificaciones')}>
+                    {/* NotificacionesAd */}
+                    <button className="icon-text-button" onClick={() => navigate('/notificacionesu')}>
                         <span>Notificaciones</span>
                         <FaBell />
                     </button>

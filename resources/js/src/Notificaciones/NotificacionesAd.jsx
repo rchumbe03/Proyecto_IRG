@@ -2,10 +2,22 @@ import React, { useEffect, useState } from 'react'; // Importa React y hooks nec
 import axios from 'axios'; // Cliente HTTP para interactuar con la API
 import {FaEdit, FaTrash, FaPlus, FaEnvelope, FaTimes} from 'react-icons/fa'; // Iconos de edición, eliminación y agregar
 import './Notificaciones.css'; // Estilos CSS del componente
-import HeaderAd from '../Headers/jsx/HeaderAd.jsx'; // Componente del encabezado
-import Footer from '../Footer.jsx'; // Componente del pie de página
+import HeaderAd from '../components/Headers/jsx/HeaderAd.jsx'; // Componente del encabezado
+import Footer from '../components/Footer/Footer.jsx'; // Componente del pie de página
 
-const Notificaciones = () => {
+const config = {
+    withCredentials: true,
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        // El token CSRF se obtendrá automáticamente con Sanctum
+    }
+};
+
+// Modifica la configuración de axios para las peticiones PUT y DELETE
+const NotificacionesAd = () => {
+    const userData = JSON.parse(localStorage.getItem('user_data'));
+
     // Estados para controlar las notificaciones y sus interacciones
     const [mensajes, setMensajes] = useState([]); // Lista de mensajes/notificaciones
     const [mostrarFormulario, setMostrarFormulario] = useState(false); // Muestra/oculta el formulario de agregar
@@ -17,19 +29,24 @@ const Notificaciones = () => {
 
     // Carga inicial de mensajes al montar el componente
     useEffect(() => {
-        const getCsrfToken = async () => {
-            try {
-                await axios.get('http://localhost:8000/sanctum/csrf-cookie', {
-                    withCredentials: true
-                });
-            } catch (error) {
-                console.error('Error al obtener el token CSRF:', error);
-            }
+        const inicializar = async () => {
+            await getCsrfToken();
+            await fetchMensajes();
         };
 
-        getCsrfToken();
-        fetchMensajes();
+        inicializar();
     }, []);
+
+    const getCsrfToken = async () => {
+        try {
+            await axios.get('http://localhost:8000/sanctum/csrf-cookie', {
+                withCredentials: true
+            });
+        } catch (error) {
+            console.error('Error al obtener el token CSRF:', error);
+            setError('Error de autenticación. Por favor, inicie sesión nuevamente.');
+        }
+    };
 
     // Función para obtener mensajes desde la API
     const fetchMensajes = async () => {
@@ -59,30 +76,23 @@ const Notificaciones = () => {
         setMensajeSeleccionado(mensaje);
     };
 
-    // Agrega un nuevo mensaje
     const handleAgregarMensaje = async () => {
         if (nuevoMensaje.titulo.trim() && nuevoMensaje.contenido.trim()) {
             try {
                 const datosNuevoMensaje = {
                     titulo: nuevoMensaje.titulo,
                     contenido: nuevoMensaje.contenido,
-                    // La información del admin se manejará en el backend
+                    id_admin: userData.id
                 };
 
                 const response = await axios.post(
                     'http://localhost:8000/api/notificaciones',
                     datosNuevoMensaje,
-                    {
-                        withCredentials: true,
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        }
-                    }
+                    config
                 );
 
                 if (response.data) {
-                    setMensajes([response.data, ...mensajes]); // Agregar al principio de la lista
+                    setMensajes([response.data, ...mensajes]);
                     setNuevoMensaje({ titulo: '', contenido: '' });
                     setMostrarFormulario(false);
                     setError(null);
@@ -93,28 +103,6 @@ const Notificaciones = () => {
             }
         } else {
             setError('Por favor, complete todos los campos requeridos.');
-        }
-    };
-
-// Elimina un mensaje existente
-    const handleEliminarMensaje = async (id, e) => {
-        e.stopPropagation();
-        try {
-            await axios.delete(`http://localhost:8000/api/notificaciones/${id}`, {
-                withCredentials: true
-            });
-
-            // Filtra el mensaje eliminado
-            setMensajes(mensajes.filter((msg) => msg.id !== id));
-
-            // Limpia el detalle si se está mostrando el mensaje eliminado
-            if (mensajeSeleccionado?.id === id) {
-                setMensajeSeleccionado(null);
-                setError(null);
-            }
-        } catch (error) {
-            console.error('Error al eliminar notificación:', error);
-            setError('Error al eliminar la notificación. Por favor, intente nuevamente.');
         }
     };
 
@@ -138,31 +126,50 @@ const Notificaciones = () => {
             const datosActualizados = {
                 titulo: mensajeEditado.titulo,
                 contenido: mensajeEditado.contenido,
-                id_admin: 1,
-                nombre_admin: 'Juan Perez' // Datos fijos por ahora
+                id_admin: userData.id
             };
 
             const response = await axios.put(
                 `http://localhost:8000/api/notificaciones/${id}`,
                 datosActualizados,
-                { withCredentials: true }
+                config
             );
 
-            // Actualiza el mensaje en el estado
-            setMensajes(
-                mensajes.map((m) => m.id === id ? response.data : m)
-            );
-            setEditandoMensajeId(null); // Cierra el modo edición
-            setMensajeEditado({});
-            setError(null);
+            if (response.data) {
+                setMensajes(mensajes.map((m) => m.id === id ? response.data : m));
+                setEditandoMensajeId(null);
+                setMensajeEditado({});
+                setError(null);
+            }
         } catch (error) {
             console.error('Error al actualizar notificación:', error);
             setError('Error al actualizar la notificación. Por favor, intente nuevamente.');
         }
     };
+    const handleEliminarMensaje = async (id, e) => {
+        e.stopPropagation();
+        try {
+            await axios.delete(
+                `http://localhost:8000/api/notificaciones/${id}`,
+                {
+                    ...config,
+                    data: { id_admin: userData.id }
+                }
+            );
+
+            setMensajes(mensajes.filter((msg) => msg.id !== id));
+            if (mensajeSeleccionado?.id === id) {
+                setMensajeSeleccionado(null);
+            }
+            setError(null);
+        } catch (error) {
+            console.error('Error al eliminar notificación:', error);
+            setError('Error al eliminar la notificación. Por favor, intente nuevamente.');
+        }
+    };
 
     return (
-        <div className="container">
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
             <HeaderAd /> {/* Encabezado de administrador */}
 
             {/* Muestra el error si existe */}
@@ -224,21 +231,24 @@ const Notificaciones = () => {
                                     </div>
                                 ) : (
                                 <div className="mensaje-contenido">
-                                        <p>{mensaje.contenido}</p>
+                                    <p>{mensaje.contenido}</p>
+                                    {/* Acciones: Editar y Eliminar */}
+                                    <div className="mensaje-acciones">
+                                        {mensaje.id_admin === userData.id && (
+                                            <>
+                                                <FaEdit
+                                                    className={`accion-icono ${mensajeSeleccionado?.id === mensaje.id ? 'seleccionado' : ''}`}
+                                                    onClick={(e) => handleEditarMensaje(mensaje.id, e)}
+                                                />
+                                                <FaTrash
+                                                    className={`accion-icono ${mensajeSeleccionado?.id === mensaje.id ? 'seleccionado' : ''}`}
+                                                    onClick={(e) => handleEliminarMensaje(mensaje.id, e)}
+                                                />
+                                            </>
+                                        )}
                                     </div>
+                                </div>
                                 )}
-                            </div>
-
-                            {/* Acciones: Editar y Eliminar */}
-                            <div className="mensaje-acciones">
-                                <FaEdit
-                                    className={`accion-icono ${mensajeSeleccionado?.id === mensaje.id ? 'seleccionado' : ''}`}
-                                    onClick={(e) => handleEditarMensaje(mensaje.id, e)}
-                                />
-                                <FaTrash
-                                    className={`accion-icono ${mensajeSeleccionado?.id === mensaje.id ? 'seleccionado' : ''}`}
-                                    onClick={(e) => handleEliminarMensaje(mensaje.id, e)}
-                                />
                             </div>
                         </div>
                     ))}
@@ -305,4 +315,4 @@ const Notificaciones = () => {
     );
 };
 
-export default Notificaciones;
+export default NotificacionesAd;

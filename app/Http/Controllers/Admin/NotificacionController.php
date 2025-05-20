@@ -30,19 +30,17 @@ class NotificacionController extends Controller
     public function store(Request $request)
     {
         try {
-            /** @var Admin $admin */
-            $admin = Auth::guard('admin')->user();
-
             $request->validate([
                 'titulo' => 'required|string|max:255',
-                'contenido' => 'required|string'
+                'contenido' => 'required|string',
+                'id_admin' => 'required|integer'
             ]);
 
             $notificacion = Notificacion::create([
                 'titulo' => $request->titulo,
                 'contenido' => $request->contenido,
-                'id_admin' => $admin ? $admin->id : 1, // ID por defecto si no hay admin
-                'nombre_admin' => $admin ? $admin->nombre : 'Administrador', // Nombre por defecto si no hay admin
+                'id_admin' => $request->id_admin,
+                'nombre_admin' => Admin::find($request->id_admin)->nombre ?? 'Administrador',
                 'created_at' => now()
             ]);
 
@@ -56,35 +54,55 @@ class NotificacionController extends Controller
         }
     }
 
-    public function update(Request $request, $id) {
-        if (!Auth::guard('admin')->check())
-        {
-            return response()->json(['message' => 'No autorizado'], 403);
+    public function update(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'titulo' => 'required|string|max:255',
+                'contenido' => 'required|string',
+                'id_admin' => 'required|integer'
+            ]);
+
+            $notificacion = Notificacion::findOrFail($id);
+
+            // Verifica que el admin que intenta actualizar sea el mismo que creó la notificación
+            if ($notificacion->id_admin !== $request->id_admin) {
+                return response()->json(['message' => 'No autorizado para editar esta notificación'], 403);
+            }
+
+            $notificacion->update([
+                'titulo' => $request->titulo,
+                'contenido' => $request->contenido
+            ]);
+
+            return response()->json($notificacion->fresh());
+        } catch (\Exception $e) {
+            Log::error('Error actualizando notificación: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Error al actualizar la notificación',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $notificacion = Notificacion::findOrFail($id);
-
-        $request->validate([
-            'titulo' => 'required|string|max:255',
-            'contenido' => 'required|string'
-        ]);
-
-        $notificacion->titulo = $request->titulo;
-        $notificacion->contenido = $request->contenido;
-        $notificacion->save();
-
-        return response()->json($notificacion);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        if (!Auth::guard('admin')->check()) {
-            return response()->json(['message' => 'No autorizado'], 403);
+        try {
+            $notificacion = Notificacion::findOrFail($id);
+
+            // Verifica que el admin que intenta eliminar sea el mismo que creó la notificación
+            if ($notificacion->id_admin !== (int)$request->id_admin) {
+                return response()->json(['message' => 'No autorizado para eliminar esta notificación'], 403);
+            }
+
+            $notificacion->delete();
+            return response()->json(['message' => 'Notificación eliminada con éxito']);
+        } catch (\Exception $e) {
+            Log::error('Error eliminando notificación: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Error al eliminar la notificación',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $notificacion = Notificacion::findOrFail($id);
-        $notificacion->delete();
-
-        return response()->json(null, 204);
     }
 }

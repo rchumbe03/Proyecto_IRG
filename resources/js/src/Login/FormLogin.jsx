@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import './FormLogin.css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
+import { faSun, faMoon, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import './FormLogin.css';
 
 // Configuración global de axios
 axios.defaults.baseURL = 'http://localhost:8000';
@@ -11,74 +11,79 @@ axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
 
+/**
+ * Componente FormLogin
+ * Maneja la autenticación de usuarios y administradores
+ *
+ * @returns {JSX.Element} Formulario de inicio de sesión
+ */
 function FormLogin() {
+    // Estados del formulario
     const [email, setEmail] = useState('');
     const [contrasena, setContrasena] = useState('');
     const [mostrarContrasena, setMostrarContrasena] = useState(false);
     const [error, setError] = useState('');
     const [darkMode, setDarkMode] = useState(false);
+
+    // Hook de navegación
     const navigate = useNavigate();
 
+    /**
+     * Alterna entre modo claro y oscuro
+     */
     const toggleDarkMode = () => {
         setDarkMode(!darkMode);
-        if (!darkMode) {
-            document.body.classList.add('dark-mode'); // Agregar la clase dark-mode al body
-        } else {
-            document.body.classList.remove('dark-mode'); // Quitar la clase dark-mode del body
-        }
+        document.body.classList.toggle('dark-mode');
     };
 
-    axios.defaults.withCredentials = true;
-
+    /**
+     * Maneja el envío del formulario de inicio de sesión
+     * @param {Event} e - Evento del formulario
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
 
         try {
-            // Obtener el token CSRF
+            // 1. Obtener token CSRF
             await axios.get('/sanctum/csrf-cookie');
 
+            // 2. Intento de inicio de sesión
             const response = await axios.post('/api/login', {
                 email,
                 password: contrasena
             });
 
             const { data } = response;
-            console.log('Respuesta del servidor:', data); // Para debug
 
+            // 3. Procesamiento de respuesta exitosa
             if (data.user) {
-                console.log('Datos del usuario:', data.user);
+                // Almacenar datos del usuario
                 localStorage.setItem('user_data', JSON.stringify(data.user));
-
-                // Guardar tema
                 localStorage.setItem('theme', data.user.theme || 'light');
 
-                // Determinar la ruta
-                const route = data.user.type === 'admin' ? '/admin/cursos' : '/cursos';
-                console.log('Intentando redirigir a:', route);
+                // Determinar ruta según tipo de usuario
+                const route = data.user.type === 'admin' ? '/cursos' : '/cursos';
 
-                // Forzar la redirección
+                // Redirección doble para mayor seguridad
                 window.location.href = route;
-
-                // Como respaldo, también usar navigate
                 navigate(route, { replace: true });
             } else {
-                console.error('No hay datos de usuario en la respuesta');
                 setError('Error: No se recibieron datos del usuario');
             }
         } catch (error) {
+            // Manejo de errores de autenticación
             console.error('Error:', error);
-            if (error.response?.status === 401) {
-                setError('Credenciales inválidas');
-            } else {
-                setError('Error al conectar con el servidor');
-            }
+            setError(error.response?.status === 401
+                ? 'Credenciales inválidas'
+                : 'Error al conectar con el servidor'
+            );
         }
     };
 
     return (
         <div className="login-wrapper">
-            {/* Sección izquierda */}
+            {/* Sección de introducción */}
             <div className="intro-container">
                 <div className="half-circle" />
                 <div className="intro-text">
@@ -87,12 +92,12 @@ function FormLogin() {
                 </div>
             </div>
 
-            {/* Sección derecha (formulario) */}
+            {/* Sección del formulario */}
             <div className="login-container">
                 <form className="login-form" onSubmit={handleSubmit}>
                     <h1 className="login-title">Iniciar Sesión</h1>
 
-                    {/* Correo */}
+                    {/* Campo de correo */}
                     <div className="form-group">
                         <label className="form-label">Correo</label>
                         <div className="form-input">
@@ -106,7 +111,7 @@ function FormLogin() {
                         </div>
                     </div>
 
-                    {/* Contraseña */}
+                    {/* Campo de contraseña */}
                     <div className="form-group">
                         <label className="form-label">Contraseña</label>
                         <div className="form-input password-input">
@@ -121,13 +126,14 @@ function FormLogin() {
                                 type="button"
                                 className="icon-button"
                                 onClick={() => setMostrarContrasena(!mostrarContrasena)}
+                                aria-label={mostrarContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                             >
-                                👁
+                                <FontAwesomeIcon icon={mostrarContrasena ? faEyeSlash : faEye} />
                             </button>
                         </div>
                     </div>
 
-                    {/* Error de login */}
+                    {/* Mensaje de error */}
                     {error && <div className="form-error">{error}</div>}
 
                     <button type="submit" className="login-button">
@@ -136,9 +142,13 @@ function FormLogin() {
                 </form>
             </div>
 
-            {/* Botón para cambiar el modo oscuro */}
+            {/* Botón de cambio de tema */}
             <div className="mode-toggle">
-                <button className="mode-toggle-button" onClick={toggleDarkMode}>
+                <button
+                    className="mode-toggle-button"
+                    onClick={toggleDarkMode}
+                    aria-label={darkMode ? 'Activar modo claro' : 'Activar modo oscuro'}
+                >
                     <FontAwesomeIcon icon={darkMode ? faMoon : faSun} />
                 </button>
             </div>
