@@ -60,14 +60,15 @@ const InicioPl = () => {
                 return;
             }
 
-const temasAdaptados = temasResult.data.map(tema => ({
-    id: tema.id,
-    titulo: tema.titulo,
-    tipo: tema.tipo, // <-- Agrega esta línea
-    estado: tema.estado || '',
-    nivel: tema.fase?.nombre || 'Base',
-    clases: clasesResult.data.filter(clase => clase.id_tema === tema.id)
-}));
+            const temasAdaptados = temasResult.data.map(tema => ({
+                id: tema.id,
+                titulo: tema.titulo,
+                tipo: tema.tipo,
+                estado: tema.estado || '',
+                nivel: tema.fase?.nombre || 'Base',
+                id_curso: tema.id_curso, // <-- Asegúrate de que venga del backend
+                clases: clasesResult.data.filter(clase => clase.id_tema === tema.id)
+            }));
 
             setTemas(temasAdaptados);
             setLoading(false);
@@ -83,10 +84,12 @@ const temasAdaptados = temasResult.data.map(tema => ({
         );
     };
 
+        // Filtrar solo temas con id_curso = 1
     const contenidoFiltrado = temas.filter(item =>
         item.nivel === nivelActivo &&
         item.estado !== 'Bloqueado' &&
-        item.titulo.toLowerCase().includes(busqueda.toLowerCase())
+        item.titulo.toLowerCase().includes(busqueda.toLowerCase()) &&
+        item.id_curso === 1 // Solo temas con id_curso = 1
     );
 
     return (
@@ -162,11 +165,11 @@ const temasAdaptados = temasResult.data.map(tema => ({
                                     <div className="numero">{index + 1}</div>
                                     <div className="info">
                                         <div className="contenido-titulo">
-    {item.titulo}
-    <span className={`tema-tipo tipo-${item.tipo?.toLowerCase()}`}>
-        {item.tipo}
-    </span>
-</div>
+                                            {item.titulo}
+                                            <span className={`tema-tipo tipo-${item.tipo?.toLowerCase()}`}>
+                                                {item.tipo}
+                                            </span>
+                                        </div>
                                         {item.estado && (
                                             <div className={`estado ${item.estado === 'Completado' ? 'completado' : 'proceso'}`}>
                                                 {item.estado === 'Completado' ? '✔ Completado' : '⏳ En proceso'}

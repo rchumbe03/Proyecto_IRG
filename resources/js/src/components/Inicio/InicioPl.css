@@ -340,14 +340,48 @@
 
 /* Colores personalizados por tipo */
 .tipo-virtual {
-    background: #e0f7fa;
-    color: #00796b;
+    background: #ffd700;
+    color: #000000;
 }
 .tipo-presencial {
-    background: #fff3e0;
-    color: #e65100;
+    background: #ffd700;
+    color: #000000;
 }
 .tipo-video {
-    background: #fce4ec;
-    color: #ad1457;
+    background: #ffd700;
+    color: #000000;
+}
+
+
+
+/* .dark-theme,
+.dark-theme .inicio-wrapper {
+    background-color: #1e1e1e !important;
+} */
+
+.dark-theme .contenidos {
+    background-color: #232323 !important;
+}
+
+.dark-theme .volver-btn {
+    color: #fff;
+}
+
+.dark-theme .porcentaje {
+    color: #fff;
+}
+.dark-theme .toggle {
+    color: #fff;
+}
+
+.dark-theme .tab {
+    color: #fff;
+}
+
+.dark-theme .tab.active {
+    border-color: #fff;
+}
+
+.dark-theme .plataforma-container{
+    background-color: #000;
 }

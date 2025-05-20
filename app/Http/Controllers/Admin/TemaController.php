@@ -20,7 +20,8 @@ public function index(): JsonResponse
                 'id' => $tema->id,
                 'titulo' => $tema->titulo,
                 'descripcion' => $tema->descripcion,
-                'tipo' => $tema->tipo, // <-- Agrega esta línea
+                'tipo' => $tema->tipo,
+                'id_curso' => $tema->id_curso, // <-- AGREGA ESTA LÍNEA
                 'fase' => [
                     'id' => $tema->fase->id,
                     'nombre' => $tema->fase->nombre
