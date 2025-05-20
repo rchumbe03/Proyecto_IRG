@@ -15,6 +15,7 @@ class Notificacion extends Model
         'titulo',
         'id_admin',
         'nombre_admin',
+        'titulo',
         'contenido',
     ];
 
