@@ -1,5 +1,6 @@
 // InicioPl.jsx
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './InicioPl.css';
 import logo from '../../assets/logos/logo.png';
 import HeaderPl from '../Headers/jsx/HeaderPl.jsx';
@@ -33,7 +34,10 @@ const InicioPl = () => {
     const [isDarkMode, setIsDarkMode] = useState(false);
 
     // Estados para la sección de plataforma
-    const [progreso] = useState(90);
+    const [progreso, setProgreso] = useState(0); // Cambia el valor inicial a 0
+
+    // Supón que tienes el userId disponible
+    const userId = 1; // Cambia esto según tu lógica de autenticación
 
     // Estados para la sección de contenidos
     const [nivelActivo, setNivelActivo] = useState('Base');
@@ -42,6 +46,11 @@ const InicioPl = () => {
     const [temas, setTemas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [temaSeleccionado, setTemaSeleccionado] = useState(null);
+    const [cursos, setCursos] = useState([]);
+    const [cursoSeleccionado, setCursoSeleccionado] = useState(null);
+
+    const navigate = useNavigate();
 
     // Efectos
     useEffect(() => {
@@ -51,7 +60,8 @@ const InicioPl = () => {
 
             const [temasResult, clasesResult] = await Promise.all([
                 fetchWithErrorHandling('http://localhost:8000/api/temas'),
-                fetchWithErrorHandling('http://localhost:8000/api/clases')
+                fetchWithErrorHandling('http://localhost:8000/api/clases'), 
+
             ]);
 
             if (temasResult.error || clasesResult.error) {
@@ -63,6 +73,7 @@ const InicioPl = () => {
             const temasAdaptados = temasResult.data.map(tema => ({
                 id: tema.id,
                 titulo: tema.titulo,
+                descripcion: tema.descripcion, // <-- Agrega esta línea
                 estado: tema.estado || '',
                 nivel: tema.fase?.nombre || 'Base',
                 clases: clasesResult.data.filter(clase => clase.id_tema === tema.id)
@@ -72,8 +83,21 @@ const InicioPl = () => {
             setLoading(false);
         };
 
+        // Cargar expediente del usuario
+        const loadExpediente = async () => {
+            try {
+                const response = await fetch(`http://localhost:8000/api/expediente/${id_usuario}`);
+                if (!response.ok) throw new Error('No se pudo cargar el expediente');
+                const data = await response.json();
+                setProgreso(data.porcentaje || 0); // Ajusta el nombre del campo según tu API
+            } catch (err) {
+                setProgreso(0);
+            }
+        };
+
         loadData();
-    }, []);
+        loadExpediente();
+    }, [userId]);
 
     // Funciones auxiliares
     const toggleItem = (id) => {
@@ -98,19 +122,22 @@ const InicioPl = () => {
             {/* Sección de Plataforma */}
             <div className="plataforma-container">
                 <div className="plataforma-left">
-                    <button className="volver-btn">← Volver</button>
+                    <button
+                        className="volver-btn"
+                        onClick={() => navigate('/cursos')}
+                    >
+                        ← Volver
+                    </button>
                     <h1 className="plataforma-titulo">¡Pasa al siguiente nivel!</h1>
 
-                    <div className="barras">
-                        <div ><h3>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            Provident, assumenda voluptatibus placeat optio quod adipisci nemo sequi labore,
-                            incidunt soluta vitae accusamus quia neque, perspiciatis iure quasi omnis porro ipsam.</h3></div>
-                        <div ><h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident,
-                            assumenda voluptatibus placeat optio quod adipisci nemo sequi labore,
-                            incidunt soluta vitae accusamus quia neque, perspiciatis iure quasi omnis porro ipsam.</h3></div>
-                        <div ><h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident,
-                            assumenda voluptatibus placeat optio quod adipisci nemo sequi labore,
-                            incidunt soluta vitae accusamus quia neque, perspiciatis iure quasi omnis porro ipsam.</h3></div>
+                    <div className="descripcion">
+                        <div>
+                            <h3>
+                                {cursoSeleccionado
+                                    ? cursoSeleccionado.descripcion || 'Descripción no disponible.'
+                                    : 'Selecciona un curso para ver la descripción.'}
+                            </h3>
+                        </div>
                         <div className="barra-progreso-contenedor">
                             <span className="porcentaje">{progreso}%</span>
                             <div className="barra-progreso">
@@ -156,7 +183,11 @@ const InicioPl = () => {
                 {!loading && !error && (
                     <ul className="contenido-lista">
                         {contenidoFiltrado.map((item, index) => (
-                            <li key={item.id} className={`contenido-item ${isDarkMode ? 'dark-theme' : ''}`}>
+                            <li
+                                key={item.id}
+                                className={`contenido-item ${isDarkMode ? 'dark-theme' : ''}`}
+                                onClick={() => setTemaSeleccionado(item)}
+                            >
                                 <div className="item-header">
                                     <div className="numero">{index + 1}</div>
                                     <div className="info">
@@ -169,7 +200,10 @@ const InicioPl = () => {
                                     </div>
                                     <button
                                         className="toggle"
-                                        onClick={() => toggleItem(item.id)}
+                                        onClick={e => {
+                                            e.stopPropagation();
+                                            toggleItem(item.id);
+                                        }}
                                         aria-label={expandido.includes(item.id) ? 'Cerrar tema' : 'Abrir tema'}
                                     >
                                         {expandido.includes(item.id) ? '▲' : '▼'}
@@ -210,6 +244,19 @@ const InicioPl = () => {
                     </ul>
                 )}
             </section>
+
+            <div className="lista-cursos">
+                {cursos.map(curso => (
+                    <div
+                        key={curso.id}
+                        className={`curso-item${cursoSeleccionado && cursoSeleccionado.id === curso.id ? ' seleccionado' : ''}`}
+                        onClick={() => setCursoSeleccionado(curso)}
+                        style={{ cursor: 'pointer', margin: '8px 0', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}
+                    >
+                        {curso.titulo}
+                    </div>
+                ))}
+            </div>
 
             <Footer />
         </div>
