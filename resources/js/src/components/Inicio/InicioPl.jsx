@@ -60,13 +60,14 @@ const InicioPl = () => {
                 return;
             }
 
-            const temasAdaptados = temasResult.data.map(tema => ({
-                id: tema.id,
-                titulo: tema.titulo,
-                estado: tema.estado || '',
-                nivel: tema.fase?.nombre || 'Base',
-                clases: clasesResult.data.filter(clase => clase.id_tema === tema.id)
-            }));
+const temasAdaptados = temasResult.data.map(tema => ({
+    id: tema.id,
+    titulo: tema.titulo,
+    tipo: tema.tipo, // <-- Agrega esta línea
+    estado: tema.estado || '',
+    nivel: tema.fase?.nombre || 'Base',
+    clases: clasesResult.data.filter(clase => clase.id_tema === tema.id)
+}));
 
             setTemas(temasAdaptados);
             setLoading(false);
@@ -160,7 +161,12 @@ const InicioPl = () => {
                                 <div className="item-header">
                                     <div className="numero">{index + 1}</div>
                                     <div className="info">
-                                        <div className="contenido-titulo">{item.titulo}</div>
+                                        <div className="contenido-titulo">
+    {item.titulo}
+    <span className={`tema-tipo tipo-${item.tipo?.toLowerCase()}`}>
+        {item.tipo}
+    </span>
+</div>
                                         {item.estado && (
                                             <div className={`estado ${item.estado === 'Completado' ? 'completado' : 'proceso'}`}>
                                                 {item.estado === 'Completado' ? '✔ Completado' : '⏳ En proceso'}

@@ -12,37 +12,38 @@ class TemaController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
-    {
-        try {
-            $temas = Tema::with(['fase', 'clases'])->get()->map(function ($tema) {
-                return [
-                    'id' => $tema->id,
-                    'titulo' => $tema->titulo,
-                    'descripcion' => $tema->descripcion,
-                    'fase' => [
-                        'id' => $tema->fase->id,
-                        'nombre' => $tema->fase->nombre
-                    ],
-                    'clases' => $tema->clases->map(function ($clase) {
-                        return [
-                            'id' => $clase->id,
-                            'titulo' => $clase->titulo,
-                            'tipo' => $clase->tipo,
-                            'url' => $clase->url
-                        ];
-                    })
-                ];
-            });
+public function index(): JsonResponse
+{
+    try {
+        $temas = Tema::with(['fase', 'clases'])->get()->map(function ($tema) {
+            return [
+                'id' => $tema->id,
+                'titulo' => $tema->titulo,
+                'descripcion' => $tema->descripcion,
+                'tipo' => $tema->tipo, // <-- Agrega esta línea
+                'fase' => [
+                    'id' => $tema->fase->id,
+                    'nombre' => $tema->fase->nombre
+                ],
+                'clases' => $tema->clases->map(function ($clase) {
+                    return [
+                        'id' => $clase->id,
+                        'titulo' => $clase->titulo,
+                        'tipo' => $clase->tipo,
+                        'url' => $clase->url
+                    ];
+                })
+            ];
+        });
 
-            return response()->json($temas, 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Error al obtener los temas',
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json($temas, 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Error al obtener los temas',
+            'message' => $e->getMessage()
+        ], 500);
     }
+}
 
     /**
      * Store a newly created resource in storage.
