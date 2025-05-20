@@ -120,13 +120,18 @@
     width: 24px;
     height: 24px;
     background: none;
-    color: #E6D00A;
+    color: #666;
     border: none;
     cursor: pointer;
-    font-size: 24px;
+    font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: color 0.3s ease;
+}
+
+.icon-button:hover {
+    color: #E6D00A;
 }
 
 /* Estilos del botón de login */
@@ -147,8 +152,12 @@
 }
 
 /* Estilos para el modo oscuro */
+body.dark-mode {
+    background-color: #1e1e1e;
+}
+
 body.dark-mode .intro-container .login-container {
-    background-color: #2C2C2C;
+    background-color: #1e1e1e;
 }
 
 body.dark-mode .form-label,
@@ -156,18 +165,22 @@ body.dark-mode .login-title {
     color: white;
 }
 
-body.dark-mode .icon-button{
-    color: white;
+body.dark-mode .icon-button {
+    color: #E6D00A;
 }
 
 body.dark-mode .form-input {
-    background-color: #444444;
+    background-color: #1a1a1a;
+    border-color: #333;
     color: white;
 }
 
 body.dark-mode .form-input input {
-    background-color: #2C2C2C;
     color: white;
+}
+
+body.dark-mode .form-input input::placeholder {
+    color: #666;
 }
 
 body.dark-mode .login-button {
@@ -209,4 +222,15 @@ body.dark-mode .login-button {
     color: red;
     font-size: 14px;
     margin-top: 10px;
+}
+
+/* Ajustes adicionales para el botón de mostrar contraseña */
+
+/* Ajuste del padding del input de contraseña */
+.password-input input {
+    padding-right: 10px;
+}
+
+.password-input {
+    padding-right: 8px;
 }

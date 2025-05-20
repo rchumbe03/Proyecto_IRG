@@ -169,7 +169,7 @@ const NotificacionesAd = () => {
     };
 
     return (
-        <div className="container">
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
             <HeaderAd /> {/* Encabezado de administrador */}
 
             {/* Muestra el error si existe */}
@@ -234,14 +234,18 @@ const NotificacionesAd = () => {
                                     <p>{mensaje.contenido}</p>
                                     {/* Acciones: Editar y Eliminar */}
                                     <div className="mensaje-acciones">
-                                        <FaEdit
-                                            className={`accion-icono ${mensajeSeleccionado?.id === mensaje.id ? 'seleccionado' : ''}`}
-                                            onClick={(e) => handleEditarMensaje(mensaje.id, e)}
-                                        />
-                                        <FaTrash
-                                            className={`accion-icono ${mensajeSeleccionado?.id === mensaje.id ? 'seleccionado' : ''}`}
-                                            onClick={(e) => handleEliminarMensaje(mensaje.id, e)}
-                                        />
+                                        {mensaje.id_admin === userData.id && (
+                                            <>
+                                                <FaEdit
+                                                    className={`accion-icono ${mensajeSeleccionado?.id === mensaje.id ? 'seleccionado' : ''}`}
+                                                    onClick={(e) => handleEditarMensaje(mensaje.id, e)}
+                                                />
+                                                <FaTrash
+                                                    className={`accion-icono ${mensajeSeleccionado?.id === mensaje.id ? 'seleccionado' : ''}`}
+                                                    onClick={(e) => handleEliminarMensaje(mensaje.id, e)}
+                                                />
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                                 )}

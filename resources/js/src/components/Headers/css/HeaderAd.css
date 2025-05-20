@@ -1,11 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .header {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #F3F3F5;
-  padding: 10px 20px;
-  font-family: sans-serif;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 15px;  /* Añadir padding de 15px a los laterales para que no esté pegado al borde */
+    background-color: #F3F3F5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid black;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 100;  /* Asegura que el header esté encima del contenido */
 }
 
 .logo {
