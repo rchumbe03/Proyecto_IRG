@@ -46,7 +46,7 @@ const HeaderAd = () => {
 
       <div className="right-section">
         {/* NotificacionesAd */}
-        <div className="icon-with-label notification-section" onClick={() => navigate('/notificacionesad')}>
+        <div className="icon-with-label notification-section" onClick={() => navigate('/admin/notificaciones')}>
           <FaBell className="icon" />
           <span className="icon-label">Notificaciones</span>
         </div>
