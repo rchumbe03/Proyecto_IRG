@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CursoController;
 use App\Http\Controllers\Admin\TemaController;
 use App\Http\Controllers\Admin\ClaseController;
 use App\Http\Controllers\Admin\NotificacionController;
+use App\Http\Controllers\ExpedienteController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -43,3 +44,5 @@ Route::delete('/notificaciones/{id}', [NotificacionController::class, 'destroy']
 Route::middleware(['auth.cookie'])->prefix('user')->group(function () {
     // Aquí tus rutas para usuarios normales
 });
+
+Route::get('/expediente/{userId}', [ExpedienteController::class, 'show']);

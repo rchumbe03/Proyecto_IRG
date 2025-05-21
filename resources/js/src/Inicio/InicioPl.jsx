@@ -1,5 +1,6 @@
 // InicioPl.jsx
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './InicioPl.css';
 import logo from '../assets/logos/logo.png';
 import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';
@@ -35,13 +36,19 @@ const InicioPl = () => {
     // Estados para la sección de plataforma
     const [progreso] = useState(90);
 
+    // Supón que tienes el userId disponible
+    const userId = 1; // Cambia esto según tu lógica de autenticación
+
     // Estados para la sección de contenidos
     const [nivelActivo, setNivelActivo] = useState('Base');
     const [busqueda, setBusqueda] = useState('');
     const [expandido, setExpandido] = useState([]);
     const [temas, setTemas] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [cursoSeleccionado] = useState(null);
     const [error, setError] = useState(null);
+
+    const navigate = useNavigate();
 
     // Efectos
     useEffect(() => {
@@ -51,7 +58,8 @@ const InicioPl = () => {
 
             const [temasResult, clasesResult] = await Promise.all([
                 fetchWithErrorHandling('http://localhost:8000/api/temas'),
-                fetchWithErrorHandling('http://localhost:8000/api/clases')
+                fetchWithErrorHandling('http://localhost:8000/api/clases'),
+
             ]);
 
             if (temasResult.error || clasesResult.error) {
@@ -63,8 +71,11 @@ const InicioPl = () => {
             const temasAdaptados = temasResult.data.map(tema => ({
                 id: tema.id,
                 titulo: tema.titulo,
+                tipo: tema.tipo,
+                descripcion: tema.descripcion,
                 estado: tema.estado || '',
                 nivel: tema.fase?.nombre || 'Base',
+                id_curso: tema.id_curso,
                 clases: clasesResult.data.filter(clase => clase.id_tema === tema.id)
             }));
 
@@ -73,7 +84,7 @@ const InicioPl = () => {
         };
 
         loadData();
-    }, []);
+    }, [userId]);
 
     // Funciones auxiliares
     const toggleItem = (id) => {
@@ -82,10 +93,12 @@ const InicioPl = () => {
         );
     };
 
+        // Filtrar solo temas con id_curso = 1
     const contenidoFiltrado = temas.filter(item =>
         item.nivel === nivelActivo &&
         item.estado !== 'Bloqueado' &&
-        item.titulo.toLowerCase().includes(busqueda.toLowerCase())
+        item.titulo.toLowerCase().includes(busqueda.toLowerCase()) &&
+        item.id_curso === 1 // Solo temas con id_curso = 1
     );
 
     return (
@@ -98,19 +111,22 @@ const InicioPl = () => {
             {/* Sección de Plataforma */}
             <div className="plataforma-container">
                 <div className="plataforma-left">
-                    <button className="volver-btn">← Volver</button>
+                    <button
+                        className="volver-btn"
+                        onClick={() => navigate('/cursos')}
+                    >
+                        ← Volver
+                    </button>
                     <h1 className="plataforma-titulo">¡Pasa al siguiente nivel!</h1>
 
-                    <div className="barras">
-                        <div ><h3>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            Provident, assumenda voluptatibus placeat optio quod adipisci nemo sequi labore,
-                            incidunt soluta vitae accusamus quia neque, perspiciatis iure quasi omnis porro ipsam.</h3></div>
-                        <div ><h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident,
-                            assumenda voluptatibus placeat optio quod adipisci nemo sequi labore,
-                            incidunt soluta vitae accusamus quia neque, perspiciatis iure quasi omnis porro ipsam.</h3></div>
-                        <div ><h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident,
-                            assumenda voluptatibus placeat optio quod adipisci nemo sequi labore,
-                            incidunt soluta vitae accusamus quia neque, perspiciatis iure quasi omnis porro ipsam.</h3></div>
+                    <div className="descripcion">
+                        <div>
+                            <h3>
+                                {cursoSeleccionado
+                                    ? cursoSeleccionado.descripcion || 'Descripción no disponible.'
+                                    : 'Selecciona un curso para ver la descripción.'}
+                            </h3>
+                        </div>
                         <div className="barra-progreso-contenedor">
                             <span className="porcentaje">{progreso}%</span>
                             <div className="barra-progreso">
@@ -160,7 +176,12 @@ const InicioPl = () => {
                                 <div className="item-header">
                                     <div className="numero">{index + 1}</div>
                                     <div className="info">
-                                        <div className="contenido-titulo">{item.titulo}</div>
+                                        <div className="contenido-titulo">
+                                            {item.titulo}
+                                            <span className={`tema-tipo tipo-${item.tipo?.toLowerCase()}`}>
+                                                {item.tipo}
+                                            </span>
+                                        </div>
                                         {item.estado && (
                                             <div className={`estado ${item.estado === 'Completado' ? 'completado' : 'proceso'}`}>
                                                 {item.estado === 'Completado' ? '✔ Completado' : '⏳ En proceso'}
@@ -184,9 +205,6 @@ const InicioPl = () => {
                                                 {item.clases.map(clase => (
                                                     <li key={clase.id} className="clase-item">
                                                         <span className="clase-titulo">{clase.titulo}</span>
-                                                        <span className={`clase-tipo tipo-${clase.tipo?.toLowerCase()}`}>
-                                                            {clase.tipo}
-                                                        </span>
                                                         {clase.url && (
                                                             <a
                                                                 href={clase.url}
@@ -210,7 +228,6 @@ const InicioPl = () => {
                     </ul>
                 )}
             </section>
-
             <Footer />
         </div>
     );
