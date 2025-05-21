@@ -34,7 +34,7 @@ const InicioPl = () => {
     const [isDarkMode, setIsDarkMode] = useState(false);
 
     // Estados para la sección de plataforma
-    const [progreso, setProgreso] = useState(0); // Cambia el valor inicial a 0
+    const [progreso] = useState(90);
 
     // Supón que tienes el userId disponible
     const userId = 1; // Cambia esto según tu lógica de autenticación
@@ -45,10 +45,8 @@ const InicioPl = () => {
     const [expandido, setExpandido] = useState([]);
     const [temas, setTemas] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [cursoSeleccionado] = useState(null);
     const [error, setError] = useState(null);
-    const [temaSeleccionado, setTemaSeleccionado] = useState(null);
-    const [cursos, setCursos] = useState([]);
-    const [cursoSeleccionado, setCursoSeleccionado] = useState(null);
 
     const navigate = useNavigate();
 
@@ -74,10 +72,10 @@ const InicioPl = () => {
                 id: tema.id,
                 titulo: tema.titulo,
                 tipo: tema.tipo,
-                descripcion: tema.descripcion, // <-- Agrega esta línea
+                descripcion: tema.descripcion,
                 estado: tema.estado || '',
                 nivel: tema.fase?.nombre || 'Base',
-                id_curso: tema.id_curso, // <-- Asegúrate de que venga del backend
+                id_curso: tema.id_curso,
                 clases: clasesResult.data.filter(clase => clase.id_tema === tema.id)
             }));
 
@@ -85,20 +83,7 @@ const InicioPl = () => {
             setLoading(false);
         };
 
-        // Cargar expediente del usuario
-        const loadExpediente = async () => {
-            try {
-                const response = await fetch(`http://localhost:8000/api/expediente/${id_usuario}`);
-                if (!response.ok) throw new Error('No se pudo cargar el expediente');
-                const data = await response.json();
-                setProgreso(data.porcentaje || 0); // Ajusta el nombre del campo según tu API
-            } catch (err) {
-                setProgreso(0);
-            }
-        };
-
         loadData();
-        loadExpediente();
     }, [userId]);
 
     // Funciones auxiliares
@@ -187,11 +172,7 @@ const InicioPl = () => {
                 {!loading && !error && (
                     <ul className="contenido-lista">
                         {contenidoFiltrado.map((item, index) => (
-                            <li
-                                key={item.id}
-                                className={`contenido-item ${isDarkMode ? 'dark-theme' : ''}`}
-                                onClick={() => setTemaSeleccionado(item)}
-                            >
+                            <li key={item.id} className={`contenido-item ${isDarkMode ? 'dark-theme' : ''}`}>
                                 <div className="item-header">
                                     <div className="numero">{index + 1}</div>
                                     <div className="info">
@@ -209,10 +190,7 @@ const InicioPl = () => {
                                     </div>
                                     <button
                                         className="toggle"
-                                        onClick={e => {
-                                            e.stopPropagation();
-                                            toggleItem(item.id);
-                                        }}
+                                        onClick={() => toggleItem(item.id)}
                                         aria-label={expandido.includes(item.id) ? 'Cerrar tema' : 'Abrir tema'}
                                     >
                                         {expandido.includes(item.id) ? '▲' : '▼'}
@@ -227,9 +205,6 @@ const InicioPl = () => {
                                                 {item.clases.map(clase => (
                                                     <li key={clase.id} className="clase-item">
                                                         <span className="clase-titulo">{clase.titulo}</span>
-                                                        <span className={`clase-tipo tipo-${clase.tipo?.toLowerCase()}`}>
-                                                            {clase.tipo}
-                                                        </span>
                                                         {clase.url && (
                                                             <a
                                                                 href={clase.url}
@@ -253,20 +228,6 @@ const InicioPl = () => {
                     </ul>
                 )}
             </section>
-
-            <div className="lista-cursos">
-                {cursos.map(curso => (
-                    <div
-                        key={curso.id}
-                        className={`curso-item${cursoSeleccionado && cursoSeleccionado.id === curso.id ? ' seleccionado' : ''}`}
-                        onClick={() => setCursoSeleccionado(curso)}
-                        style={{ cursor: 'pointer', margin: '8px 0', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}
-                    >
-                        {curso.titulo}
-                    </div>
-                ))}
-            </div>
-
             <Footer />
         </div>
     );
