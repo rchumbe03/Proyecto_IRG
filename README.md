@@ -97,21 +97,66 @@ bash database/seeders/
 
 1. **Clonar el repositorio**:
 
-   bash git clone [https://github.com/rchumbe03/Proyecto_IRG.git](https://github.com/rchumbe03/Proyecto_IRG.git) cd IRGInmobiliaria
+   // En terminal 
+   git clone [https://github.com/rchumbe03/Proyecto_IRG.git](https://github.com/rchumbe03/Proyecto_IRG.git) cd IRGInmobiliaria
 
 2. **Instalar dependencias de PHP**:
-   
-   bash composer install
+
+   // En terminal
+   composer install
 
 3. **Configurar el entorno**:
 
-   bash cp .env.example .env
+   // En terminal 
+   cp .env.example .env
+
+4. **Generar la clave de la aplicación**:
+
+   // En terminal 
+   php artisan key:generate
+
+5. **Configurar la base de datos**:
+   - Editar el archivo `.env` con tus credenciales de base de datos
+   - Ejecutar las migraciones y seeders:
+
+   // En terminal
+   php artisan migrate --seed
+
+6. **Instalar dependencias de JavaScript**:
+
+   // En terminal
+   npm install
+
+7. **Iniciar el servidor de desarrollo**:
+
+   # Terminal 1 - Laravel
+   php artisan serve
+   # Terminal 2 - Vite/React // Abre un segundo terminal
+   npm run dev
 
 
+## Desarrollo
+
+### Comandos útiles
+
+1. **Laravel**:
+
+# Crear un nuevo modelo con migración, factory y seeder
+php artisan make:model NombreModelo -mfs
+# Ejecutar pruebas
+php artisan test
+# Limpiar caché
+php artisan optimize:clear
 
 
+2. **React/Vite**:
+```bash
+# Desarrollo
+npm run dev
 
-
+# Construcción para producción
+npm run build
+```
 
 ### 1. Clonar el repositorio
 
