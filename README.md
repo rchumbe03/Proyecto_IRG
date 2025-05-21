@@ -185,7 +185,8 @@ git pull origin master // Descarga y aplica los cambios de master remoto
 git checkout feature/nueva-funcionalidad // Cambia a tu rama de desarrollo git merge master // Fusiona los cambios de master en tu rama
 
 # Guardar cambios en el repositorio local
-git add . // Prepara todos los archivos modificados para commit git commit -m "descripción" // Guarda los cambios en el repositorio local con un mensaje
+git add . // Prepara todos los archivos modificados para commit 
+git commit -m "descripción" // Guarda los cambios en el repositorio local con un mensaje
 
 # Publicar cambios en GitHub
 git push origin feature/nueva-funcionalidad // Sube los cambios de tu rama al repositorio remoto
