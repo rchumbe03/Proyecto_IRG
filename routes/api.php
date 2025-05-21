@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\ExpedienteController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
@@ -43,3 +44,5 @@ Route::delete('/notificaciones/{id}', [NotificacionController::class, 'destroy']
 Route::middleware(['auth.cookie'])->prefix('user')->group(function () {
     // Aquí tus rutas para usuarios normales
 });
+
+Route::get('/expediente/{userId}', [ExpedienteController::class, 'show']);
