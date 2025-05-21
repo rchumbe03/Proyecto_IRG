@@ -97,43 +97,50 @@ bash database/seeders/
 
 1. **Clonar el repositorio**:
 
-   // En terminal 
-   git clone [https://github.com/rchumbe03/Proyecto_IRG.git](https://github.com/rchumbe03/Proyecto_IRG.git) cd IRGInmobiliaria
+```bash
+git clone [https://github.com/rchumbe03/Proyecto_IRG.git](https://github.com/rchumbe03/Proyecto_IRG.git) cd IRGInmobiliaria
+```
 
 2. **Instalar dependencias de PHP**:
 
-   // En terminal
-   composer install
+```bash
+composer install
+```
 
 3. **Configurar el entorno**:
 
-   // En terminal 
-   cp .env.example .env
+```bash
+cp .env.example .env
+```
 
-4. **Generar la clave de la aplicación**:
+5. **Generar la clave de la aplicación**:
 
-   // En terminal 
-   php artisan key:generate
+```bash
+php artisan key:generate
+```
 
 5. **Configurar la base de datos**:
    - Editar el archivo `.env` con tus credenciales de base de datos
    - Ejecutar las migraciones y seeders:
 
-   // En terminal
-   php artisan migrate --seed
+```bash
+php artisan migrate --seed
+```
 
 6. **Instalar dependencias de JavaScript**:
 
-   // En terminal
-   npm install
+```bash
+npm install
+```
 
 7. **Iniciar el servidor de desarrollo**:
 
-   # Terminal 1 - Laravel
-   php artisan serve
-   # Terminal 2 - Vite/React // Abre un segundo terminal
-   npm run dev
-
+```bash
+# Terminal 1 - Laravel
+php artisan serve
+# Terminal 2 - Vite/React // Abre un segundo terminal
+npm run dev
+```
 
 ## Desarrollo
 
@@ -141,13 +148,14 @@ bash database/seeders/
 
 1. **Laravel**:
 
+```bash
 # Crear un nuevo modelo con migración, factory y seeder
 php artisan make:model NombreModelo -mfs
 # Ejecutar pruebas
 php artisan test
 # Limpiar caché
 php artisan optimize:clear
-
+```
 
 2. **React/Vite**:
 ```bash
@@ -158,68 +166,55 @@ npm run dev
 npm run build
 ```
 
-### 1. Clonar el repositorio
+## Contribuciones
 
-Primero, clona este repositorio en tu máquina local usando el siguiente comando:
+### Comandos Git Esenciales
 
-git clone https://github.com/rchumbe03/Proyecto_IRG.git
-cd IRGInmobiliaria
+```bash
+# Actualizar repositorio local con cambios del remoto
+git fetch origin // Descarga los cambios del repositorio remoto sin aplicarlos
+# Crear y cambiar a una nueva rama desde master
+git checkout -b feature/nueva-funcionalidad master // Crea y cambia a una nueva rama basada en master
+# Actualizar rama master local con cambios del remoto
+git checkout master // Cambia a la rama master git pull origin master // Descarga y aplica los cambios de master remoto
+# Fusionar cambios de master a tu rama
+git checkout feature/nueva-funcionalidad // Cambia a tu rama de desarrollo git merge master // Fusiona los cambios de master en tu rama
+# Guardar cambios en el repositorio local
+git add . // Prepara todos los archivos modificados para commit git commit -m "descripción" // Guarda los cambios en el repositorio local con un mensaje
+# Publicar cambios en GitHub
+git push origin feature/nueva-funcionalidad // Sube los cambios de tu rama al repositorio remoto
+```
 
-2. Instalar dependencias de PHP (Laravel)
-En la raíz del proyecto, ejecuta el siguiente comando para instalar las dependencias de PHP mediante Composer:
+### Flujo de Trabajo Recomendado
 
-composer install
-// Esto descargará las dependencias necesarias para el backend de Laravel.
+1. Mantén tu repositorio actualizado:
+   ```bash
+   git fetch origin
+   git pull origin master
+   ```
 
-3. Configurar el entorno
-Copia el archivo .env.example a un nuevo archivo .env:
+2. Crea una rama para tus cambios:
+   ```bash
+   git checkout -b feature/nueva-funcionalidad master
+   ```
 
-cp .env.example .env
-Luego, configura tu base de datos y otras variables de entorno en el archivo .env.
+3. Realiza tus cambios y haz commits frecuentes:
+   ```bash
+   git add .
+   git commit -m "Descripción detallada de los cambios"
+   ```
 
-4. Generar la clave de la aplicación
-Ejecuta el siguiente comando para generar la clave de la aplicación de Laravel:
+4. Mantén tu rama actualizada con master:
+   ```bash
+   git checkout master
+   git pull origin master
+   git checkout feature/nueva-funcionalidad
+   git merge master
+   ```
 
-php artisan key:generate
+5. Publica tus cambios:
+   ```bash
+   git push origin feature/nueva-funcionalidad
+   ```
 
-5. Migrar la base de datos (si es necesario)
-Si tienes migraciones pendientes, ejecuta:
-
-php artisan migrate
-
-6. Instalar dependencias de JavaScript (React)
-En la raíz del proyecto, navega a la carpeta resources/js y ejecuta el siguiente comando para instalar las dependencias de JavaScript mediante npm:
-
-npm install
-
-7. Compilar los assets
-Usa el siguiente comando para compilar los assets de React usando Vite:
-
-npm run dev
-
-Esto compilará tu proyecto frontend en modo desarrollo y se mantendrá escuchando cambios.
-
-8. Ejecutar el servidor de desarrollo de Laravel
-Finalmente, en otro terminal, ejecuta el servidor de Laravel:
-
-php artisan serve
-
-Esto iniciará el servidor de Laravel en http://localhost:8000.
-
-Acceder al Proyecto
-
-Frontend (React + Vite): http://localhost:5173/ (Vite en modo desarrollo)
-
-Backend (Laravel): http://localhost:8000/
-
-Construcción para Producción
-Si deseas generar una versión optimizada de producción para el frontend, ejecuta:
-
-npm run build
-Esto generará los archivos optimizados en la carpeta public/build/.
-
-Contribuciones
-Si deseas contribuir a este proyecto, haz un fork del repositorio, crea una rama para tus cambios, y luego realiza un pull request.
-
-Licencia
-Este proyecto está licenciado bajo la MIT License - consulta el archivo LICENSE para más detalles.
+6. Crea un Pull Request en GitHub para que tus cambios sean revisados
