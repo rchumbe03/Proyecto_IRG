@@ -46,9 +46,10 @@ const HeaderAd = () => {
 
       <div className="right-section">
         {/* NotificacionesAd */}
-        <div className="icon-with-label notification-section" onClick={() => navigate('/notificacionesad')}>
-          <FaBell className="icon" />
-          <span className="icon-label">Notificaciones</span>
+        <div className="icon-text-button" onClick={() => navigate('/notificacionesad')}>
+          <span>Notificaciones</span>
+          <FaBell /> 
+          
         </div>
 
         {/* Modo Oscuro */}
