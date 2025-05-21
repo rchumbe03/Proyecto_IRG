@@ -79,6 +79,34 @@ bash database/migrations/
 
 ### Factories
 database/factories/
+- AdminFactory
+- ClaseFactory
+- CursoFactory
+- FaseFactory
+- NotificacionFactory
+- TemaFactory
+- UsuarioFactory
+
+### Seeders
+bash database/seeders/
+- DatabaseSeeder.php
+- FasesTemasClasesSeeder
+
+
+## Instalación
+
+1. **Clonar el repositorio**:
+
+   bash git clone [https://github.com/rchumbe03/Proyecto_IRG.git](https://github.com/rchumbe03/Proyecto_IRG.git) cd IRGInmobiliaria
+
+2. **Instalar dependencias de PHP**:
+   
+   bash composer install
+
+3. **Configurar el entorno**:
+
+   bash cp .env.example .env
+
 
 
 
