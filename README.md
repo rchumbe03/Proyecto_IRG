@@ -15,15 +15,75 @@ Este proyecto es una aplicación de **Laravel + React** que utiliza **Vite** par
 
 Antes de comenzar, asegúrate de tener instalados los siguientes requisitos:
 
-- [PHP](https://www.php.net/) (versión 8.0 o superior)
-- [Composer](https://getcomposer.org/) (para gestionar dependencias de PHP)
-- [Node.js](https://nodejs.org/) (versión 16 o superior)
-- [NPM](https://www.npmjs.com/) (para gestionar dependencias de JavaScript)
-- [Git](https://git-scm.com/)
+1. [PHP](https://www.php.net/) (versión 8.2 o superior)
+2. [Composer](https://getcomposer.org/) (para gestionar dependencias de PHP)
+3. [Node.js](https://nodejs.org/) (versión 16 o superior)
+4. [NPM](https://www.npmjs.com/) (para gestionar dependencias de JavaScript)
+5. [Git](https://git-scm.com/)
 
-## Instalación
+## Dependencias Principales
 
-Sigue estos pasos para configurar el proyecto en tu entorno local.
+### Backend (Laravel v12.14.1)
+
+1. **PHP Packages**:
+   - laravel/framework: ^12.0
+   - laravel/sanctum: ^4.1
+   - laravel/tinker: ^2.10.1
+   - monolog/monolog: 3.9.0
+   - guzzlehttp/guzzle: 7.9.3
+
+2. **Dev Dependencies**:
+   - fakerphp/faker: ^1.23
+   - laravel/pail: ^1.2.2
+   - laravel/pint: ^1.13
+   - laravel/sail: ^1.41
+   - mockery/mockery: ^1.6
+   - phpunit/phpunit: ^11.5.3
+
+### Frontend
+
+1. **React Packages**:
+   - react: ^19.1.0
+   - react-dom: ^19.1.0
+   - react-router-dom: ^7.5.3
+   - react-icons: ^5.5.0
+   - @fortawesome/react-fontawesome: ^0.2.2
+   - @fortawesome/free-solid-svg-icons: ^6.7.2
+
+2. **Dev Dependencies**:
+   - vite: ^6.3.2
+   - @vitejs/plugin-react: ^4.4.1
+   - tailwindcss: ^4.0.0
+   - axios: ^1.9.0
+   - concurrently: ^9.0.1
+
+## Estructura del Proyecto
+
+### Migrations
+
+bash database/migrations/
+ ├── 2014_10_12_000000_create_users_table.php
+ ├── 0001_01_01_000001_create_cache_table
+ ├── 0001_01_01_000002_create_jobs_table
+ ├── 2025_04_24_071122_create_admins_table
+ ├── 2025_04_24_071125_create_cursos_table
+ ├── 2025_04_24_071126_create_fases_table
+ ├── 2025_04_24_071127_create_usuarios_table
+ ├── 2025_04_24_071128_create_temas_table
+ ├── 2025_04_24_071129_create_empresas_table
+ ├── 2025_04_24_071129_create_expedientes_table
+ ├── 2025_04_24_071129_create_notificaciones_table
+ ├── 2025_04_28_100850_create_compras_table
+ ├── 2025_05_13_192748_create_clases_table
+ ├── 2025_05_16_074614_create_personal_access_tokens_table
+
+### Factories
+database/factories/
+
+
+
+
+
 
 ### 1. Clonar el repositorio
 
