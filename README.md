@@ -173,14 +173,20 @@ npm run build
 ```bash
 # Actualizar repositorio local con cambios del remoto
 git fetch origin // Descarga los cambios del repositorio remoto sin aplicarlos
+
 # Crear y cambiar a una nueva rama desde master
 git checkout -b feature/nueva-funcionalidad master // Crea y cambia a una nueva rama basada en master
+
 # Actualizar rama master local con cambios del remoto
-git checkout master // Cambia a la rama master git pull origin master // Descarga y aplica los cambios de master remoto
+git checkout master // Cambia a la rama master 
+git pull origin master // Descarga y aplica los cambios de master remoto
+
 # Fusionar cambios de master a tu rama
 git checkout feature/nueva-funcionalidad // Cambia a tu rama de desarrollo git merge master // Fusiona los cambios de master en tu rama
+
 # Guardar cambios en el repositorio local
 git add . // Prepara todos los archivos modificados para commit git commit -m "descripción" // Guarda los cambios en el repositorio local con un mensaje
+
 # Publicar cambios en GitHub
 git push origin feature/nueva-funcionalidad // Sube los cambios de tu rama al repositorio remoto
 ```
