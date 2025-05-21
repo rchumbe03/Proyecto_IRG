@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/HeaderPl.css';
+import pepsi from '../../../assets/logos/pepsi.png';
 
 // Importa los iconos de React Icons
-import { FaWallet, FaBell, FaSun, FaMoon } from 'react-icons/fa';
+import { FaBell, FaSun, FaMoon } from 'react-icons/fa';
 
 export default function Header() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -47,21 +48,17 @@ export default function Header() {
     return (
         <header className={isDarkMode ? 'dark-theme' : ''}>
             <div className="left">
-                <img src="" alt="Logo" className="logo" />
+                <img src={pepsi} alt="Logo" className="logo" />
             </div>
             <div className="right">
                 <div className="icons">
-                    {/* Billetera */}
-                    <button className="icon-text-button">
-                        <span>Billetera</span>
-                        <FaWallet />
-                    </button>
 
                     {/* NotificacionesAd */}
-                    <button className="icon-text-button" onClick={() => navigate('/notificacionesu')}>
+                    <button className="icon-text-button" onClick={() => navigate('/usuario/notificaciones')}>
                         <span>Notificaciones</span>
                         <FaBell />
                     </button>
+
 
                     {/* Modo Día/Noche */}
                     <button className="icon-text-button" onClick={toggleTheme}>
