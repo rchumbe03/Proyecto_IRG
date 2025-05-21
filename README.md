@@ -62,20 +62,20 @@ Antes de comenzar, asegúrate de tener instalados los siguientes requisitos:
 ### Migrations
 
 bash database/migrations/
- ├── 2014_10_12_000000_create_users_table.php
- ├── 0001_01_01_000001_create_cache_table
- ├── 0001_01_01_000002_create_jobs_table
- ├── 2025_04_24_071122_create_admins_table
- ├── 2025_04_24_071125_create_cursos_table
- ├── 2025_04_24_071126_create_fases_table
- ├── 2025_04_24_071127_create_usuarios_table
- ├── 2025_04_24_071128_create_temas_table
- ├── 2025_04_24_071129_create_empresas_table
- ├── 2025_04_24_071129_create_expedientes_table
- ├── 2025_04_24_071129_create_notificaciones_table
- ├── 2025_04_28_100850_create_compras_table
- ├── 2025_05_13_192748_create_clases_table
- ├── 2025_05_16_074614_create_personal_access_tokens_table
+ - ├── 2014_10_12_000000_create_users_table.php
+ - ├── 0001_01_01_000001_create_cache_table
+ - ├── 0001_01_01_000002_create_jobs_table
+ - ├── 2025_04_24_071122_create_admins_table
+ - ├── 2025_04_24_071125_create_cursos_table
+ - ├── 2025_04_24_071126_create_fases_table
+ - ├── 2025_04_24_071127_create_usuarios_table
+ - ├── 2025_04_24_071128_create_temas_table
+ - ├── 2025_04_24_071129_create_empresas_table
+ - ├── 2025_04_24_071129_create_expedientes_table
+ - ├── 2025_04_24_071129_create_notificaciones_table
+ - ├── 2025_04_28_100850_create_compras_table
+ - ├── 2025_05_13_192748_create_clases_table
+ - ├── 2025_05_16_074614_create_personal_access_tokens_table
 
 ### Factories
 database/factories/
