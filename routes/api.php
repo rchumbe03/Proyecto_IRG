@@ -4,11 +4,11 @@ use App\Http\Controllers\Admin\CursoController;
 use App\Http\Controllers\Admin\TemaController;
 use App\Http\Controllers\Admin\ClaseController;
 use App\Http\Controllers\Admin\NotificacionController;
+use App\Http\Controllers\ExpedienteController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AuthController;
-use App\Http\Controllers\Admin\ExpedienteController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);

@@ -16,7 +16,7 @@ class AdminFactory extends Factory
         return [
             'nombre' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => Hash::make('password'), // password
+            'password' => Hash::make('Password%123/'),
             'remember_token' => Str::random(10),
         ];
     }
