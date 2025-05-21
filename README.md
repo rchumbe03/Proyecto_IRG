@@ -18,7 +18,7 @@ Antes de comenzar, asegúrate de tener instalados los siguientes requisitos:
 1. [PHP](https://www.php.net/) (versión 8.2 o superior)
 2. [Composer](https://getcomposer.org/) (para gestionar dependencias de PHP)
 3. [Node.js](https://nodejs.org/) (versión 16 o superior)
-4. [NPM](https://www.npmjs.com/) (para gestionar dependencias de JavaScript)
+4. [NPM](https://www.npmjs.com/package/download/) (para gestionar dependencias de JavaScript)
 5. [Git](https://git-scm.com/)
 
 ## Dependencias Principales
