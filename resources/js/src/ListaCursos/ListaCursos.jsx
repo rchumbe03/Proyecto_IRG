@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import './ListaCursos.css';
 import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';
+import HeaderAdmin from '../components/Headers/jsx/HeaderAdmin.jsx';  //  import de HeaderAdmin para hacer los headers
 import Footer from '../components/Footer/Footer.jsx';
 
 // ==============================
@@ -20,6 +21,18 @@ const ListaCursos = () => {
     const [cursos, setCursos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+     //Estado userType para guardar el tipo de usuario
+    const [userType, setUserType] = useState(null);  
+
+// Lee el tipo de usuario desde localStorage al montar el componente
+    useEffect(() => {
+        const userData = localStorage.getItem("user");
+        if (userData) {
+            const user = JSON.parse(userData);
+            setUserType(user.tipo);
+        }
+    }, []);
 
     // ------------------------------
     // EFECTO: CARGA DE CURSOS
@@ -56,8 +69,8 @@ const ListaCursos = () => {
     // ------------------------------
     return (
         <div className="cursos-container">
-            {/* Encabezado */}
-            <HeaderPl />
+            {/* Mostrar Header según el tipo de usuario */}
+            {userType === 'admin' ? <HeaderAdmin /> : <HeaderPl />}
 
             {/* Sección principal de cursos */}
             <div className="course-page">
