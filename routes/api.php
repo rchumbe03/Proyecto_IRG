@@ -1,18 +1,29 @@
 <?php
 
+// ==============================
+// IMPORTACIONES DE CONTROLADORES
+// ==============================
+
+// --- Controladores generales ---
+use App\Http\Controllers\ExpedienteController;
+
+// --- Controladores de administrador ---
+use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CursoController;
 use App\Http\Controllers\Admin\TemaController;
 use App\Http\Controllers\Admin\ClaseController;
 use App\Http\Controllers\Admin\NotificacionController;
-use App\Http\Controllers\ExpedienteController;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Admin\AuthController;
-
+// ==============================
+// AUTENTICACIÓN
+// ==============================
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
+// Verifica si el usuario es admin
 Route::get('/check-admin', function () {
     if (Auth::guard('admin')->check()) {
         return response()->json([
@@ -23,26 +34,35 @@ Route::get('/check-admin', function () {
     return response()->json(['isAdmin' => false]);
 });
 
+// ==============================
+// RECURSOS GENERALES (PÚBLICOS)
+// ==============================
 Route::get('/temas', [TemaController::class, 'index']);
 Route::get('/clases', [ClaseController::class, 'index']);
-Route::apiResource('cursos', CursoController::class);
+Route::apiResource('cursos', CursoController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
+Route::get('/expediente/{userId}', [ExpedienteController::class, 'show']);
 
-// Rutas protegidas para administradores
+// ==============================
+// NOTIFICACIONES (ADMIN Y USUARIO)
+// ==============================
+Route::get('/notificaciones', [NotificacionController::class, 'index']);
+Route::post('/notificaciones', [NotificacionController::class, 'store']);
+Route::put('/notificaciones/{id}', [NotificacionController::class, 'update']);
+Route::delete('/notificaciones/{id}', [NotificacionController::class, 'destroy']);
+
+// ==============================
+// RECURSOS ADMINISTRADOR (PROTEGIDOS)
+// ==============================
 Route::middleware(['auth.cookie'])->prefix('admin')->group(function () {
     Route::apiResource('cursos', CursoController::class);
     Route::apiResource('temas', TemaController::class);
     Route::apiResource('clases', ClaseController::class);
 });
 
-// Rutas de notificaciones
-Route::get('/notificaciones', [NotificacionController::class, 'index']);
-Route::post('/notificaciones', [NotificacionController::class, 'store']);
-Route::put('/notificaciones/{id}', [NotificacionController::class, 'update']);
-Route::delete('/notificaciones/{id}', [NotificacionController::class, 'destroy']);
-
-// Rutas protegidas para usuarios normales
+// ==============================
+// RECURSOS USUARIO NORMAL (PROTEGIDOS)
+// ==============================
 Route::middleware(['auth.cookie'])->prefix('user')->group(function () {
     // Aquí tus rutas para usuarios normales
 });
 
-Route::get('/expediente/{userId}', [ExpedienteController::class, 'show']);

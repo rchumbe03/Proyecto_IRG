@@ -1,4 +1,6 @@
-// InicioPl.jsx
+// ==============================
+// IMPORTACIONES
+// ==============================
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './InicioPl.css';
@@ -6,10 +8,22 @@ import logo from '../assets/logos/logo.png';
 import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';
 import Footer from '../components/Footer/Footer.jsx';
 
-// Constantes
-const niveles = ['Base', 'Profesional', 'Avanzado', 'Experto'];
+// ==============================
+// CONSTANTES
+// ==============================
+const NIVELES = ['Base', 'Profesional', 'Avanzado', 'Experto'];
 
-// Función auxiliar para manejar las peticiones
+// Definir cursoId como constante
+const cursoId = 1; // id del curso actual
+
+// ==============================
+// FUNCIONES AUXILIARES
+// ==============================
+/**
+ * Realiza una petición fetch y maneja errores.
+ * @param {string} url
+ * @returns {Promise<{data?: any, error?: string, status?: number}>}
+ */
 const fetchWithErrorHandling = async (url) => {
     const response = await fetch(url, {
         headers: {
@@ -17,92 +31,108 @@ const fetchWithErrorHandling = async (url) => {
             'Content-Type': 'application/json'
         }
     });
-
     if (!response.ok) {
-        return {
-            error: `Error al cargar los datos (${response.status})`,
-            status: response.status
-        };
+        return { error: `Error al cargar los datos (${response.status})`, status: response.status };
     }
-
     const data = await response.json();
     return { data };
 };
 
-const InicioPl = () => {
-    // Estados compartidos
-    const [isDarkMode, setIsDarkMode] = useState(false);
-
-    // Estados para la sección de plataforma
-    const [progreso] = useState(90);
-
-    // Supón que tienes el userId disponible
-    const userId = 1; // Cambia esto según tu lógica de autenticación
-
-    // Estados para la sección de contenidos
-    const [nivelActivo, setNivelActivo] = useState('Base');
-    const [busqueda, setBusqueda] = useState('');
-    const [expandido, setExpandido] = useState([]);
-    const [temas, setTemas] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [cursoSeleccionado] = useState(null);
-    const [error, setError] = useState(null);
+// ==============================
+// COMPONENTE PRINCIPAL
+// ==============================
+/**
+ * Componente principal de la plataforma de inicio.
+ * Muestra los temas y clases filtrados por nivel y búsqueda.
+ */
+function InicioPl() {
+    // ------------------------------
+    // ESTADOS
+    // ------------------------------
+    const [isDarkMode, setIsDarkMode] = useState(false); // Modo oscuro
+    const [nivelActivo, setNivelActivo] = useState('Base'); // Nivel seleccionado
+    const [busqueda, setBusqueda] = useState(''); // Texto de búsqueda
+    const [descripcionCurso, setDescripcionCurso] = useState('');
+    const [expandido, setExpandido] = useState([]); // IDs de temas expandidos
+    const [temas, setTemas] = useState([]); // Lista de temas cargados
+    const [loading, setLoading] = useState(true); // Estado de carga
+    const [error, setError] = useState(null); // Mensaje de error
 
     const navigate = useNavigate();
 
-    // Efectos
+    // ------------------------------
+    // EFECTO: CARGA INICIAL DE DATOS
+    // ------------------------------
+
     useEffect(() => {
-        const loadData = async () => {
-            setLoading(true);
-            setError(null);
-
-            const [temasResult, clasesResult] = await Promise.all([
-                fetchWithErrorHandling('http://localhost:8000/api/temas'),
-                fetchWithErrorHandling('http://localhost:8000/api/clases'),
-
-            ]);
-
-            if (temasResult.error || clasesResult.error) {
-                setError(temasResult.error || clasesResult.error);
-                setLoading(false);
-                return;
+        const fetchDescripcion = async () => {
+            try {
+                const response = await fetch(`http://localhost:8000/api/cursos/${cursoId}`);
+                const data = await response.json();
+                setDescripcionCurso(data.descripcion || 'Descripción no disponible');
+            } catch (error) {
+                console.error('Error al cargar la descripción del curso:', error.message);
+                setError(error.message); // Guarda el mensaje de error en el estado
             }
+        };
+        const loadData = async () => {
+            try {
+                setLoading(true);
+                setError(null);
 
-            const temasAdaptados = temasResult.data.map(tema => ({
-                id: tema.id,
-                titulo: tema.titulo,
-                tipo: tema.tipo,
-                descripcion: tema.descripcion,
-                estado: tema.estado || '',
-                nivel: tema.fase?.nombre || 'Base',
-                id_curso: tema.id_curso,
-                clases: clasesResult.data.filter(clase => clase.id_tema === tema.id)
-            }));
+                const [temasResult, clasesResult] = await Promise.all([
+                    fetchWithErrorHandling('http://localhost:8000/api/temas'),
+                    fetchWithErrorHandling('http://localhost:8000/api/clases'),
+                ]);
 
-            setTemas(temasAdaptados);
-            setLoading(false);
+                if (temasResult.error || clasesResult.error) {
+                    setError(temasResult.error || clasesResult.error);
+                    setLoading(false);
+                    return;
+                }
+
+                const temasAdaptados = temasResult.data.map(tema => ({
+                    ...tema,
+                    nivel: tema.fase?.nombre || 'Base',
+                    clases: clasesResult.data.filter(clase => clase.id_tema === tema.id),
+                }));
+
+                setTemas(temasAdaptados);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error al cargar los datos:', error);
+                setLoading(false);
+            }
         };
 
+        fetchDescripcion();
         loadData();
-    }, [userId]);
+    }, []);
 
-    // Funciones auxiliares
+    // ------------------------------
+    // FUNCIONES DE UI
+    // ------------------------------
+    // Alterna expansión de un tema
     const toggleItem = (id) => {
         setExpandido(prev =>
             prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
         );
     };
 
-        // Filtrar solo temas con id_curso = 1
+    // Filtrar temas (asegúrate de que id_curso exista en los datos)
     const contenidoFiltrado = temas.filter(item =>
         item.nivel === nivelActivo &&
         item.estado !== 'Bloqueado' &&
         item.titulo.toLowerCase().includes(busqueda.toLowerCase()) &&
-        item.id_curso === 1 // Solo temas con id_curso = 1
+        item.id_curso === cursoId
     );
 
+    // ------------------------------
+    // RENDERIZADO
+    // ------------------------------
     return (
         <div className={`inicio-wrapper ${isDarkMode ? 'dark-theme' : ''}`}>
+            {/* Encabezado con modo oscuro */}
             <HeaderPl
                 toggleDarkMode={() => setIsDarkMode(prev => !prev)}
                 isDarkMode={isDarkMode}
@@ -111,26 +141,18 @@ const InicioPl = () => {
             {/* Sección de Plataforma */}
             <div className="plataforma-container">
                 <div className="plataforma-left">
-                    <button
-                        className="volver-btn"
-                        onClick={() => navigate('/cursos')}
-                    >
+                    <button className="volver-btn" onClick={() => navigate('/cursos')}>
                         ← Volver
                     </button>
                     <h1 className="plataforma-titulo">¡Pasa al siguiente nivel!</h1>
 
+                    {/* Barra de progreso */}
                     <div className="descripcion">
-                        <div>
-                            <h3>
-                                {cursoSeleccionado
-                                    ? cursoSeleccionado.descripcion || 'Descripción no disponible.'
-                                    : 'Selecciona un curso para ver la descripción.'}
-                            </h3>
-                        </div>
+                        <h3>{descripcionCurso || 'Selecciona un curso para ver la descripción.'}</h3>
                         <div className="barra-progreso-contenedor">
-                            <span className="porcentaje">{progreso}%</span>
+                            <span className="porcentaje">90%</span>
                             <div className="barra-progreso">
-                                <div className="relleno" style={{ width: `${progreso}%` }}></div>
+                                <div className="relleno" style={{ width: '90%' }}></div>
                             </div>
                         </div>
                     </div>
@@ -138,6 +160,7 @@ const InicioPl = () => {
                     <button className="ver-btn">Ver de nuevo</button>
                 </div>
 
+                {/* Imagen del logo */}
                 <div className="plataforma-right">
                     <img src={logo} alt="Logo" className="logo-img" />
                 </div>
@@ -147,8 +170,9 @@ const InicioPl = () => {
             <section className="contenidos">
                 <h2>Contenidos</h2>
 
+                {/* Tabs de niveles y barra de búsqueda */}
                 <div className="tabs">
-                    {niveles.map(nivel => (
+                    {NIVELES.map(nivel => (
                         <button
                             key={nivel}
                             className={`tab ${nivelActivo === nivel ? 'active' : ''}`}
@@ -166,9 +190,11 @@ const InicioPl = () => {
                     />
                 </div>
 
+                {/* Mensajes de carga o error */}
                 {loading && <p>Cargando contenido...</p>}
                 {error && <p className="error-message">{error}</p>}
 
+                {/* Lista de contenidos filtrados */}
                 {!loading && !error && (
                     <ul className="contenido-lista">
                         {contenidoFiltrado.map((item, index) => (
@@ -188,6 +214,7 @@ const InicioPl = () => {
                                             </div>
                                         )}
                                     </div>
+                                    {/* Botón para expandir/cerrar tema */}
                                     <button
                                         className="toggle"
                                         onClick={() => toggleItem(item.id)}
@@ -197,6 +224,7 @@ const InicioPl = () => {
                                     </button>
                                 </div>
 
+                                {/* Detalle del tema */}
                                 {expandido.includes(item.id) && (
                                     <div className="item-body">
                                         <h3>Clases del tema</h3>
@@ -228,9 +256,11 @@ const InicioPl = () => {
                     </ul>
                 )}
             </section>
+
+            {/* Pie de página */}
             <Footer />
         </div>
     );
-};
+}
 
 export default InicioPl;

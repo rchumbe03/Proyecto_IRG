@@ -1,4 +1,8 @@
-/* Agregar Flexbox al contenedor */
+/* ==============================
+   CONTENEDORES PRINCIPALES
+   ============================== */
+
+/* Contenedor general de la página de cursos */
 .cursos-container {
     min-height: 100vh;
     display: flex;
@@ -6,7 +10,7 @@
     gap: 30px;
 }
 
-/* Flex en .course-page para que ocupe todo el espacio disponible */
+/* Contenedor de la sección principal de cursos */
 .course-page {
     display: flex;
     align-self: center;
@@ -15,6 +19,12 @@
     width: auto;
     height: 545px;
 }
+
+/* ==============================
+   CABECERA Y DESCRIPCIÓN
+   ============================== */
+
+/* Descripción del curso */
 .description {
     width: 647px;
     font-weight: 600;
@@ -22,6 +32,8 @@
     line-height: 16px;
     margin-bottom: 10px;
 }
+
+/* Contenedor del título y acciones */
 .title-container {
     display: flex;
     justify-content: space-between;
@@ -34,6 +46,11 @@
     line-height: 24px;
 }
 
+/* ==============================
+   LISTADO DE CURSOS
+   ============================== */
+
+/* Lista de tarjetas de cursos */
 .course-list {
     display: flex;
     flex-wrap: wrap;
@@ -41,6 +58,11 @@
     justify-content: space-around;
 }
 
+/* ==============================
+   TARJETA DE CURSO
+   ============================== */
+
+/* Tarjeta individual de curso */
 .course-card {
     border: 1px solid #ccc;
     width: 329px;
@@ -54,6 +76,7 @@
     padding-bottom: 20px;
 }
 
+/* Imagen del curso */
 .course-img {
     border-bottom: 1px solid #ccc;
     width: 100%;
@@ -62,6 +85,7 @@
     margin-bottom: 12px;
 }
 
+/* Título del curso */
 .course-title {
     font-weight: 700;
     font-size: 16px;
@@ -69,6 +93,7 @@
     margin: 0;
 }
 
+/* Descripción corta del curso */
 .course-desc {
     font-weight: 400;
     font-size: 20px;
@@ -77,6 +102,11 @@
     text-align: center;
 }
 
+/* ==============================
+   BOTONES DE ACCIÓN
+   ============================== */
+
+/* Contenedor de botones dentro de la tarjeta */
 .button-group {
     display: flex;
     gap: 10px;
@@ -86,6 +116,7 @@
     margin-top: auto;
 }
 
+/* Botón principal de la tarjeta */
 .course-button {
     width: 141px;
     height: 28px;
@@ -99,6 +130,7 @@
     cursor: pointer;
 }
 
+/* Botón para agregar curso */
 .agregar-btn {
     background-color: #E6D00A;
     border: none;

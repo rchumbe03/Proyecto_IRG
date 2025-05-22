@@ -1,4 +1,7 @@
-/* ====== ESTILOS GENERALES ====== */
+/* ==============================
+   CONTENEDOR PRINCIPAL
+   ============================== */
+
 .inicio-wrapper {
     display: flex;
     flex-direction: column;
@@ -6,7 +9,10 @@
     font-family: Arial, sans-serif;
 }
 
-/* ====== SECCIÓN PLATAFORMA ====== */
+/* ==============================
+   SECCIÓN PLATAFORMA
+   ============================== */
+
 /* Contenedor principal de la plataforma */
 .plataforma-container {
     flex: 1;
@@ -111,7 +117,10 @@
     height: 300px;
 }
 
-/* ====== SECCIÓN CONTENIDOS ====== */
+/* ==============================
+   SECCIÓN CONTENIDOS
+   ============================== */
+
 .contenidos {
     width: 100%;
     margin: 0;
@@ -150,7 +159,10 @@
     border-radius: 4px;
 }
 
-/* Lista de contenidos */
+/* ==============================
+   LISTA DE CONTENIDOS Y ITEMS
+   ============================== */
+
 .contenido-lista {
     list-style: none;
     padding: 0;
@@ -268,7 +280,10 @@
     text-decoration: none !important;
 }
 
-/* ====== MODO OSCURO ====== */
+/* ==============================
+   MODO OSCURO
+   ============================== */
+
 .dark-theme {
     background-color: #1e1e1e;
     color: #f4f4f4;
@@ -297,68 +312,6 @@
     border: 1px solid #555;
 }
 
-/* ====== ENLACES ====== */
-.item-body a {
-    color: #000;
-    text-decoration: none;
-}
-
-.item-body a:hover {
-    color: #555;
-    text-decoration: underline;
-}
-
-/* ====== RESPONSIVE ====== */
-@media (max-width: 768px) {
-    .plataforma-container {
-        flex-direction: column;
-        padding: 30px;
-    }
-
-    .plataforma-left,
-    .plataforma-right {
-        max-width: 100%;
-    }
-
-    .logo-img {
-        height: 200px;
-    }
-}
-
-/* ====== ESTILO PARA EL TIPO DE TEMA ====== */
-.tema-tipo {
-    display: inline-block;
-    margin-left: 10px;
-    padding: 2px 10px;
-    border-radius: 12px;
-    font-size: 0.9em;
-    font-weight: bold;
-    background: #f0f0f0;
-    color: #333;
-    vertical-align: middle;
-}
-
-/* Colores personalizados por tipo */
-.tipo-virtual {
-    background: #ffd700;
-    color: #000000;
-}
-.tipo-presencial {
-    background: #ffd700;
-    color: #000000;
-}
-.tipo-video {
-    background: #ffd700;
-    color: #000000;
-}
-
-
-
-/* .dark-theme,
-.dark-theme .inicio-wrapper {
-    background-color: #1e1e1e !important;
-} */
-
 .dark-theme .contenidos {
     background-color: #232323 !important;
 }
@@ -384,4 +337,62 @@
 
 .dark-theme .plataforma-container{
     background-color: #000;
+}
+
+/* ==============================
+   ENLACES
+   ============================== */
+
+.item-body a {
+    color: #000;
+    text-decoration: none;
+}
+
+.item-body a:hover {
+    color: #555;
+    text-decoration: underline;
+}
+
+/* ==============================
+   RESPONSIVE
+   ============================== */
+
+@media (max-width: 768px) {
+    .plataforma-container {
+        flex-direction: column;
+        padding: 30px;
+    }
+
+    .plataforma-left,
+    .plataforma-right {
+        max-width: 100%;
+    }
+
+    .logo-img {
+        height: 200px;
+    }
+}
+
+/* ==============================
+   ESTILO PARA EL TIPO DE TEMA
+   ============================== */
+
+.tema-tipo {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.9em;
+    font-weight: bold;
+    background: #f0f0f0;
+    color: #333;
+    vertical-align: middle;
+}
+
+/* Colores personalizados por tipo */
+.tipo-virtual,
+.tipo-presencial,
+.tipo-video {
+    background: #ffd700;
+    color: #000000;
 }

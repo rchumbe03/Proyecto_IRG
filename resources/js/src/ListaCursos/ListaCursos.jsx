@@ -1,54 +1,98 @@
+// ==============================
+// IMPORTACIONES
+// ==============================
 import React, { useEffect, useState } from 'react';
 import './ListaCursos.css';
 import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';
 import Footer from '../components/Footer/Footer.jsx';
 
+// ==============================
+// COMPONENTE PRINCIPAL
+// ==============================
+/**
+ * ListaCursos muestra todos los cursos disponibles para el usuario.
+ * Permite ver detalles y acceder a cada curso.
+ */
 const ListaCursos = () => {
+    // ------------------------------
+    // ESTADOS
+    // ------------------------------
     const [cursos, setCursos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
+    // ------------------------------
+    // EFECTO: CARGA DE CURSOS
+    // ------------------------------
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/cursos', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-            },
-            credentials: 'include',
-        })
-            .then(res => {
-                console.log('Response:', res);
-                if (!res.ok) throw new Error('Error al obtener cursos');
-                return res.json();
-            })
-            .then(data => {
-                console.log('Cursos:', data);
+        const fetchCursos = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const res = await fetch('http://127.0.0.1:8000/api/cursos', {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' },
+                    credentials: 'include',
+                });
+                if (!res.ok) {
+                    setError('Error al obtener cursos');
+                    setCursos([]);
+                    setLoading(false);
+                    return;
+                }
+                const data = await res.json();
                 setCursos(data);
-            })
-            .catch(err => console.error('Error de fetch:', err));
+            } catch {
+                setError('No se pudieron cargar los cursos.');
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchCursos();
     }, []);
 
+    // ------------------------------
+    // RENDERIZADO
+    // ------------------------------
     return (
         <div className="cursos-container">
+            {/* Encabezado */}
             <HeaderPl />
+
+            {/* Sección principal de cursos */}
             <div className="course-page">
                 <h1 className="title">Mis Cursos</h1>
-                <div className="course-list">
-                    {cursos.map(course => (
-                        <div key={course.id} className="course-card">
-                            <img
-                                src={course.imagen || '/images/default-course.png'}
-                                alt={course.titulo}
-                                className="course-img"
-                            />
-                            <h3 className="course-title">{course.titulo}</h3>
-                            <p className="course-developer">{course.desarrollador}</p>
-                            <div className="button-group">
-                                <button className="course-button">Detalles</button>
-                                <button className="course-button">Acceder</button>
+
+                {/* Mensajes de carga o error */}
+                {loading && <p>Cargando cursos...</p>}
+                {error && <p className="error-message">{error}</p>}
+
+                {/* Lista de cursos */}
+                {!loading && !error && (
+                    <div className="course-list">
+                        {cursos.map(course => (
+                            <div key={course.id} className="course-card">
+                                {/* Imagen del curso */}
+                                <img
+                                    src={course.imagen || '/images/default-course.png'}
+                                    alt={course.titulo}
+                                    className="course-img"
+                                />
+                                {/* Título y desarrollador */}
+                                <h3 className="course-title">{course.titulo}</h3>
+                                <p className="course-developer">{course.desarrollador}</p>
+                                {/* Botones de acción */}
+                                <div className="button-group">
+                                    <button className="course-button">Detalles</button>
+                                    <button className="course-button">Acceder</button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                )}
             </div>
+
+            {/* Pie de página */}
             <Footer />
         </div>
     );
