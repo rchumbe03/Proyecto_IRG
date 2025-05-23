@@ -63,7 +63,7 @@ function FormLogin() {
                 localStorage.setItem('user_data', JSON.stringify(data.user));
                 localStorage.setItem('theme', data.user.theme || 'light');
                 // Redirección según tipo de usuario
-                const route = '/cursos';
+                const route = data.user.role === 'admin' ? '/admin/cursos' : '/usuario/cursos';
                 window.location.href = route;
                 navigate(route, { replace: true });
             } else {
