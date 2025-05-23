@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/HeaderPl.css';
-import pepsi from '../../../assets/logos/pepsi.png';
+import perfilIcon from '../../../assets/usuario/perfil-icon.png';
+import spotify from '../../../assets/logos/spotify.png';
 
 // Importa los iconos de React Icons
 import { FaBell, FaSun, FaMoon } from 'react-icons/fa';
@@ -48,7 +49,7 @@ export default function Header() {
     return (
         <header className={isDarkMode ? 'dark-theme' : ''}>
             <div className="left">
-                <img src={pepsi} alt="Logo" className="logo" />
+                <img src={spotify} alt="Logo" className="logo" onClick={() => navigate('/cursos')} />
             </div>
             <div className="right">
                 <div className="icons">
@@ -68,7 +69,7 @@ export default function Header() {
 
                 <div className="profile" ref={profileRef}>
                     <img
-                        src=""
+                        src={perfilIcon}
                         alt="Perfil"
                         className="profile-icon"
                         onClick={toggleDropdown}
