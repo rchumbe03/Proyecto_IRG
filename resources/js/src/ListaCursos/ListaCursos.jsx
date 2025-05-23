@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import './ListaCursos.css';
 import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';
-import HeaderAdmin from '../components/Headers/jsx/HeaderAdmin.jsx';  //  import de HeaderAdmin para hacer los headers
+import HeaderAdmin from '../components/Headers/jsx/HeaderAd.jsx';  //  import de HeaderAdmin para hacer los headers
 import Footer from '../components/Footer/Footer.jsx';
 
 // ==============================
