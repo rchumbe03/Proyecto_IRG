@@ -19,7 +19,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 60px 90px;
+    padding: 1rem 0.5rem;
     box-sizing: border-box;
     gap: 40px;
 }

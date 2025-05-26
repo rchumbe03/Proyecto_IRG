@@ -11,6 +11,8 @@ const ListaCursos = lazy(() => import('./ListaCursos/ListaCursos'));
 const NotificacionesAd = lazy(() => import('./Notificaciones/NotificacionesAd'));
 const InicioPl = lazy(() => import('./Inicio/InicioPl'));
 const NotificacionesU = lazy(() => import('./Notificaciones/NotificacionesU'));
+const PasarelaPago = lazy(() => import('./PasarelaPago/PasarelaPago'));
+const InicioComunidad = lazy(() => import('./InicioUsuario/InicioComunidad'));
 
 export const AppRoutes = () => (
     <Suspense fallback={<LoadingSpinner />}>
@@ -25,6 +27,8 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesAd />} />
                         <Route path="inicio" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
+                        <Route path="pasarela" element={<PasarelaPago />} />
+                        <Route path="comunidad" element={<InicioComunidad />} />
                     </Routes>
                 </ProtectedRoute>
             } />
@@ -36,6 +40,8 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesU />} />
                         <Route path="inicio" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
+                        <Route path="pasarela" element={<PasarelaPago />} />
+                        <Route path="comunidad" element={<InicioComunidad />} />
                     </Routes>
                 </ProtectedRoute>
             } />
