@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './InicioPl.css';
 import logo from '../assets/logos/logo.png';
-import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';
+import Header from '../components/Headers/jsx/HeaderPl.jsx';
 import Footer from '../components/Footer/Footer.jsx';
 
 // ==============================
@@ -133,7 +133,7 @@ function InicioPl() {
     return (
         <div className={`inicio-wrapper ${isDarkMode ? 'dark-theme' : ''}`}>
             {/* Encabezado con modo oscuro */}
-            <HeaderPl
+            <Header
                 toggleDarkMode={() => setIsDarkMode(prev => !prev)}
                 isDarkMode={isDarkMode}
             />

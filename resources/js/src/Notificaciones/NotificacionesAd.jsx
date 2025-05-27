@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaEdit, FaTrash, FaPlus, FaEnvelope, FaTimes } from 'react-icons/fa';
 import './Notificaciones.css';
-import HeaderAd from '../components/Headers/jsx/HeaderAd.jsx';
+import Header from '../components/Headers/jsx/HeaderAd.jsx';
 import Footer from '../components/Footer/Footer.jsx';
 
 // ==============================
@@ -172,7 +172,7 @@ const NotificacionesAd = () => {
     // ------------------------------
     return (
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-            <HeaderAd />
+            <Header />
 
             {/* Mensaje de error */}
             {error && <div className="error-mensaje">{error}</div>}

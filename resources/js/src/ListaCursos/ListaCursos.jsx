@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import './ListaCursos.css';
 import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';
-import HeaderAdmin from '../components/Headers/jsx/HeaderAd.jsx';  //  import de HeaderAdmin para hacer los headers
+import HeaderAd from '../components/Headers/jsx/HeaderAd.jsx';  //  import de HeaderAdmin para hacer los headers
 import Footer from '../components/Footer/Footer.jsx';
 
 // ==============================
@@ -23,7 +23,7 @@ const ListaCursos = () => {
     const [error, setError] = useState(null);
 
      //Estado userType para guardar el tipo de usuario
-    const [userType, setUserType] = useState(null);  
+    const [userType, setUserType] = useState(null);
 
 // Lee el tipo de usuario desde localStorage al montar el componente
     useEffect(() => {
@@ -70,7 +70,7 @@ const ListaCursos = () => {
     return (
         <div className="cursos-container">
             {/* Mostrar Header según el tipo de usuario */}
-            {userType === 'admin' ? <HeaderAdmin /> : <HeaderPl />}
+            {userType === 'admin' ? <HeaderAd /> : <HeaderPl />}
 
             {/* Sección principal de cursos */}
             <div className="course-page">

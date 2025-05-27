@@ -27,7 +27,6 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesAd />} />
                         <Route path="inicio" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
-                        <Route path="pasarela" element={<PasarelaPago />} />
                         <Route path="comunidad" element={<InicioComunidad />} />
                     </Routes>
                 </ProtectedRoute>

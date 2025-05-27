@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Notificaciones.css';
-import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';
+import Header from '../components/Headers/jsx/HeaderPl.jsx';
 import Footer from '../components/Footer/Footer.jsx';
 import { FaEnvelope, FaTimes } from "react-icons/fa";
 
@@ -54,7 +54,7 @@ const NotificacionesU = () => {
     // ------------------------------
     return (
         <div className="container">
-            <HeaderPl />
+            <Header />
 
             {/* Mensaje de error */}
             {error && <div className="error-mensaje">{error}</div>}

@@ -104,9 +104,7 @@
 }
 
 .detalles-compra-item {
-    display: flex;
     align-items: center;
-    gap: 0.5rem;
     font-size: 14px;
     color: #111827;
 }
@@ -150,6 +148,15 @@
 
 .pagar-btn:hover {
     background-color: #d1bd00;
+}
+
+.stripe-card-element {
+    padding: 13px;
+    border: 1.5px solid #CBD2E0;
+    border-radius: 6px;
+    background-color: #f9fafb;
+    color: #111827;
+    margin-bottom: 1rem;
 }
 
 /* Responsive para móviles */
