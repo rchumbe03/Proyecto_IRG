@@ -5,7 +5,7 @@ import Header from '../components/Headers/jsx/HeaderIn.jsx';
 import Footer from '../components/Footer/Footer.jsx';
 import './PasarelaPago.css';
 
-const stripePromise = loadStripe('pk_test_XXXXXXXXXXXXXXXXXXXXXXXX'); // Reemplaza con tu clave pública de Stripe
+const stripePromise = loadStripe('pk_test_51RGlsjB2ttGnV711RTjFq0AoULWgpTuCeOLL4W0rsi6UTCx7TI85kOW0KIwMN0vHIgrgfVuxDb0t1hbyZjNd2sWd00je0sxh6D'); // Reemplaza con tu clave pública de Stripe
 
 function PaymentForm() {
     const stripe = useStripe();
