@@ -1,0 +1,235 @@
+:root {
+  --yellow: #E6D00A;
+  --gray-light: #ccc;
+  --gray-dark: #444;
+}
+
+.live-class {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Header */
+.lc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: white;
+  border-bottom: 1px solid var(--gray-light);
+}
+
+.lc-back {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lc-nav button {
+  background: var(--yellow);
+  border: none;
+  padding: 8px;
+  margin-left: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Body grid */
+.lc-body {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  width: 100%;
+}
+
+/* Main column */
+.lc-main {
+  padding: 24px;
+  /* ✂️ Eliminar esta línea si la tenías: overflow-y: auto; */
+}
+
+.lc-title {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--gray-dark);
+  text-transform: uppercase;
+}
+
+.lc-progress-bar {
+  background: var(--gray-light);
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.lc-progress {
+  background: var(--yellow);
+  height: 100%;
+  width: 0;
+}
+
+/* Video + overlay logo */
+.lc-image-container {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.video-container {
+  width: 100%;
+  padding-top: 56.25%; /* Relación 16:9 */
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.lc-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.lc-logo-overlay {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  width: 64px;
+  height: auto;
+  opacity: 0.8;
+}
+
+/* Tabs */
+.lc-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--gray-light);
+  margin-bottom: 16px;
+}
+
+.lc-tabs button {
+  background: none;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--gray-dark);
+}
+
+.lc-tabs .active {
+  border-bottom: 3px solid var(--yellow);
+  color: var(--yellow);
+}
+
+/* Tab content */
+.lc-tab-content p,
+.lc-tab-content ul {
+  margin-bottom: 12px;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Comments */
+.lc-comments-section {
+  margin-top: 32px;
+}
+
+.lc-comments-section h2 {
+  margin-bottom: 12px;
+}
+
+.lc-comment-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.lc-avatar {
+  width: 32px;
+  height: 32px;
+  background: var(--yellow);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.lc-comment-input input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--gray-light);
+  border-radius: 4px;
+}
+
+.lc-no-comments {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Sidebar */
+.lc-sidebar {
+  background: #f9f9f9;
+  padding: 24px 16px;
+  max-height: 113vh; /* o lo que necesites */
+  overflow-y: auto;
+}
+.lc-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.lc-sidebar::-webkit-scrollbar-thumb {
+  background: var(--gray-dark);
+  border-radius: 3px;
+}
+.lc-lesson-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.lc-lesson-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: white;
+}
+
+.lc-lesson-circle.completed {
+  background: var(--yellow);
+}
+
+.lc-lesson-circle.in-progress {
+  background: var(--gray-light);
+}
+
+.lc-lesson-circle.completed svg,
+.lc-lesson-circle.in-progress svg {
+  position: absolute;
+  font-size: 12px;
+}
+
+.lc-lesson-circle span {
+  position: relative;
+  z-index: 1;
+}
+
+
+.lc-lesson-status {
+  font-size: 12px;
+  color: var(--gray-dark);
+  padding: 2px 4px;
+}
+

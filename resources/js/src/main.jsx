@@ -11,6 +11,7 @@ const ListaCursos = lazy(() => import('./ListaCursos/ListaCursos'));
 const NotificacionesAd = lazy(() => import('./Notificaciones/NotificacionesAd'));
 const InicioPl = lazy(() => import('./Inicio/InicioPl'));
 const NotificacionesU = lazy(() => import('./Notificaciones/NotificacionesU'));
+const Plataforma = lazy(() => import('./clasevideo/plataforma.jsx'));
 
 export const AppRoutes = () => (
     <Suspense fallback={<LoadingSpinner />}>
@@ -25,6 +26,7 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesAd />} />
                         <Route path="inicio" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
+                        <Route path="ClaseVideo" element={<Plataforma />} />
                     </Routes>
                 </ProtectedRoute>
             } />
@@ -36,8 +38,9 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesU />} />
                         <Route path="inicio" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
+                        <Route path="ClaseVideo" element={<Plataforma />} />
                     </Routes>
-                </ProtectedRoute>
+                </ProtectedRoute>   
             } />
 
             {/* Redirección por defecto */}
