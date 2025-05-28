@@ -134,3 +134,13 @@ html, body {
     font-size: 14px;
   }
 }
+
+/*MODO OSCURO*/
+.dark .preguntas-frecuentes {
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+    background-color: #2C2C2C;
+  color: #fff;
+}
