@@ -19,6 +19,7 @@ export const AppRoutes = () => (
         <Routes>
             {/* Rutas públicas */}
             <Route path="/login" element={<FormLogin />} />
+            <Route path="/pasarela" element={<PasarelaPago />} />
 
             {/* Rutas protegidas de administrador */}
             <Route path="/admin/*" element={
@@ -39,7 +40,6 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesU />} />
                         <Route path="inicio" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
-                        <Route path="pasarela" element={<PasarelaPago />} />
                         <Route path="comunidad" element={<InicioComunidad />} />
                     </Routes>
                 </ProtectedRoute>

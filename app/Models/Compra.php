@@ -15,7 +15,8 @@ class Compra extends Model
         'id_usuario',
         'id_curso',
         'precio',
-        'metodo_pago'
+        'metodo_pago',
+        'id_sesion',
     ];
 
     // Relación: Un pago pertenece a un usuario

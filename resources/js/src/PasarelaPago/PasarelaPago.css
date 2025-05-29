@@ -32,10 +32,14 @@
 .pasarela-input {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
 }
 
-/* Etiquetas (si las agregas) */
+.titulo {
+    font-size: 16px;
+    margin-bottom: 0.5rem;
+}
+
+/* Etiquetas */
 .pasarela-input label {
     font-size: 14px;
     color: #374151;
@@ -44,7 +48,7 @@
 
 /* Inputs de texto */
 .pasarela-input input {
-    padding: 12px;
+    padding: 17px;
     border-radius: 6px;
     border: 1.5px solid #CBD2E0;
     font-size: 15px;
@@ -52,6 +56,20 @@
     outline: none;
     background-color: #f9fafb;
     color: #111827;
+}
+
+/* Botón del ícono */
+.pasarela-input .icon-button {
+    position: absolute;
+    top: 70%;
+    right: 15px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 18px;
+    color: #6b7280; /* Color del ícono */
 }
 
 /* Dos campos en línea */
@@ -76,8 +94,48 @@
     outline: none;
 }
 
+.telefono-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.telefono-row label {
+    font-size: 14px;
+    color: #374151;
+    font-weight: 500;
+}
+
+.telefono-row .telefono-input-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.telefono-prefijo {
+    width: 70px;
+    padding: 17px 12px;
+    border-radius: 6px;
+    border: 1.5px solid #CBD2E0;
+    background-color: #f9fafb;
+    font-size: 15px;
+    color: #111827;
+}
+
+.telefono-input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1.5px solid #CBD2E0;
+    font-size: 15px;
+    background-color: #f9fafb;
+    color: #111827;
+}
+
+/* Resumen de compra */
 .detalles-compra {
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     padding: 1.5rem;
     background-color: #f3f4f6;
     border-radius: 8px;
@@ -96,23 +154,10 @@
     color: #111827;
 }
 
-.barra-progreso {
-    height: 12px;
-    background-color: #999999;
-    border-radius: 6px;
-    width: 70%;
-}
-
 .detalles-compra-item {
     align-items: center;
     font-size: 14px;
     color: #111827;
-}
-
-.tooltip {
-    color: #E6D00A;
-    font-weight: bold;
-    cursor: pointer;
 }
 
 .iva-label {
@@ -133,8 +178,8 @@
 
 /* Botón de pago */
 .pagar-btn {
-    margin-top: 2rem;
-    padding: 14px 0;
+    margin-top: 0.70rem;
+    padding: 17.5px;
     background-color: #E6D00A;
     color: #111827;
     border: none;
@@ -146,17 +191,20 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.pagar-btn.enabled {
+    cursor: pointer;
+}
+.pagar-btn:disabled {
+    cursor: not-allowed;
+}
+
 .pagar-btn:hover {
     background-color: #d1bd00;
 }
 
-.stripe-card-element {
-    padding: 13px;
-    border: 1.5px solid #CBD2E0;
-    border-radius: 6px;
-    background-color: #f9fafb;
-    color: #111827;
-    margin-bottom: 1rem;
+div#payment-element-container {
+    display: flex;
+    flex-direction: column;
 }
 
 /* Responsive para móviles */

@@ -21,7 +21,6 @@ use Illuminate\Support\Facades\Route;
 // CHECKOUT (Stripe)
 // ==============================
 Route::post('/create-payment-intent', [CheckoutController::class, 'createPaymentIntent']);
-Route::post('/stripe/webhook', [CheckoutController::class, 'handleWebhook']);
 
 // ==============================
 // AUTENTICACIÓN
