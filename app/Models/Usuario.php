@@ -20,8 +20,13 @@ class Usuario extends Model
         'cv',
         'foto_perfil',
         'direccion',
+        'ciudad',
+        'pais',
+        'estado',
+        'codigo_postal',
         'edad',
         'dni',
+        'prefijo_telefono',
         'telefono',
     ];
 
@@ -30,7 +35,6 @@ class Usuario extends Model
         'remember_token',
     ];
 
-    // Relación: Un usuario puede estar relacionado con varias empresas
     public function expediente()
     {
         return $this->hasOne(Expediente::class, 'id_usuario');

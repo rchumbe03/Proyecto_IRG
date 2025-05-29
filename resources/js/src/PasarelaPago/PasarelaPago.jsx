@@ -98,19 +98,19 @@ function PaymentForm() {
                     <div className="columna">
                         <h2 className="pasarela-title">Datos personales</h2>
                         <InputField
+                            label="Nombre y Apellido"
+                            name="nombreApellido"
+                            value={formData.nombreApellido}
+                            onChange={handleChange}
+                            placeholder="Nombre y Apellido"
+                        />
+                        <InputField
                             label="Correo Electrónico"
                             name="email"
                             type="email"
                             value={formData.email}
                             onChange={handleChange}
                             placeholder="Correo electrónico"
-                        />
-                        <InputField
-                            label="Nombre y Apellido"
-                            name="nombreApellido"
-                            value={formData.nombreApellido}
-                            onChange={handleChange}
-                            placeholder="Nombre y Apellido"
                         />
                         <InputField
                             label="Contraseña"
@@ -280,11 +280,6 @@ export default function PasarelaPago() {
         variables: {
             colorPrimaryText: '#262626',
         },
-    };
-
-    const options = {
-        clientSecret,
-        appearance,
     };
 
     return (

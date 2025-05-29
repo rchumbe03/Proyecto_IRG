@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Usuario;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UsuarioFactory extends Factory
@@ -16,11 +15,16 @@ class UsuarioFactory extends Factory
         return [
             'nombre' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => bcrypt('password'), // password
+            'password' => bcrypt('password'),
             'direccion' => $this->faker->address(),
+            'ciudad' => $this->faker->city(),
+            'pais' => $this->faker->country(),
+            'estado' => $this->faker->state(),
+            'codigo_postal' => $this->faker->postcode(),
             'edad' => $this->faker->numberBetween(18, 65),
             'dni' => $this->faker->unique()->numerify('########') . $this->faker->randomLetter(),
-            'telefono' => $this->faker->numerify('6########'), // Formato español: 9 dígitos
+            'prefijo_telefono' => '+34',
+            'telefono' => $this->faker->numerify('6########'),
             'remember_token' => Str::random(10),
         ];
     }

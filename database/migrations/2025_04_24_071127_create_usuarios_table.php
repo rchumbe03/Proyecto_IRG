@@ -18,8 +18,13 @@ return new class extends Migration
             $table->string('password');
             $table->string('foto_perfil')->nullable();
             $table->string('direccion');
+            $table->string('ciudad')->nullable(); // Nueva columna
+            $table->string('pais', 100)->nullable(); // Nueva columna
+            $table->string('estado', 100)->nullable(); // Nueva columna
+            $table->string('codigo_postal', 10)->nullable(); // Nueva columna
             $table->tinyInteger('edad')->nullable();
             $table->string('dni', 20)->nullable();
+            $table->string('prefijo_telefono', 10)->nullable(); // Nueva columna
             $table->string('telefono', 20)->nullable();
             $table->string('cv')->nullable();
             $table->rememberToken();
