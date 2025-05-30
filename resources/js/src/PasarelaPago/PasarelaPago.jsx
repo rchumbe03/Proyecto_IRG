@@ -219,7 +219,7 @@ function PaymentForm() {
                     <div className="columna">
                         <h2 className="pasarela-title">Datos de compra</h2>
                         <div id="payment-element-container">
-                            <label className="titulo">Método de pago</label>
+                            <label className="titulo">Metodo de pago</label>
                             <PaymentElement id="payment-element" />
                             <div className="detalles-compra">
                                 <div className="detalles-compra-title">Resumen de compra</div>
@@ -264,11 +264,7 @@ export default function PasarelaPago() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                name: 'John Doe',
-                phone: '123456789',
-                country: 'España',
-                product_name: 'Curso React',
-                amount: 2000,
+                amount: 100, // Monto en centavos (ejemplo: 100 centavos = €1.00)
             }),
         })
             .then(res => res.json())

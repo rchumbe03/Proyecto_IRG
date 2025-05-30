@@ -12,10 +12,6 @@ class CheckoutController extends Controller
     {
         // Validar los datos de entrada
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'country' => 'required|string|max:100',
-            'product_name' => 'required|string|max:255',
             'amount' => 'required|integer|min:1', // Monto en centavos
         ]);
 
@@ -27,12 +23,6 @@ class CheckoutController extends Controller
                 'amount' => $validatedData['amount'],
                 'currency' => 'eur',
                 'payment_method_types' => ['card', 'paypal'],
-                'metadata' => [
-                    'name' => $validatedData['name'],
-                    'phone' => $validatedData['phone'],
-                    'country' => $validatedData['country'],
-                    'product_name' => $validatedData['product_name'],
-                ],
             ]);
 
             return response()->json(['clientSecret' => $paymentIntent->client_secret]);
