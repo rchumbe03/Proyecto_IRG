@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('titulo');
             $table->foreignId('id_curso')->constrained('cursos')->onDelete('cascade');
             $table->foreignId('id_fase')->constrained('fases')->onDelete('cascade');
-            $table->timestamps();
             $table->enum('tipo', ['virtual', 'presencial', 'video']);
+            $table->string('url')->nullable();
+            $table->timestamps();
         });
     }
 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('id_curso')->constrained('cursos');
             $table->decimal('precio', 8, 2);
             $table->enum('metodo_pago', ['stripe', 'paypal', 'apple pay']);
+            $table->string('id_sesion');
             $table->timestamps();
         });
     }

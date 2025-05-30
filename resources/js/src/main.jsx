@@ -16,12 +16,15 @@ const ListaCursos = lazy(() => import('./ListaCursos/ListaCursos'));
 const NotificacionesAd = lazy(() => import('./Notificaciones/NotificacionesAd'));
 const InicioPl = lazy(() => import('./Inicio/InicioPl'));
 const NotificacionesU = lazy(() => import('./Notificaciones/NotificacionesU'));
+const PasarelaPago = lazy(() => import('./PasarelaPago/PasarelaPago'));
+const InicioComunidad = lazy(() => import('./InicioUsuario/InicioComunidad'));
 
 export const AppRoutes = () => (
     <Suspense fallback={<LoadingSpinner />}>
         <Routes>
             {/* Rutas públicas */}
             <Route path="/login" element={<FormLogin />} />
+            <Route path="/pasarela" element={<PasarelaPago />} />
 
             {/* Rutas protegidas de administrador */}
             <Route path="/admin/*" element={
@@ -30,11 +33,10 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesAd />} />
                         <Route path="inicio" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
-                        <Route path="comunidad" element={<InicioComunidad />} />
-                        <Route path="formaparte" element={<FormaParte/>} />
-                        <Route path="preguntasfrecuentes" element={<PreguntasFrecuentes/>} />
+
                         <Route path="usuario" element={<LandingSecciones/>} />
                         <Route path="InformacionPersonal" element={<InformacionPersonal />}/>
+                        <Route path="comunidad" element={<InicioComunidad />} />
                     </Routes>
                 </ProtectedRoute>
             } />
@@ -46,10 +48,8 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesU />} />
                         <Route path="inicio" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
+                        <Route path="comunidad" element={<InicioComunidad />} />
                         <Route path="Inicio" element={<InicioComunidad />} />
-                        <Route path="comunidad" element={<InicioComunidad />} /> 
-                        <Route path="formaparte" element={<FormaParte/>} />
-                        <Route path="preguntasfrecuentes" element={<PreguntasFrecuentes/>} />
                         <Route path="usuario" element={<LandingSecciones/>} />
                         <Route path="InformacionPersonal" element={<InformacionPersonal />}/>
 

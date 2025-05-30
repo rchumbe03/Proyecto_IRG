@@ -15,7 +15,8 @@ class Compra extends Model
         'id_usuario',
         'id_curso',
         'precio',
-        'metodo_pago'
+        'metodo_pago',
+        'id_sesion',
     ];
 
     // Relación: Un pago pertenece a un usuario
@@ -24,6 +25,7 @@ class Compra extends Model
         return $this->belongsTo(Usuario::class, 'id_usuario');
     }
 
+    // Relación: Un pago pertenece a un curso
     public function curso()
     {
         return $this->belongsTo(Curso::class, 'id_curso');
