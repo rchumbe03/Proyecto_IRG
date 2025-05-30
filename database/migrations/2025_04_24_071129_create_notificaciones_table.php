@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_admin')->constrained('admins');
             $table->string('nombre_admin')->constrained('admins');
+            $table->foreignId('id_curso')->nullable()->constrained('cursos')->onDelete('set null');
             $table->string('titulo');
             $table->text('contenido');
             $table->timestamps();
