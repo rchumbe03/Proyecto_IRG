@@ -7,7 +7,7 @@ const FormaParte = () => {
     <section className="contenedor">
       <h1 className="titulo">¿Que esperas para formar parte?</h1>
       <div className="seccion-contenido">
-        <img src={edificio} alt="Invitación IRG" className="imagen-cont" />
+        <img src={edificio} alt="imagen" className="imagen-cont" />
         <div className="texto-boton">
           <div className="texto">
             <p>

@@ -1,0 +1,416 @@
+.contenedor-informacion-personal{
+    font-family: Arial, sans-serif; 
+    align-content: center;
+}
+
+.informacion-personal {
+    padding-left: 150px;
+}
+
+.informacion-personal input{
+    width: 352px;
+    height: 48px;
+    border-radius: 8px;
+    border: 1.5px solid #CBD2E0 !important;
+    box-shadow: none !important;
+    outline: none;
+}
+
+.informacion-personal h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: normal;
+}
+
+.contenedor-imagen{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.contenedor-imagen img{
+    height: 80px;
+    width: 80px;
+}
+
+.informacion-personal p{
+    margin-left: 50px;
+}
+
+.dato-personal .nombre-completo {
+    font-size: 24px;
+}
+
+.barra-nombre-completo{
+    margin-left: 10px;
+}
+
+.dato-email{
+    margin-top: 15px;
+    display: inline-block;
+}
+.barra-email{
+    margin-left: 162px;
+}
+
+/*DIRECCION*/
+.dato-direccion{
+    margin-top: 30px;
+}
+
+.dato-direccion h1{
+    font-size: 24px;
+    font-weight: normal;
+    margin: 0px 0px 15px 0px;
+}
+
+.grupo-direccion, .grupo-direccion2{
+    display: flex;
+    gap: 100px;
+    align-items: center;
+}
+
+.barra-suit{
+    margin-left: 60px;
+}
+
+.barra-direccion{
+    margin-left: 80px;
+}
+
+.dato-ciudad input{
+    margin-left: 71px;
+}
+
+.dato-pais, .dato-pais2{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.barra-pais{
+    margin-left: 174px;
+}
+
+.barra-pais2 {
+    margin-left: 175px;
+    width: 170px !important;
+}
+
+.barra2-pais2{
+    margin-left: 10px;
+    width: 170px !important;
+}
+
+.grupo-telefono-cv{
+    display: flex;
+    gap: 220px;
+    align-items: center;
+}
+
+.grupo-telefono-cv .boton-cambios{
+    width: 352px;
+    height: 56px;
+    border-radius: 5px;
+    background-color: #E6D00A;
+    border: none;
+    color: #F3F3F5;
+}
+
+.campo-telefono-completo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.select-prefijo {
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: white;
+  min-width: 130px;
+}
+
+.input-telefono {
+  flex: 1;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.select-prefijo{
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 150px;
+}
+
+.dato-telefono input{
+    margin-left: 50px;
+}
+
+.boton-cv button{
+    width: 173px;
+}
+
+.dato-cv{
+    margin: 30px 0px 0px 55px;
+}
+
+.dato-cv label{
+    margin-left: 900px;
+}
+
+.dato-cv button{
+    margin-left: 730px;
+    width: 352px;
+    height: 48px;
+    border-radius: 8px;
+    border: 1.5px solid #CBD2E0 !important;
+    box-shadow: none !important;
+    outline: none;
+}
+
+
+.grupo-id-fase, .grupo-progreso-tema, .grupo-tiempo-notas, .grupo-jornadas-cuenta{
+    display: flex;
+    align-items: center;
+}
+
+.grupo-progreso-tema, .grupo-tiempo-notas, .grupo-jornadas-cuenta{
+    margin-top: 20px;
+}
+
+.dato-id input{
+    margin-left: 180px;
+}
+
+.dato-fase-actual, .dato-tema-actual, .dato-cuenta{
+    margin: 0 0 0 110px;
+}
+
+.dato-progreso input{
+    margin-left: 130px;
+}
+
+.dato-tema-actual input{
+    margin-left: 38px;
+}
+
+.dato-tiempo input{
+    margin-left: 140px;
+}
+
+.dato-notas{
+    margin: 0 0 0 140px;
+}
+
+.dato-jornadas input{
+    margin-left: 45px;
+}
+
+.dato-cuenta input{
+    margin-left: 10px !important;
+}
+
+.grupo-jornadas-cuenta{
+    margin-bottom: 100px;
+}
+
+@media (max-width: 600px) {
+
+    .informacion-personal{
+    padding-left: 25px;
+    }
+  .informacion-personal h1 {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .datos-personales h1, .nombre-completo, .dato-email label, .dato-direccion label, .dato-telefono label, .dato-expediente label{
+    display: none;
+  }
+
+  .datos-personales .barra-nombre-completo, .dato-email input, .dato-telefono input, .dato-expediente input, .dato-direccion input{
+    margin-left: 20px;
+    width: 300px;
+  }
+
+  .dato-direccion .barra-pais2, .barra2-pais2{
+    width: 145px !important;
+  }
+   .dato-direccion .barra2-pais2{
+    margin-left: 10px;
+    }
+
+  .dato-telefono input{
+    margin-top: 20px;
+  }
+
+  .grupo-telefono-cv{
+    display: flex;
+    flex-direction: column;
+    padding-right: 40px;
+    gap: 20px;
+  }
+
+  .boton-cambios {
+    width: 300px !important;
+  }
+
+  .campo-telefono-completo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .campo-telefono-completo .select-prefijo {
+    height: 50px;
+  }
+
+  .campo-telefono-completo .input-telefono {
+    width: 100px;
+    height: 50px;
+  }
+
+  .dato-cv{
+    margin: 20px 0px 0px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .dato-cv label, .dato-cv button{
+    margin: 0 40px 0 0;
+    text-align: center;
+    width: 300px;
+  }   
+    .dato-cv label{
+        display: none;
+    } 
+
+    .dato-expediente, .grupo-id-fase, .grupo-progreso-tema, .grupo-tiempo-notas, .grupo-jornadas-cuenta{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 10px;
+    }
+
+    .dato-expediente input{
+    margin-right: 10px;
+    }
+
+    .dato-expediente, .dato-fase-actual, .dato-tema-actual, .dato-cuenta{
+    margin-right: 140px;
+    }
+
+   .dato-expediente  .dato-notas{
+    margin-right: 145px;
+    }
+
+    .dato-expediente, .grupo-progreso-tema, .grupo-id-fase, .grupo-tiempo-notas, .grupo-jornadas-cuenta{
+    margin-right: 20px;
+    }
+
+    .contenedor-imagen {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  .contenedor-imagen img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .contenedor-imagen p {
+    margin: 8px 0 0 0;
+    text-align: center;
+  }
+}
+
+/*MODO OSCURO*/
+
+.dark .contenedor-informacion-personal {
+    background-color: #18191a;
+    color: #f5f6fa;
+}
+
+.dark .informacion-personal h1 {
+    color: #fff;
+}
+
+.dark .informacion-personal input,
+.dark .dato-cv button {
+    background-color: #2C2C2C;
+    color: #f5f6fa;
+    border: 1.5px solid #CBD2E0 !important;
+}
+
+.dark .informacion-personal input::placeholder {
+    color: #CBD2E0;
+}
+
+.dark .contenedor-imagen p {
+    color: #CBD2E0;
+}
+
+.dark .boton-cambios,
+.dark .dato-cv button {
+    background-color: #D8C101;
+    color: #232323;
+    border: none !important;
+}
+
+.dark .boton-cambios:hover,
+.dark .dato-cv button:hover {
+    background-color: #ffe22b;
+}
+
+.dark label {
+    color: #e0e0e0;
+}
+
+.dark .informacion-personal {
+    background: transparent;
+}
+
+@media (max-width: 600px) {
+  .dark .informacion-personal h1 {
+    color: #fff;
+  }
+  .dark .informacion-personal input,
+  .dark .dato-cv button {
+    background-color: #232323;
+    color: #f5f6fa;
+    border: 1.5px solid #CBD2E0 !important;
+  }
+  .dark .informacion-personal input::placeholder {
+    color: #CBD2E0;
+  }
+  .dark .contenedor-imagen p {
+    color: #CBD2E0;
+  }
+  .dark .boton-cambios,
+  .dark {
+    background-color: #D8C101;
+    color: #232323;
+    border: none !important;
+  }
+
+  .dark .dato-cv button {
+    background-color: rgb(181, 177, 177);
+    color: #232323;
+    border: none !important;
+  }
+}
+

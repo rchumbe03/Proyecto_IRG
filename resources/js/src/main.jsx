@@ -8,6 +8,7 @@ import InicioComunidad from './InicioUsuario/jsx/InicioComunidad.jsx';
 import FormaParte from './InicioUsuario/jsx/FormaParte.jsx'; 
 import PreguntasFrecuentes from './InicioUsuario/jsx/PreguntasFrecuentes.jsx'
 import LandingSecciones from './InicioUsuario/jsx/LandingSecciones.jsx';
+import InformacionPersonal from './InformacionPersonal/InformacionPersonal.jsx';
 
 // Lazy loading de componentes
 const FormLogin = lazy(() => import('./Login/FormLogin'));
@@ -29,10 +30,11 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesAd />} />
                         <Route path="inicio" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
-                        <Route path="comunidad" element={<InicioComunidad />} /> {/* Ruta corregida */}
+                        <Route path="comunidad" element={<InicioComunidad />} />
                         <Route path="formaparte" element={<FormaParte/>} />
                         <Route path="preguntasfrecuentes" element={<PreguntasFrecuentes/>} />
                         <Route path="usuario" element={<LandingSecciones/>} />
+                        <Route path="InformacionPersonal" element={<InformacionPersonal />}/>
                     </Routes>
                 </ProtectedRoute>
             } />
@@ -44,11 +46,12 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesU />} />
                         <Route path="inicio" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
-                        <Route path="Inicio" element={<InicioComunidad />} /> {/* Ruta corregida */}
+                        <Route path="Inicio" element={<InicioComunidad />} />
                         <Route path="comunidad" element={<InicioComunidad />} /> 
                         <Route path="formaparte" element={<FormaParte/>} />
                         <Route path="preguntasfrecuentes" element={<PreguntasFrecuentes/>} />
                         <Route path="usuario" element={<LandingSecciones/>} />
+                        <Route path="InformacionPersonal" element={<InformacionPersonal />}/>
 
                     </Routes>
                 </ProtectedRoute>

@@ -40,9 +40,11 @@ Route::post('/notificaciones', [NotificacionController::class, 'store']);
 Route::put('/notificaciones/{id}', [NotificacionController::class, 'update']);
 Route::delete('/notificaciones/{id}', [NotificacionController::class, 'destroy']);
 
-// Rutas protegidas para usuarios normales
+// Rutas protegidas para usuarios normales (ajusta el middleware según necesites)
 Route::middleware(['auth.cookie'])->prefix('user')->group(function () {
-    // Aquí tus rutas para usuarios normales
+    // Perfil de usuario
+    Route::get('/perfil', [\App\Http\Controllers\Admin\UsuarioController::class, 'getProfile']);
+    Route::put('/perfil', [\App\Http\Controllers\Admin\UsuarioController::class, 'updateProfile']);
 });
 
 Route::get('/expediente/{userId}', [ExpedienteController::class, 'show']);
