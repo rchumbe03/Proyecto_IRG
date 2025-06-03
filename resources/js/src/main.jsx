@@ -12,7 +12,7 @@ const NotificacionesAd = lazy(() => import('./Notificaciones/NotificacionesAd'))
 const InicioPl = lazy(() => import('./Dashboard/./Dashboard'));
 const NotificacionesU = lazy(() => import('./Notificaciones/NotificacionesU'));
 const PasarelaPago = lazy(() => import('./PasarelaPago/PasarelaPago'));
-const InicioComunidad = lazy(() => import('./Inicio/InicioComunidad'));
+const Inicio = lazy(() => import('./Inicio/Inicio.jsx'));
 
 export const AppRoutes = () => (
     <Suspense fallback={<LoadingSpinner />}>
@@ -20,6 +20,7 @@ export const AppRoutes = () => (
             {/* Rutas públicas */}
             <Route path="/login" element={<FormLogin />} />
             <Route path="/pasarela" element={<PasarelaPago />} />
+            <Route path="/inicio" element={<Inicio />} />
 
             {/* Rutas protegidas de administrador */}
             <Route path="/admin/*" element={
@@ -28,7 +29,6 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesAd />} />
                         <Route path="dashboard" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
-                        <Route path="inicio" element={<InicioComunidad />} />
                     </Routes>
                 </ProtectedRoute>
             } />
@@ -40,7 +40,6 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesU />} />
                         <Route path="dashboard" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
-                        <Route path="inicio" element={<InicioComunidad />} />
                     </Routes>
                 </ProtectedRoute>
             } />

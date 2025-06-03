@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
-import '../InicioUsuario/usuario.css';
+import React, { useRef, useState } from 'react';
+import './Inicio.css';
 import edificio from '../assets/img/edificio.png';
 import Footer from '../components/Footer/Footer.jsx';
 
