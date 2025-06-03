@@ -1,0 +1,326 @@
+/* ====== ESTILOS GENERALES ====== */
+.inicio-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+/* ====== SECCIÓN PLATAFORMA ====== */
+/* Contenedor principal de la plataforma */
+.plataforma-container {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px 90px;
+    box-sizing: border-box;
+    gap: 40px;
+}
+
+/* Panel izquierdo */
+.plataforma-left {
+    flex: 1;
+    max-width: 50%;
+}
+
+.plataforma-titulo {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* Botón volver */
+.volver-btn {
+    background: none;
+    border: none;
+    color: #000;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+/* Barra de progreso */
+.barras {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 60px;
+}
+
+.barra-progreso-contenedor {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.barra-progreso {
+    width: 20%;
+    height: 7px;
+    background-color: #aaa;
+    border-radius: 50px;
+    overflow: hidden;
+    position: relative;
+    right: 15px;
+}
+
+.relleno {
+    height: 100%;
+    background: #f2cd00;
+    border-radius: 50px;
+    transition: width 0.5s ease-in-out;
+    position: relative;
+    z-index: 1;
+}
+
+.porcentaje {
+    font-weight: bold;
+    font-size: 15px;
+    color: #000;
+    min-width: 45px;
+    text-align: left;
+}
+
+/* Botón amarillo */
+.ver-btn {
+    background-color: #f2cd00;
+    color: #000;
+    border: none;
+    padding: 12px 24px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+.ver-btn:hover {
+    background-color: #e0bc00;
+}
+
+/* Panel derecho */
+.plataforma-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-img {
+    height: 300px;
+}
+
+/* ====== SECCIÓN CONTENIDOS ====== */
+.contenidos {
+    width: 100%;
+    margin: 0;
+    padding: 40px;
+    background-color: #f4f4f4;
+    flex: 1;
+}
+
+/* Tabs de navegación */
+.tabs {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tab {
+    background: none;
+    border: none;
+    padding: 10px 15px;
+    font-weight: bold;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+}
+
+.tab.active {
+    border-color: black;
+}
+
+/* Barra de búsqueda */
+.search {
+    margin-left: auto;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Lista de contenidos */
+.contenido-lista {
+    list-style: none;
+    padding: 0;
+}
+
+.contenido-item {
+    background: #f9f9f9;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-left: 5px solid #ffd700;
+    border-radius: 5px;
+}
+
+/* Cabecera de items */
+.item-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.numero {
+    background: #ffd700;
+    color: black;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+/* Información del contenido */
+.info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.contenido-titulo {
+    font-size: 18px;
+    color: #333;
+}
+
+/* Estados */
+.estado {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 4px;
+}
+
+.estado.completado { color: green; }
+.estado.proceso { color: orange; }
+.estado.bloqueado { color: red; }
+
+/* Botón toggle */
+.toggle {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* Cuerpo expandible */
+.item-body {
+    margin-top: 10px;
+    padding-left: 30px;
+}
+
+/* Lista de clases */
+.clases-lista {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.clase-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
+
+.clase-titulo {
+    font-weight: 500;
+    flex: 1;
+}
+
+.clase-tipo {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    background-color: #e0e0e0;
+}
+
+.clase-link {
+    padding: 4px 8px;
+    background-color: #ffd700;
+    color: white !important;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.clase-link:hover {
+    background-color: #e0bc00;
+    text-decoration: none !important;
+}
+
+/* ====== MODO OSCURO ====== */
+.dark-theme {
+    background-color: #1e1e1e;
+    color: #f4f4f4;
+}
+
+.dark-theme .contenido-item {
+    background-color: #2c2c2c;
+}
+
+.dark-theme .contenido-titulo {
+    color: #ffffff;
+}
+
+.dark-theme .clase-item {
+    background-color: #2d2d2d;
+}
+
+.dark-theme .clase-tipo {
+    background-color: #404040;
+    color: #fff;
+}
+
+.dark-theme .search {
+    background-color: #333;
+    color: #f4f4f4;
+    border: 1px solid #555;
+}
+
+/* ====== ENLACES ====== */
+.item-body a {
+    color: #000;
+    text-decoration: none;
+}
+
+.item-body a:hover {
+    color: #555;
+    text-decoration: underline;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 768px) {
+    .plataforma-container {
+        flex-direction: column;
+        padding: 30px;
+    }
+
+    .plataforma-left,
+    .plataforma-right {
+        max-width: 100%;
+    }
+
+    .logo-img {
+        height: 200px;
+    }
+}

@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../css/HeaderIn.css';
+import perfilIcon from '../../../assets/usuario/perfil-icon.png';
+import spotify from '../../../assets/logos/spotify.png';
 import { FaHome, FaBookOpen, FaBuilding, FaEnvelope, FaSun, FaMoon } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
     const profileRef = useRef(null);
+    const navigate = useNavigate();
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -44,25 +48,32 @@ export default function Header() {
     return (
         <header>
             <div className="left">
-                <img src="" alt="Logo" className="logo" />
+                <img src={spotify} alt="Logo" className="logo" onClick={() => navigate('/cursos')} />
             </div>
             <div className="right">
                 <nav className="tabs">
-                    <a href="#"><FaHome className="tab-icon" />Inicio</a>
-                    <a href="#"><FaBookOpen className="tab-icon" />Cursos</a>
-                    <a href="#"><FaBuilding className="tab-icon" />Sobre Nosotros</a>
-                    <a href="#"><FaEnvelope className="tab-icon" />Contacto</a>
+                    <button className="icon-text-button" onClick={() => navigate('/')}>
+                        <span>Inicio</span>
+                        <FaHome />
+                    </button>
+                    <button className="icon-text-button" onClick={() => navigate('/admin/cursos')}>
+                        <span>Cursos</span>
+                        <FaBookOpen />
+                    </button>
+                    <button className="icon-text-button">                       
+                        <span>Sobre Nosotros</span> 
+                        <FaBuilding />
+                    </button>
+                    <button className="icon-text-button">
+                        <span>Contacto</span>
+                        <FaEnvelope />
+                    </button>
                 </nav>
                 <div className="mode-toggle" onClick={toggleDarkMode}>
                     {darkMode ? <FaSun className="mode-icon" /> : <FaMoon className="mode-icon" />}
                 </div>
                 <div className="profile" ref={profileRef}>
-                    <img
-                        src=""
-                        alt="Perfil"
-                        className="profile-icon"
-                        onClick={toggleDropdown}
-                    />
+                    <img src={perfilIcon} alt="Perfil" className="profile-icon" onClick={toggleDropdown} />
                     {isDropdownOpen && (
                         <div className="dropdown">
                             <ul>
