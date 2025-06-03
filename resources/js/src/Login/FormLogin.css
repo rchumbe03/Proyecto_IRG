@@ -261,3 +261,68 @@ body.dark-mode .login-button {
     font-size: 14px;
     margin-top: 10px;
 }
+@media (max-width: 768px) {
+  .intro-container {
+    position: relative;
+    z-index: 1;
+    flex-direction: column;
+    height: auto;
+    padding: 2rem 0;
+    justify-content: center;
+    align-items: center;
+    background-color: #E6D00A; 
+  }
+
+  .half-circle {
+    display: none;
+  }
+
+  .intro-text {
+    padding: 0;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    align-items: center;
+    color: black;
+    background-color: transparent;
+  }
+
+  .intro-title {
+    font-size: 56px;
+  }
+
+  .intro-subtitle {
+    font-size: 32px;
+  }
+
+  .login-container {
+    position: relative;
+    width: 100%;
+    padding: 0 1rem;
+    justify-content: center;
+    background-color: white;
+    z-index: 2; /* para que esté por encima de intro-container */
+  }
+
+  .login-form {
+    width: 100%;
+    max-width: 500px;
+    padding: 1.5rem;
+  }
+
+  .login-title {
+    font-size: 36px;
+    text-align: center;
+    align-self: center;
+  }
+
+.mode-toggle-button {
+    border-color: white !important; 
+    color: white !important;       
+  }
+
+.mode-toggle-button:hover {
+    background-color: white !important;
+    color: #E6D00A !important;
+}
+}

@@ -1,0 +1,3834 @@
+[1mdiff --git a/app/Http/Controllers/CursoController.php b/app/Http/Controllers/Admin/CursoController.php[m
+[1msimilarity index 97%[m
+[1mrename from app/Http/Controllers/CursoController.php[m
+[1mrename to app/Http/Controllers/Admin/CursoController.php[m
+[1mindex bf615a1..cd02cd3 100644[m
+[1m--- a/app/Http/Controllers/CursoController.php[m
+[1m+++ b/app/Http/Controllers/Admin/CursoController.php[m
+[36m@@ -1,7 +1,8 @@[m
+ <?php[m
+ [m
+[31m-namespace App\Http\Controllers;[m
+[32m+[m[32mnamespace App\Http\Controllers\Admin;[m
+ [m
+[32m+[m[32muse App\Http\Controllers\Controller;[m
+ use App\Models\Curso;[m
+ use Illuminate\Http\Request;[m
+ [m
+[1mdiff --git a/app/Http/Controllers/CheckoutController.php b/app/Http/Controllers/CheckoutController.php[m
+[1mdeleted file mode 100644[m
+[1mindex 77885c3..0000000[m
+[1m--- a/app/Http/Controllers/CheckoutController.php[m
+[1m+++ /dev/null[m
+[36m@@ -1,44 +0,0 @@[m
+[31m-<?php[m
+[31m-[m
+[31m-namespace App\Http\Controllers;[m
+[31m-[m
+[31m-use Illuminate\Http\Request;[m
+[31m-use Stripe\Stripe;[m
+[31m-use Stripe\PaymentIntent;[m
+[31m-[m
+[31m-class CheckoutController extends Controller[m
+[31m-{[m
+[31m-    public function createPaymentIntent(Request $request)[m
+[31m-    {[m
+[31m-        // Validar los datos de entrada[m
+[31m-        $validatedData = $request->validate([[m
+[31m-            'amount' => 'required|integer|min:1', // Monto en centavos[m
+[31m-        ]);[m
+[31m-[m
+[31m-        try {[m
+[31m-            // Configurar Stripe con la clave secreta[m
+[31m-            Stripe::setApiKey(config('stripe.sk'));[m
+[31m-[m
+[31m-            $paymentIntent = PaymentIntent::create([[m
+[31m-                'amount' => $validatedData['amount'],[m
+[31m-                'currency' => 'eur',[m
+[31m-                'payment_method_types' => ['card', 'paypal'],[m
+[31m-            ]);[m
+[31m-[m
+[31m-            return response()->json(['clientSecret' => $paymentIntent->client_secret]);[m
+[31m-        } catch (\Exception $e) {[m
+[31m-            return response()->json(['error' => $e->getMessage()], 500);[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    public function confirmPayment()[m
+[31m-    {[m
+[31m-        return response()->json(['message' => 'Pago confirmado exitosamente.']);[m
+[31m-    }[m
+[31m-[m
+[31m-    public function cancelPayment()[m
+[31m-    {[m
+[31m-        return response()->json(['message' => 'Pago cancelado.']);[m
+[31m-    }[m
+[31m-[m
+[31m-}[m
+[1mdiff --git a/app/Models/Compra.php b/app/Models/Compra.php[m
+[1mindex bb52575..912ea19 100644[m
+[1m--- a/app/Models/Compra.php[m
+[1m+++ b/app/Models/Compra.php[m
+[36m@@ -15,8 +15,7 @@[m [mclass Compra extends Model[m
+         'id_usuario',[m
+         'id_curso',[m
+         'precio',[m
+[31m-        'metodo_pago',[m
+[31m-        'id_sesion',[m
+[32m+[m[32m        'metodo_pago'[m
+     ];[m
+ [m
+     // Relación: Un pago pertenece a un usuario[m
+[36m@@ -25,7 +24,6 @@[m [mpublic function usuario()[m
+         return $this->belongsTo(Usuario::class, 'id_usuario');[m
+     }[m
+ [m
+[31m-    // Relación: Un pago pertenece a un curso[m
+     public function curso()[m
+     {[m
+         return $this->belongsTo(Curso::class, 'id_curso');[m
+[1mdiff --git a/app/Models/Usuario.php b/app/Models/Usuario.php[m
+[1mindex 95716a2..a66053e 100644[m
+[1m--- a/app/Models/Usuario.php[m
+[1m+++ b/app/Models/Usuario.php[m
+[36m@@ -20,13 +20,8 @@[m [mclass Usuario extends Model[m
+         'cv',[m
+         'foto_perfil',[m
+         'direccion',[m
+[31m-        'ciudad',[m
+[31m-        'pais',[m
+[31m-        'estado',[m
+[31m-        'codigo_postal',[m
+         'edad',[m
+         'dni',[m
+[31m-        'prefijo_telefono',[m
+         'telefono',[m
+     ];[m
+ [m
+[36m@@ -35,6 +30,7 @@[m [mclass Usuario extends Model[m
+         'remember_token',[m
+     ];[m
+ [m
+[32m+[m[32m    // Relación: Un usuario puede estar relacionado con varias empresas[m
+     public function expediente()[m
+     {[m
+         return $this->hasOne(Expediente::class, 'id_usuario');[m
+[1mdiff --git a/composer-setup.php b/composer-setup.php[m
+[1mdeleted file mode 100644[m
+[1mindex a5efbed..0000000[m
+[1m--- a/composer-setup.php[m
+[1m+++ /dev/null[m
+[36m@@ -1,1748 +0,0 @@[m
+[31m-<?php[m
+[31m-[m
+[31m-/*[m
+[31m- * This file is part of Composer.[m
+[31m- *[m
+[31m- * (c) Nils Adermann <naderman@naderman.de>[m
+[31m- *     Jordi Boggiano <j.boggiano@seld.be>[m
+[31m- *[m
+[31m- * For the full copyright and license information, please view the LICENSE[m
+[31m- * file that was distributed with this source code.[m
+[31m- */[m
+[31m-[m
+[31m-setupEnvironment();[m
+[31m-process(is_array($argv) ? $argv : array());[m
+[31m-[m
+[31m-/**[m
+[31m- * Initializes various values[m
+[31m- *[m
+[31m- * @throws RuntimeException If uopz extension prevents exit calls[m
+[31m- */[m
+[31m-function setupEnvironment()[m
+[31m-{[m
+[31m-    ini_set('display_errors', 1);[m
+[31m-[m
+[31m-    if (extension_loaded('uopz') && !(ini_get('uopz.disable') || ini_get('uopz.exit'))) {[m
+[31m-        // uopz works at opcode level and disables exit calls[m
+[31m-        if (function_exists('uopz_allow_exit')) {[m
+[31m-            @uopz_allow_exit(true);[m
+[31m-        } else {[m
+[31m-            throw new RuntimeException('The uopz extension ignores exit calls and breaks this installer.');[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    $installer = 'ComposerInstaller';[m
+[31m-[m
+[31m-    if (defined('PHP_WINDOWS_VERSION_MAJOR')) {[m
+[31m-        if ($version = getenv('COMPOSERSETUP')) {[m
+[31m-            $installer = sprintf('Composer-Setup.exe/%s', $version);[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    define('COMPOSER_INSTALLER', $installer);[m
+[31m-}[m
+[31m-[m
+[31m-/**[m
+[31m- * Processes the installer[m
+[31m- */[m
+[31m-function process($argv)[m
+[31m-{[m
+[31m-    // Determine ANSI output from --ansi and --no-ansi flags[m
+[31m-    setUseAnsi($argv);[m
+[31m-[m
+[31m-    $help = in_array('--help', $argv) || in_array('-h', $argv);[m
+[31m-    if ($help) {[m
+[31m-        displayHelp();[m
+[31m-        exit(0);[m
+[31m-    }[m
+[31m-[m
+[31m-    $check      = in_array('--check', $argv);[m
+[31m-    $force      = in_array('--force', $argv);[m
+[31m-    $quiet      = in_array('--quiet', $argv);[m
+[31m-    $channel    = 'stable';[m
+[31m-    if (in_array('--snapshot', $argv)) {[m
+[31m-        $channel = 'snapshot';[m
+[31m-    } elseif (in_array('--preview', $argv)) {[m
+[31m-        $channel = 'preview';[m
+[31m-    } elseif (in_array('--1', $argv)) {[m
+[31m-        $channel = '1';[m
+[31m-    } elseif (in_array('--2', $argv)) {[m
+[31m-        $channel = '2';[m
+[31m-    } elseif (in_array('--2.2', $argv)) {[m
+[31m-        $channel = '2.2';[m
+[31m-    }[m
+[31m-    $disableTls = in_array('--disable-tls', $argv);[m
+[31m-    $installDir = getOptValue('--install-dir', $argv, false);[m
+[31m-    $version    = getOptValue('--version', $argv, false);[m
+[31m-    $filename   = getOptValue('--filename', $argv, 'composer.phar');[m
+[31m-    $cafile     = getOptValue('--cafile', $argv, false);[m
+[31m-[m
+[31m-    if (!checkParams($installDir, $version, $cafile)) {[m
+[31m-        exit(1);[m
+[31m-    }[m
+[31m-[m
+[31m-    $ok = checkPlatform($warnings, $quiet, $disableTls, true);[m
+[31m-[m
+[31m-    if ($check) {[m
+[31m-        // Only show warnings if we haven't output any errors[m
+[31m-        if ($ok) {[m
+[31m-            showWarnings($warnings);[m
+[31m-            showSecurityWarning($disableTls);[m
+[31m-        }[m
+[31m-        exit($ok ? 0 : 1);[m
+[31m-    }[m
+[31m-[m
+[31m-    if ($ok || $force) {[m
+[31m-        if ($channel === '1' && !$quiet) {[m
+[31m-            out('Warning: You forced the install of Composer 1.x via --1, but Composer 2.x is the latest stable version. Updating to it via composer self-update --stable is recommended.', 'error');[m
+[31m-        }[m
+[31m-[m
+[31m-        $installer = new Installer($quiet, $disableTls, $cafile);[m
+[31m-        if ($installer->run($version, $installDir, $filename, $channel)) {[m
+[31m-            showWarnings($warnings);[m
+[31m-            showSecurityWarning($disableTls);[m
+[31m-            exit(0);[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    exit(1);[m
+[31m-}[m
+[31m-[m
+[31m-/**[m
+[31m- * Displays the help[m
+[31m- */[m
+[31m-function displayHelp()[m
+[31m-{[m
+[31m-    echo <<<EOF[m
+[31m-Composer Installer[m
+[31m-------------------[m
+[31m-Options[m
+[31m---help               this help[m
+[31m---check              for checking environment only[m
+[31m---force              forces the installation[m
+[31m---ansi               force ANSI color output[m
+[31m---no-ansi            disable ANSI color output[m
+[31m---quiet              do not output unimportant messages[m
+[31m---install-dir="..."  accepts a target installation directory[m
+[31m---preview            install the latest version from the preview (alpha/beta/rc) channel instead of stable[m
+[31m---snapshot           install the latest version from the snapshot (dev builds) channel instead of stable[m
+[31m---1                  install the latest stable Composer 1.x (EOL) version[m
+[31m---2                  install the latest stable Composer 2.x version[m
+[31m---2.2                install the latest stable Composer 2.2.x (LTS) version[m
+[31m---version="..."      accepts a specific version to install instead of the latest[m
+[31m---filename="..."     accepts a target filename (default: composer.phar)[m
+[31m---disable-tls        disable SSL/TLS security for file downloads[m
+[31m---cafile="..."       accepts a path to a Certificate Authority (CA) certificate file for SSL/TLS verification[m
+[31m-[m
+[31m-EOF;[m
+[31m-}[m
+[31m-[m
+[31m-/**[m
+[31m- * Sets the USE_ANSI define for colorizing output[m
+[31m- *[m
+[31m- * @param array $argv Command-line arguments[m
+[31m- */[m
+[31m-function setUseAnsi($argv)[m
+[31m-{[m
+[31m-    // --no-ansi wins over --ansi[m
+[31m-    if (in_array('--no-ansi', $argv)) {[m
+[31m-        define('USE_ANSI', false);[m
+[31m-    } elseif (in_array('--ansi', $argv)) {[m
+[31m-        define('USE_ANSI', true);[m
+[31m-    } else {[m
+[31m-        define('USE_ANSI', outputSupportsColor());[m
+[31m-    }[m
+[31m-}[m
+[31m-[m
+[31m-/**[m
+[31m- * Returns whether color output is supported[m
+[31m- *[m
+[31m- * @return bool[m
+[31m- */[m
+[31m-function outputSupportsColor()[m
+[31m-{[m
+[31m-    if (false !== getenv('NO_COLOR') || !defined('STDOUT')) {[m
+[31m-        return false;[m
+[31m-    }[m
+[31m-[m
+[31m-    if ('Hyper' === getenv('TERM_PROGRAM')) {[m
+[31m-        return true;[m
+[31m-    }[m
+[31m-[m
+[31m-    if (defined('PHP_WINDOWS_VERSION_BUILD')) {[m
+[31m-        return (function_exists('sapi_windows_vt100_support')[m
+[31m-            && sapi_windows_vt100_support(STDOUT))[m
+[31m-            || false !== getenv('ANSICON')[m
+[31m-            || 'ON' === getenv('ConEmuANSI')[m
+[31m-            || 'xterm' === getenv('TERM');[m
+[31m-    }[m
+[31m-[m
+[31m-    if (function_exists('stream_isatty')) {[m
+[31m-        return stream_isatty(STDOUT);[m
+[31m-    }[m
+[31m-[m
+[31m-    if (function_exists('posix_isatty')) {[m
+[31m-        return posix_isatty(STDOUT);[m
+[31m-    }[m
+[31m-[m
+[31m-    $stat = fstat(STDOUT);[m
+[31m-    // Check if formatted mode is S_IFCHR[m
+[31m-    return $stat ? 0020000 === ($stat['mode'] & 0170000) : false;[m
+[31m-}[m
+[31m-[m
+[31m-/**[m
+[31m- * Returns the value of a command-line option[m
+[31m- *[m
+[31m- * @param string $opt The command-line option to check[m
+[31m- * @param array $argv Command-line arguments[m
+[31m- * @param mixed $default Default value to be returned[m
+[31m- *[m
+[31m- * @return mixed The command-line value or the default[m
+[31m- */[m
+[31m-function getOptValue($opt, $argv, $default)[m
+[31m-{[m
+[31m-    $optLength = strlen($opt);[m
+[31m-[m
+[31m-    foreach ($argv as $key => $value) {[m
+[31m-        $next = $key + 1;[m
+[31m-        if (0 === strpos($value, $opt)) {[m
+[31m-            if ($optLength === strlen($value) && isset($argv[$next])) {[m
+[31m-                return trim($argv[$next]);[m
+[31m-            } else {[m
+[31m-                return trim(substr($value, $optLength + 1));[m
+[31m-            }[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    return $default;[m
+[31m-}[m
+[31m-[m
+[31m-/**[m
+[31m- * Checks that user-supplied params are valid[m
+[31m- *[m
+[31m- * @param mixed $installDir The required istallation directory[m
+[31m- * @param mixed $version The required composer version to install[m
+[31m- * @param mixed $cafile Certificate Authority file[m
+[31m- *[m
+[31m- * @return bool True if the supplied params are okay[m
+[31m- */[m
+[31m-function checkParams($installDir, $version, $cafile)[m
+[31m-{[m
+[31m-    $result = true;[m
+[31m-[m
+[31m-    if (false !== $installDir && !is_dir($installDir)) {[m
+[31m-        out("The defined install dir ({$installDir}) does not exist.", 'info');[m
+[31m-        $result = false;[m
+[31m-    }[m
+[31m-[m
+[31m-    if (false !== $version && 1 !== preg_match('/^\d+\.\d+\.\d+(\-(alpha|beta|RC)\d*)*$/', $version)) {[m
+[31m-        out("The defined install version ({$version}) does not match release pattern.", 'info');[m
+[31m-        $result = false;[m
+[31m-    }[m
+[31m-[m
+[31m-    if (false !== $cafile && (!file_exists($cafile) || !is_readable($cafile))) {[m
+[31m-        out("The defined Certificate Authority (CA) cert file ({$cafile}) does not exist or is not readable.", 'info');[m
+[31m-        $result = false;[m
+[31m-    }[m
+[31m-    return $result;[m
+[31m-}[m
+[31m-[m
+[31m-/**[m
+[31m- * Checks the platform for possible issues running Composer[m
+[31m- *[m
+[31m- * Errors are written to the output, warnings are saved for later display.[m
+[31m- *[m
+[31m- * @param array $warnings Populated by method, to be shown later[m
+[31m- * @param bool $quiet Quiet mode[m
+[31m- * @param bool $disableTls Bypass tls[m
+[31m- * @param bool $install If we are installing, rather than diagnosing[m
+[31m- *[m
+[31m- * @return bool True if there are no errors[m
+[31m- */[m
+[31m-function checkPlatform(&$warnings, $quiet, $disableTls, $install)[m
+[31m-{[m
+[31m-    getPlatformIssues($errors, $warnings, $install);[m
+[31m-[m
+[31m-    // Make openssl warning an error if tls has not been specifically disabled[m
+[31m-    if (isset($warnings['openssl']) && !$disableTls) {[m
+[31m-        $errors['openssl'] = $warnings['openssl'];[m
+[31m-        unset($warnings['openssl']);[m
+[31m-    }[m
+[31m-[m
+[31m-    if (!empty($errors)) {[m
+[31m-        // Composer-Setup.exe uses "Some settings" to flag platform errors[m
+[31m-        out('Some settings on your machine make Composer unable to work properly.', 'error');[m
+[31m-        out('Make sure that you fix the issues listed below and run this script again:', 'error');[m
+[31m-        outputIssues($errors);[m
+[31m-        return false;[m
+[31m-    }[m
+[31m-[m
+[31m-    if (empty($warnings) && !$quiet) {[m
+[31m-        out('All settings correct for using Composer', 'success');[m
+[31m-    }[m
+[31m-    return true;[m
+[31m-}[m
+[31m-[m
+[31m-/**[m
+[31m- * Checks platform configuration for common incompatibility issues[m
+[31m- *[m
+[31m- * @param array $errors Populated by method[m
+[31m- * @param array $warnings Populated by method[m
+[31m- * @param bool $install If we are installing, rather than diagnosing[m
+[31m- *[m
+[31m- * @return bool If any errors or warnings have been found[m
+[31m- */[m
+[31m-function getPlatformIssues(&$errors, &$warnings, $install)[m
+[31m-{[m
+[31m-    $errors = array();[m
+[31m-    $warnings = array();[m
+[31m-[m
+[31m-    if ($iniPath = php_ini_loaded_file()) {[m
+[31m-        $iniMessage = PHP_EOL.'The php.ini used by your command-line PHP is: ' . $iniPath;[m
+[31m-    } else {[m
+[31m-        $iniMessage = PHP_EOL.'A php.ini file does not exist. You will have to create one.';[m
+[31m-    }[m
+[31m-    $iniMessage .= PHP_EOL.'If you can not modify the ini file, you can also run `php -d option=value` to modify ini values on the fly. You can use -d multiple times.';[m
+[31m-[m
+[31m-    if (ini_get('detect_unicode')) {[m
+[31m-        $errors['unicode'] = array([m
+[31m-            'The detect_unicode setting must be disabled.',[m
+[31m-            'Add the following to the end of your `php.ini`:',[m
+[31m-            '    detect_unicode = Off',[m
+[31m-            $iniMessage[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    if (extension_loaded('suhosin')) {[m
+[31m-        $suhosin = ini_get('suhosin.executor.include.whitelist');[m
+[31m-        $suhosinBlacklist = ini_get('suhosin.executor.include.blacklist');[m
+[31m-        if (false === stripos($suhosin, 'phar') && (!$suhosinBlacklist || false !== stripos($suhosinBlacklist, 'phar'))) {[m
+[31m-            $errors['suhosin'] = array([m
+[31m-                'The suhosin.executor.include.whitelist setting is incorrect.',[m
+[31m-                'Add the following to the end of your `php.ini` or suhosin.ini (Example path [for Debian]: /etc/php5/cli/conf.d/suhosin.ini):',[m
+[31m-                '    suhosin.executor.include.whitelist = phar '.$suhosin,[m
+[31m-                $iniMessage[m
+[31m-            );[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    if (!function_exists('json_decode')) {[m
+[31m-        $errors['json'] = array([m
+[31m-            'The json extension is missing.',[m
+[31m-            'Install it or recompile php without --disable-json'[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    if (!extension_loaded('Phar')) {[m
+[31m-        $errors['phar'] = array([m
+[31m-            'The phar extension is missing.',[m
+[31m-            'Install it or recompile php without --disable-phar'[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    if (!extension_loaded('filter')) {[m
+[31m-        $errors['filter'] = array([m
+[31m-            'The filter extension is missing.',[m
+[31m-            'Install it or recompile php without --disable-filter'[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    if (!extension_loaded('hash')) {[m
+[31m-        $errors['hash'] = array([m
+[31m-            'The hash extension is missing.',[m
+[31m-            'Install it or recompile php without --disable-hash'[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    if (!extension_loaded('iconv') && !extension_loaded('mbstring')) {[m
+[31m-        $errors['iconv_mbstring'] = array([m
+[31m-            'The iconv OR mbstring extension is required and both are missing.',[m
+[31m-            'Install either of them or recompile php without --disable-iconv'[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    if (!ini_get('allow_url_fopen')) {[m
+[31m-        $errors['allow_url_fopen'] = array([m
+[31m-            'The allow_url_fopen setting is incorrect.',[m
+[31m-            'Add the following to the end of your `php.ini`:',[m
+[31m-            '    allow_url_fopen = On',[m
+[31m-            $iniMessage[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    if (extension_loaded('ionCube Loader') && ioncube_loader_iversion() < 40009) {[m
+[31m-        $ioncube = ioncube_loader_version();[m
+[31m-        $errors['ioncube'] = array([m
+[31m-            'Your ionCube Loader extension ('.$ioncube.') is incompatible with Phar files.',[m
+[31m-            'Upgrade to ionCube 4.0.9 or higher or remove this line (path may be different) from your `php.ini` to disable it:',[m
+[31m-            '    zend_extension = /usr/lib/php5/20090626+lfs/ioncube_loader_lin_5.3.so',[m
+[31m-            $iniMessage[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    if (version_compare(PHP_VERSION, '5.3.2', '<')) {[m
+[31m-        $errors['php'] = array([m
+[31m-            'Your PHP ('.PHP_VERSION.') is too old, you must upgrade to PHP 5.3.2 or higher.'[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    if (version_compare(PHP_VERSION, '5.3.4', '<')) {[m
+[31m-        $warnings['php'] = array([m
+[31m-            'Your PHP ('.PHP_VERSION.') is quite old, upgrading to PHP 5.3.4 or higher is recommended.',[m
+[31m-            'Composer works with 5.3.2+ for most people, but there might be edge case issues.'[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    if (!extension_loaded('openssl')) {[m
+[31m-        $warnings['openssl'] = array([m
+[31m-            'The openssl extension is missing, which means that secure HTTPS transfers are impossible.',[m
+[31m-            'If possible you should enable it or recompile php with --with-openssl'[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    if (extension_loaded('openssl') && OPENSSL_VERSION_NUMBER < 0x1000100f) {[m
+[31m-        // Attempt to parse version number out, fallback to whole string value.[m
+[31m-        $opensslVersion = trim(strstr(OPENSSL_VERSION_TEXT, ' '));[m
+[31m-        $opensslVersion = substr($opensslVersion, 0, strpos($opensslVersion, ' '));[m
+[31m-        $opensslVersion = $opensslVersion ? $opensslVersion : OPENSSL_VERSION_TEXT;[m
+[31m-[m
+[31m-        $warnings['openssl_version'] = array([m
+[31m-            'The OpenSSL library ('.$opensslVersion.') used by PHP does not support TLSv1.2 or TLSv1.1.',[m
+[31m-            'If possible you should upgrade OpenSSL to version 1.0.1 or above.'[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    if (!defined('HHVM_VERSION') && !extension_loaded('apcu') && ini_get('apc.enable_cli')) {[m
+[31m-        $warnings['apc_cli'] = array([m
+[31m-            'The apc.enable_cli setting is incorrect.',[m
+[31m-            'Add the following to the end of your `php.ini`:',[m
+[31m-            '    apc.enable_cli = Off',[m
+[31m-            $iniMessage[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    if (!$install && extension_loaded('xdebug')) {[m
+[31m-        $warnings['xdebug_loaded'] = array([m
+[31m-            'The xdebug extension is loaded, this can slow down Composer a little.',[m
+[31m-            'Disabling it when using Composer is recommended.'[m
+[31m-        );[m
+[31m-[m
+[31m-        if (ini_get('xdebug.profiler_enabled')) {[m
+[31m-            $warnings['xdebug_profile'] = array([m
+[31m-                'The xdebug.profiler_enabled setting is enabled, this can slow down Composer a lot.',[m
+[31m-                'Add the following to the end of your `php.ini` to disable it:',[m
+[31m-                '    xdebug.profiler_enabled = 0',[m
+[31m-                $iniMessage[m
+[31m-            );[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    if (!extension_loaded('zlib')) {[m
+[31m-        $warnings['zlib'] = array([m
+[31m-            'The zlib extension is not loaded, this can slow down Composer a lot.',[m
+[31m-            'If possible, install it or recompile php with --with-zlib',[m
+[31m-            $iniMessage[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    if (defined('PHP_WINDOWS_VERSION_BUILD')[m
+[31m-        && (version_compare(PHP_VERSION, '7.2.23', '<')[m
+[31m-        || (version_compare(PHP_VERSION, '7.3.0', '>=')[m
+[31m-        && version_compare(PHP_VERSION, '7.3.10', '<')))) {[m
+[31m-        $warnings['onedrive'] = array([m
+[31m-            'The Windows OneDrive folder is not supported on PHP versions below 7.2.23 and 7.3.10.',[m
+[31m-            'Upgrade your PHP ('.PHP_VERSION.') to use this location with Composer.'[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    if (extension_loaded('uopz') && !(ini_get('uopz.disable') || ini_get('uopz.exit'))) {[m
+[31m-        $warnings['uopz'] = array([m
+[31m-            'The uopz extension ignores exit calls and may not work with all Composer commands.',[m
+[31m-            'Disabling it when using Composer is recommended.'[m
+[31m-        );[m
+[31m-    }[m
+[31m-[m
+[31m-    ob_start();[m
+[31m-    phpinfo(INFO_GENERAL);[m
+[31m-    $phpinfo = ob_get_clean();[m
+[31m-    if (preg_match('{Configure Command(?: *</td><td class="v">| *=> *)(.*?)(?:</td>|$)}m', $phpinfo, $match)) {[m
+[31m-        $configure = $match[1];[m
+[31m-[m
+[31m-        if (false !== strpos($configure, '--enable-sigchild')) {[m
+[31m-            $warnings['sigchild'] = array([m
+[31m-                'PHP was compiled with --enable-sigchild which can cause issues on some platforms.',[m
+[31m-                'Recompile it without this flag if possible, see also:',[m
+[31m-                '    https://bugs.php.net/bug.php?id=22999'[m
+[31m-            );[m
+[31m-        }[m
+[31m-[m
+[31m-        if (false !== strpos($configure, '--with-curlwrappers')) {[m
+[31m-            $warnings['curlwrappers'] = array([m
+[31m-                'PHP was compiled with --with-curlwrappers which will cause issues with HTTP authentication and GitHub.',[m
+[31m-                'Recompile it without this flag if possible'[m
+[31m-            );[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    // Stringify the message arrays[m
+[31m-    foreach ($errors as $key => $value) {[m
+[31m-        $errors[$key] = PHP_EOL.implode(PHP_EOL, $value);[m
+[31m-    }[m
+[31m-[m
+[31m-    foreach ($warnings as $key => $value) {[m
+[31m-        $warnings[$key] = PHP_EOL.implode(PHP_EOL, $value);[m
+[31m-    }[m
+[31m-[m
+[31m-    return !empty($errors) || !empty($warnings);[m
+[31m-}[m
+[31m-[m
+[31m-[m
+[31m-/**[m
+[31m- * Outputs an array of issues[m
+[31m- *[m
+[31m- * @param array $issues[m
+[31m- */[m
+[31m-function outputIssues($issues)[m
+[31m-{[m
+[31m-    foreach ($issues as $issue) {[m
+[31m-        out($issue, 'info');[m
+[31m-    }[m
+[31m-    out('');[m
+[31m-}[m
+[31m-[m
+[31m-/**[m
+[31m- * Outputs any warnings found[m
+[31m- *[m
+[31m- * @param array $warnings[m
+[31m- */[m
+[31m-function showWarnings($warnings)[m
+[31m-{[m
+[31m-    if (!empty($warnings)) {[m
+[31m-        out('Some settings on your machine may cause stability issues with Composer.', 'error');[m
+[31m-        out('If you encounter issues, try to change the following:', 'error');[m
+[31m-        outputIssues($warnings);[m
+[31m-    }[m
+[31m-}[m
+[31m-[m
+[31m-/**[m
+[31m- * Outputs an end of process warning if tls has been bypassed[m
+[31m- *[m
+[31m- * @param bool $disableTls Bypass tls[m
+[31m- */[m
+[31m-function showSecurityWarning($disableTls)[m
+[31m-{[m
+[31m-    if ($disableTls) {[m
+[31m-        out('You have instructed the Installer not to enforce SSL/TLS security on remote HTTPS requests.', 'info');[m
+[31m-        out('This will leave all downloads during installation vulnerable to Man-In-The-Middle (MITM) attacks', 'info');[m
+[31m-    }[m
+[31m-}[m
+[31m-[m
+[31m-/**[m
+[31m- * colorize output[m
+[31m- */[m
+[31m-function out($text, $color = null, $newLine = true)[m
+[31m-{[m
+[31m-    $styles = array([m
+[31m-        'success' => "\033[0;32m%s\033[0m",[m
+[31m-        'error' => "\033[31;31m%s\033[0m",[m
+[31m-        'info' => "\033[33;33m%s\033[0m"[m
+[31m-    );[m
+[31m-[m
+[31m-    $format = '%s';[m
+[31m-[m
+[31m-    if (isset($styles[$color]) && USE_ANSI) {[m
+[31m-        $format = $styles[$color];[m
+[31m-    }[m
+[31m-[m
+[31m-    if ($newLine) {[m
+[31m-        $format .= PHP_EOL;[m
+[31m-    }[m
+[31m-[m
+[31m-    printf($format, $text);[m
+[31m-}[m
+[31m-[m
+[31m-/**[m
+[31m- * Returns the system-dependent Composer home location, which may not exist[m
+[31m- *[m
+[31m- * @return string[m
+[31m- */[m
+[31m-function getHomeDir()[m
+[31m-{[m
+[31m-    $home = getenv('COMPOSER_HOME');[m
+[31m-    if ($home) {[m
+[31m-        return $home;[m
+[31m-    }[m
+[31m-[m
+[31m-    $userDir = getUserDir();[m
+[31m-[m
+[31m-    if (defined('PHP_WINDOWS_VERSION_MAJOR')) {[m
+[31m-        return $userDir.'/Composer';[m
+[31m-    }[m
+[31m-[m
+[31m-    $dirs = array();[m
+[31m-[m
+[31m-    if (useXdg()) {[m
+[31m-        // XDG Base Directory Specifications[m
+[31m-        $xdgConfig = getenv('XDG_CONFIG_HOME');[m
+[31m-        if (!$xdgConfig) {[m
+[31m-            $xdgConfig = $userDir . '/.config';[m
+[31m-        }[m
+[31m-[m
+[31m-        $dirs[] = $xdgConfig . '/composer';[m
+[31m-    }[m
+[31m-[m
+[31m-    $dirs[] = $userDir . '/.composer';[m
+[31m-[m
+[31m-    // select first dir which exists of: $XDG_CONFIG_HOME/composer or ~/.composer[m
+[31m-    foreach ($dirs as $dir) {[m
+[31m-        if (is_dir($dir)) {[m
+[31m-            return $dir;[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    // if none exists, we default to first defined one (XDG one if system uses it, or ~/.composer otherwise)[m
+[31m-    return $dirs[0];[m
+[31m-}[m
+[31m-[m
+[31m-/**[m
+[31m- * Returns the location of the user directory from the environment[m
+[31m- * @throws RuntimeException If the environment value does not exists[m
+[31m- *[m
+[31m- * @return string[m
+[31m- */[m
+[31m-function getUserDir()[m
+[31m-{[m
+[31m-    $userEnv = defined('PHP_WINDOWS_VERSION_MAJOR') ? 'APPDATA' : 'HOME';[m
+[31m-    $userDir = getenv($userEnv);[m
+[31m-[m
+[31m-    if (!$userDir) {[m
+[31m-        throw new RuntimeException('The '.$userEnv.' or COMPOSER_HOME environment variable must be set for composer to run correctly');[m
+[31m-    }[m
+[31m-[m
+[31m-    return rtrim(strtr($userDir, '\\', '/'), '/');[m
+[31m-}[m
+[31m-[m
+[31m-/**[m
+[31m- * @return bool[m
+[31m- */[m
+[31m-function useXdg()[m
+[31m-{[m
+[31m-    foreach (array_keys($_SERVER) as $key) {[m
+[31m-        if (strpos($key, 'XDG_') === 0) {[m
+[31m-            return true;[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    if (is_dir('/etc/xdg')) {[m
+[31m-        return true;[m
+[31m-    }[m
+[31m-[m
+[31m-    return false;[m
+[31m-}[m
+[31m-[m
+[31m-function validateCaFile($contents)[m
+[31m-{[m
+[31m-    // assume the CA is valid if php is vulnerable to[m
+[31m-    // https://www.sektioneins.de/advisories/advisory-012013-php-openssl_x509_parse-memory-corruption-vulnerability.html[m
+[31m-    if ([m
+[31m-        PHP_VERSION_ID <= 50327[m
+[31m-        || (PHP_VERSION_ID >= 50400 && PHP_VERSION_ID < 50422)[m
+[31m-        || (PHP_VERSION_ID >= 50500 && PHP_VERSION_ID < 50506)[m
+[31m-    ) {[m
+[31m-        return !empty($contents);[m
+[31m-    }[m
+[31m-[m
+[31m-    return (bool) openssl_x509_parse($contents);[m
+[31m-}[m
+[31m-[m
+[31m-class Installer[m
+[31m-{[m
+[31m-    private $quiet;[m
+[31m-    private $disableTls;[m
+[31m-    private $cafile;[m
+[31m-    private $displayPath;[m
+[31m-    private $target;[m
+[31m-    private $tmpFile;[m
+[31m-    private $tmpCafile;[m
+[31m-    private $baseUrl;[m
+[31m-    private $algo;[m
+[31m-    private $errHandler;[m
+[31m-    private $httpClient;[m
+[31m-    private $pubKeys = array();[m
+[31m-    private $installs = array();[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Constructor - must not do anything that throws an exception[m
+[31m-     *[m
+[31m-     * @param bool $quiet Quiet mode[m
+[31m-     * @param bool $disableTls Bypass tls[m
+[31m-     * @param mixed $cafile Path to CA bundle, or false[m
+[31m-     */[m
+[31m-    public function __construct($quiet, $disableTls, $caFile)[m
+[31m-    {[m
+[31m-        if (($this->quiet = $quiet)) {[m
+[31m-            ob_start();[m
+[31m-        }[m
+[31m-        $this->disableTls = $disableTls;[m
+[31m-        $this->cafile = $caFile;[m
+[31m-        $this->errHandler = new ErrorHandler();[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Runs the installer[m
+[31m-     *[m
+[31m-     * @param mixed $version Specific version to install, or false[m
+[31m-     * @param mixed $installDir Specific installation directory, or false[m
+[31m-     * @param string $filename Specific filename to save to, or composer.phar[m
+[31m-     * @param string $channel Specific version channel to use[m
+[31m-     * @throws Exception If anything other than a RuntimeException is caught[m
+[31m-     *[m
+[31m-     * @return bool If the installation succeeded[m
+[31m-     */[m
+[31m-    public function run($version, $installDir, $filename, $channel)[m
+[31m-    {[m
+[31m-        try {[m
+[31m-            $this->initTargets($installDir, $filename);[m
+[31m-            $this->initTls();[m
+[31m-            $this->httpClient = new HttpClient($this->disableTls, $this->cafile);[m
+[31m-            $result = $this->install($version, $channel);[m
+[31m-[m
+[31m-            // in case --1 or --2 is passed, we leave the default channel for next self-update to stable[m
+[31m-            if (1 === preg_match('{^\d+$}D', $channel)) {[m
+[31m-                $channel = 'stable';[m
+[31m-            }[m
+[31m-[m
+[31m-            if ($result && $channel !== 'stable' && !$version && defined('PHP_BINARY')) {[m
+[31m-                $null = (defined('PHP_WINDOWS_VERSION_MAJOR') ? 'NUL' : '/dev/null');[m
+[31m-                @exec(escapeshellarg(PHP_BINARY) .' '.escapeshellarg($this->target).' self-update --'.$channel.' --set-channel-only -q > '.$null.' 2> '.$null, $output);[m
+[31m-            }[m
+[31m-        } catch (Exception $e) {[m
+[31m-            $result = false;[m
+[31m-        }[m
+[31m-[m
+[31m-        // Always clean up[m
+[31m-        $this->cleanUp($result);[m
+[31m-[m
+[31m-        if (isset($e)) {[m
+[31m-            // Rethrow anything that is not a RuntimeException[m
+[31m-            if (!$e instanceof RuntimeException) {[m
+[31m-                throw $e;[m
+[31m-            }[m
+[31m-            out($e->getMessage(), 'error');[m
+[31m-        }[m
+[31m-        return $result;[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Initialization methods to set the required filenames and composer url[m
+[31m-     *[m
+[31m-     * @param mixed $installDir Specific installation directory, or false[m
+[31m-     * @param string $filename Specific filename to save to, or composer.phar[m
+[31m-     * @throws RuntimeException If the installation directory is not writable[m
+[31m-     */[m
+[31m-    protected function initTargets($installDir, $filename)[m
+[31m-    {[m
+[31m-        $this->displayPath = ($installDir ? rtrim($installDir, '/').'/' : '').$filename;[m
+[31m-        $installDir = $installDir ? realpath($installDir) : getcwd();[m
+[31m-[m
+[31m-        if (!is_writeable($installDir)) {[m
+[31m-            throw new RuntimeException('The installation directory "'.$installDir.'" is not writable');[m
+[31m-        }[m
+[31m-[m
+[31m-        $this->target = $installDir.DIRECTORY_SEPARATOR.$filename;[m
+[31m-        $this->tmpFile = $installDir.DIRECTORY_SEPARATOR.basename($this->target, '.phar').'-temp.phar';[m
+[31m-[m
+[31m-        $uriScheme = $this->disableTls ? 'http' : 'https';[m
+[31m-        $this->baseUrl = $uriScheme.'://getcomposer.org';[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * A wrapper around methods to check tls and write public keys[m
+[31m-     * @throws RuntimeException If SHA384 is not supported[m
+[31m-     */[m
+[31m-    protected function initTls()[m
+[31m-    {[m
+[31m-        if ($this->disableTls) {[m
+[31m-            return;[m
+[31m-        }[m
+[31m-[m
+[31m-        if (!in_array('sha384', array_map('strtolower', openssl_get_md_methods()))) {[m
+[31m-            throw new RuntimeException('SHA384 is not supported by your openssl extension');[m
+[31m-        }[m
+[31m-[m
+[31m-        $this->algo = defined('OPENSSL_ALGO_SHA384') ? OPENSSL_ALGO_SHA384 : 'SHA384';[m
+[31m-        $home = $this->getComposerHome();[m
+[31m-[m
+[31m-        $this->pubKeys = array([m
+[31m-            'dev' => $this->installKey(self::getPKDev(), $home, 'keys.dev.pub'),[m
+[31m-            'tags' => $this->installKey(self::getPKTags(), $home, 'keys.tags.pub')[m
+[31m-        );[m
+[31m-[m
+[31m-        if (empty($this->cafile) && !HttpClient::getSystemCaRootBundlePath()) {[m
+[31m-            $this->cafile = $this->tmpCafile = $this->installKey(HttpClient::getPackagedCaFile(), $home, 'cacert-temp.pem');[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Returns the Composer home directory, creating it if required[m
+[31m-     * @throws RuntimeException If the directory cannot be created[m
+[31m-     *[m
+[31m-     * @return string[m
+[31m-     */[m
+[31m-    protected function getComposerHome()[m
+[31m-    {[m
+[31m-        $home = getHomeDir();[m
+[31m-[m
+[31m-        if (!is_dir($home)) {[m
+[31m-            $this->errHandler->start();[m
+[31m-[m
+[31m-            if (!mkdir($home, 0777, true)) {[m
+[31m-                throw new RuntimeException(sprintf([m
+[31m-                    'Unable to create Composer home directory "%s": %s',[m
+[31m-                    $home,[m
+[31m-                    $this->errHandler->message[m
+[31m-                ));[m
+[31m-            }[m
+[31m-            $this->installs[] = $home;[m
+[31m-            $this->errHandler->stop();[m
+[31m-        }[m
+[31m-        return $home;[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Writes public key data to disc[m
+[31m-     *[m
+[31m-     * @param string $data The public key(s) in pem format[m
+[31m-     * @param string $path The directory to write to[m
+[31m-     * @param string $filename The name of the file[m
+[31m-     * @throws RuntimeException If the file cannot be written[m
+[31m-     *[m
+[31m-     * @return string The path to the saved data[m
+[31m-     */[m
+[31m-    protected function installKey($data, $path, $filename)[m
+[31m-    {[m
+[31m-        $this->errHandler->start();[m
+[31m-[m
+[31m-        $target = $path.DIRECTORY_SEPARATOR.$filename;[m
+[31m-        $installed = file_exists($target);[m
+[31m-        $write = file_put_contents($target, $data, LOCK_EX);[m
+[31m-        @chmod($target, 0644);[m
+[31m-[m
+[31m-        $this->errHandler->stop();[m
+[31m-[m
+[31m-        if (!$write) {[m
+[31m-            throw new RuntimeException(sprintf('Unable to write %s to: %s', $filename, $path));[m
+[31m-        }[m
+[31m-[m
+[31m-        if (!$installed) {[m
+[31m-            $this->installs[] = $target;[m
+[31m-        }[m
+[31m-[m
+[31m-        return $target;[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * The main install function[m
+[31m-     *[m
+[31m-     * @param mixed $version Specific version to install, or false[m
+[31m-     * @param string $channel Version channel to use[m
+[31m-     *[m
+[31m-     * @return bool If the installation succeeded[m
+[31m-     */[m
+[31m-    protected function install($version, $channel)[m
+[31m-    {[m
+[31m-        $retries = 3;[m
+[31m-        $result = false;[m
+[31m-        $infoMsg = 'Downloading...';[m
+[31m-        $infoType = 'info';[m
+[31m-[m
+[31m-        while ($retries--) {[m
+[31m-            if (!$this->quiet) {[m
+[31m-                out($infoMsg, $infoType);[m
+[31m-                $infoMsg = 'Retrying...';[m
+[31m-                $infoType = 'error';[m
+[31m-            }[m
+[31m-[m
+[31m-            if (!$this->getVersion($channel, $version, $url, $error)) {[m
+[31m-                out($error, 'error');[m
+[31m-                continue;[m
+[31m-            }[m
+[31m-[m
+[31m-            if (!$this->downloadToTmp($url, $signature, $error)) {[m
+[31m-                out($error, 'error');[m
+[31m-                continue;[m
+[31m-            }[m
+[31m-[m
+[31m-            if (!$this->verifyAndSave($version, $signature, $error)) {[m
+[31m-                out($error, 'error');[m
+[31m-                continue;[m
+[31m-            }[m
+[31m-[m
+[31m-            $result = true;[m
+[31m-            break;[m
+[31m-        }[m
+[31m-[m
+[31m-        if (!$this->quiet) {[m
+[31m-            if ($result) {[m
+[31m-                out(PHP_EOL."Composer (version {$version}) successfully installed to: {$this->target}", 'success');[m
+[31m-                out("Use it: php {$this->displayPath}", 'info');[m
+[31m-                out('');[m
+[31m-            } else {[m
+[31m-                out('The download failed repeatedly, aborting.', 'error');[m
+[31m-            }[m
+[31m-        }[m
+[31m-        return $result;[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Sets the version url, downloading version data if required[m
+[31m-     *[m
+[31m-     * @param string $channel Version channel to use[m
+[31m-     * @param false|string $version Version to install, or set by method[m
+[31m-     * @param null|string $url The versioned url, set by method[m
+[31m-     * @param null|string $error Set by method on failure[m
+[31m-     *[m
+[31m-     * @return bool If the operation succeeded[m
+[31m-     */[m
+[31m-    protected function getVersion($channel, &$version, &$url, &$error)[m
+[31m-    {[m
+[31m-        $error = '';[m
+[31m-[m
+[31m-        if ($version) {[m
+[31m-            if (empty($url)) {[m
+[31m-                $url = $this->baseUrl."/download/{$version}/composer.phar";[m
+[31m-            }[m
+[31m-            return true;[m
+[31m-        }[m
+[31m-[m
+[31m-        $this->errHandler->start();[m
+[31m-[m
+[31m-        if ($this->downloadVersionData($data, $error)) {[m
+[31m-            $this->parseVersionData($data, $channel, $version, $url);[m
+[31m-        }[m
+[31m-[m
+[31m-        $this->errHandler->stop();[m
+[31m-        return empty($error);[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Downloads and json-decodes version data[m
+[31m-     *[m
+[31m-     * @param null|array $data Downloaded version data, set by method[m
+[31m-     * @param null|string $error Set by method on failure[m
+[31m-     *[m
+[31m-     * @return bool If the operation succeeded[m
+[31m-     */[m
+[31m-    protected function downloadVersionData(&$data, &$error)[m
+[31m-    {[m
+[31m-        $url = $this->baseUrl.'/versions';[m
+[31m-        $errFmt = 'The "%s" file could not be %s: %s';[m
+[31m-[m
+[31m-        if (!$json = $this->httpClient->get($url)) {[m
+[31m-            $error = sprintf($errFmt, $url, 'downloaded', $this->errHandler->message);[m
+[31m-            return false;[m
+[31m-        }[m
+[31m-[m
+[31m-        if (!$data = json_decode($json, true)) {[m
+[31m-            $error = sprintf($errFmt, $url, 'json-decoded', $this->getJsonError());[m
+[31m-            return false;[m
+[31m-        }[m
+[31m-        return true;[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * A wrapper around the methods needed to download and save the phar[m
+[31m-     *[m
+[31m-     * @param string $url The versioned download url[m
+[31m-     * @param null|string $signature Set by method on successful download[m
+[31m-     * @param null|string $error Set by method on failure[m
+[31m-     *[m
+[31m-     * @return bool If the operation succeeded[m
+[31m-     */[m
+[31m-    protected function downloadToTmp($url, &$signature, &$error)[m
+[31m-    {[m
+[31m-        $error = '';[m
+[31m-        $errFmt = 'The "%s" file could not be downloaded: %s';[m
+[31m-        $sigUrl = $url.'.sig';[m
+[31m-        $this->errHandler->start();[m
+[31m-[m
+[31m-        if (!$fh = fopen($this->tmpFile, 'w')) {[m
+[31m-            $error = sprintf('Could not create file "%s": %s', $this->tmpFile, $this->errHandler->message);[m
+[31m-[m
+[31m-        } elseif (!$this->getSignature($sigUrl, $signature)) {[m
+[31m-            $error = sprintf($errFmt, $sigUrl, $this->errHandler->message);[m
+[31m-[m
+[31m-        } elseif (!fwrite($fh, $this->httpClient->get($url))) {[m
+[31m-            $error = sprintf($errFmt, $url, $this->errHandler->message);[m
+[31m-        }[m
+[31m-[m
+[31m-        if (is_resource($fh)) {[m
+[31m-            fclose($fh);[m
+[31m-        }[m
+[31m-        $this->errHandler->stop();[m
+[31m-        return empty($error);[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Verifies the downloaded file and saves it to the target location[m
+[31m-     *[m
+[31m-     * @param string $version The composer version downloaded[m
+[31m-     * @param string $signature The digital signature to check[m
+[31m-     * @param null|string $error Set by method on failure[m
+[31m-     *[m
+[31m-     * @return bool If the operation succeeded[m
+[31m-     */[m
+[31m-    protected function verifyAndSave($version, $signature, &$error)[m
+[31m-    {[m
+[31m-        $error = '';[m
+[31m-[m
+[31m-        if (!$this->validatePhar($this->tmpFile, $pharError)) {[m
+[31m-            $error = 'The download is corrupt: '.$pharError;[m
+[31m-[m
+[31m-        } elseif (!$this->verifySignature($version, $signature, $this->tmpFile)) {[m
+[31m-            $error = 'Signature mismatch, could not verify the phar file integrity';[m
+[31m-[m
+[31m-        } else {[m
+[31m-            $this->errHandler->start();[m
+[31m-[m
+[31m-            if (!rename($this->tmpFile, $this->target)) {[m
+[31m-                $error = sprintf('Could not write to file "%s": %s', $this->target, $this->errHandler->message);[m
+[31m-            }[m
+[31m-            chmod($this->target, 0755);[m
+[31m-            $this->errHandler->stop();[m
+[31m-        }[m
+[31m-[m
+[31m-        return empty($error);[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Parses an array of version data to match the required channel[m
+[31m-     *[m
+[31m-     * @param array $data Downloaded version data[m
+[31m-     * @param mixed $channel Version channel to use[m
+[31m-     * @param false|string $version Set by method[m
+[31m-     * @param mixed $url The versioned url, set by method[m
+[31m-     */[m
+[31m-    protected function parseVersionData(array $data, $channel, &$version, &$url)[m
+[31m-    {[m
+[31m-        foreach ($data[$channel] as $candidate) {[m
+[31m-            if ($candidate['min-php'] <= PHP_VERSION_ID) {[m
+[31m-                $version = $candidate['version'];[m
+[31m-                $url = $this->baseUrl.$candidate['path'];[m
+[31m-                break;[m
+[31m-            }[m
+[31m-        }[m
+[31m-[m
+[31m-        if (!$version) {[m
+[31m-            $error = sprintf([m
+[31m-                'None of the %d %s version(s) of Composer matches your PHP version (%s / ID: %d)',[m
+[31m-                count($data[$channel]),[m
+[31m-                $channel,[m
+[31m-                PHP_VERSION,[m
+[31m-                PHP_VERSION_ID[m
+[31m-            );[m
+[31m-            throw new RuntimeException($error);[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Downloads the digital signature of required phar file[m
+[31m-     *[m
+[31m-     * @param string $url The signature url[m
+[31m-     * @param null|string $signature Set by method on success[m
+[31m-     *[m
+[31m-     * @return bool If the download succeeded[m
+[31m-     */[m
+[31m-    protected function getSignature($url, &$signature)[m
+[31m-    {[m
+[31m-        if (!$result = $this->disableTls) {[m
+[31m-            $signature = $this->httpClient->get($url);[m
+[31m-[m
+[31m-            if ($signature) {[m
+[31m-                $signature = json_decode($signature, true);[m
+[31m-                $signature = base64_decode($signature['sha384']);[m
+[31m-                $result = true;[m
+[31m-            }[m
+[31m-        }[m
+[31m-[m
+[31m-        return $result;[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Verifies the signature of the downloaded phar[m
+[31m-     *[m
+[31m-     * @param string $version The composer versione[m
+[31m-     * @param string $signature The downloaded digital signature[m
+[31m-     * @param string $file The temp phar file[m
+[31m-     *[m
+[31m-     * @return bool If the operation succeeded[m
+[31m-     */[m
+[31m-    protected function verifySignature($version, $signature, $file)[m
+[31m-    {[m
+[31m-        if (!$result = $this->disableTls) {[m
+[31m-            $path = preg_match('{^[0-9a-f]{40}$}', $version) ? $this->pubKeys['dev'] : $this->pubKeys['tags'];[m
+[31m-            $pubkeyid = openssl_pkey_get_public('file://'.$path);[m
+[31m-[m
+[31m-            $result = 1 === openssl_verify([m
+[31m-                file_get_contents($file),[m
+[31m-                $signature,[m
+[31m-                $pubkeyid,[m
+[31m-                $this->algo[m
+[31m-            );[m
+[31m-[m
+[31m-            // PHP 8 automatically frees the key instance and deprecates the function[m
+[31m-            if (PHP_VERSION_ID < 80000) {[m
+[31m-                openssl_free_key($pubkeyid);[m
+[31m-            }[m
+[31m-        }[m
+[31m-[m
+[31m-        return $result;[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Validates the downloaded phar file[m
+[31m-     *[m
+[31m-     * @param string $pharFile The temp phar file[m
+[31m-     * @param null|string $error Set by method on failure[m
+[31m-     *[m
+[31m-     * @return bool If the operation succeeded[m
+[31m-     */[m
+[31m-    protected function validatePhar($pharFile, &$error)[m
+[31m-    {[m
+[31m-        if (ini_get('phar.readonly')) {[m
+[31m-            return true;[m
+[31m-        }[m
+[31m-[m
+[31m-        try {[m
+[31m-            // Test the phar validity[m
+[31m-            $phar = new Phar($pharFile);[m
+[31m-            // Free the variable to unlock the file[m
+[31m-            unset($phar);[m
+[31m-            $result = true;[m
+[31m-[m
+[31m-        } catch (Exception $e) {[m
+[31m-            if (!$e instanceof UnexpectedValueException && !$e instanceof PharException) {[m
+[31m-                throw $e;[m
+[31m-            }[m
+[31m-            $error = $e->getMessage();[m
+[31m-            $result = false;[m
+[31m-        }[m
+[31m-        return $result;[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Returns a string representation of the last json error[m
+[31m-     *[m
+[31m-     * @return string The error string or code[m
+[31m-     */[m
+[31m-    protected function getJsonError()[m
+[31m-    {[m
+[31m-        if (function_exists('json_last_error_msg')) {[m
+[31m-            return json_last_error_msg();[m
+[31m-        } else {[m
+[31m-            return 'json_last_error = '.json_last_error();[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Cleans up resources at the end of the installation[m
+[31m-     *[m
+[31m-     * @param bool $result If the installation succeeded[m
+[31m-     */[m
+[31m-    protected function cleanUp($result)[m
+[31m-    {[m
+[31m-        if (!$result) {[m
+[31m-            // Output buffered errors[m
+[31m-            if ($this->quiet) {[m
+[31m-                $this->outputErrors();[m
+[31m-            }[m
+[31m-            // Clean up stuff we created[m
+[31m-            $this->uninstall();[m
+[31m-        } elseif ($this->tmpCafile) {[m
+[31m-            @unlink($this->tmpCafile);[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Outputs unique errors when in quiet mode[m
+[31m-     *[m
+[31m-     */[m
+[31m-    protected function outputErrors()[m
+[31m-    {[m
+[31m-        $errors = explode(PHP_EOL, ob_get_clean());[m
+[31m-        $shown = array();[m
+[31m-[m
+[31m-        foreach ($errors as $error) {[m
+[31m-            if ($error && !in_array($error, $shown)) {[m
+[31m-                out($error, 'error');[m
+[31m-                $shown[] = $error;[m
+[31m-            }[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Uninstalls newly-created files and directories on failure[m
+[31m-     *[m
+[31m-     */[m
+[31m-    protected function uninstall()[m
+[31m-    {[m
+[31m-        foreach (array_reverse($this->installs) as $target) {[m
+[31m-            if (is_file($target)) {[m
+[31m-                @unlink($target);[m
+[31m-            } elseif (is_dir($target)) {[m
+[31m-                @rmdir($target);[m
+[31m-            }[m
+[31m-        }[m
+[31m-[m
+[31m-        if ($this->tmpFile !== null && file_exists($this->tmpFile)) {[m
+[31m-            @unlink($this->tmpFile);[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    public static function getPKDev()[m
+[31m-    {[m
+[31m-        return <<<PKDEV[m
+[31m------BEGIN PUBLIC KEY-----[m
+[31m-MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAnBDHjZS6e0ZMoK3xTD7f[m
+[31m-FNCzlXjX/Aie2dit8QXA03pSrOTbaMnxON3hUL47Lz3g1SC6YJEMVHr0zYq4elWi[m
+[31m-i3ecFEgzLcj+pZM5X6qWu2Ozz4vWx3JYo1/a/HYdOuW9e3lwS8VtS0AVJA+U8X0A[m
+[31m-hZnBmGpltHhO8hPKHgkJtkTUxCheTcbqn4wGHl8Z2SediDcPTLwqezWKUfrYzu1f[m
+[31m-o/j3WFwFs6GtK4wdYtiXr+yspBZHO3y1udf8eFFGcb2V3EaLOrtfur6XQVizjOuk[m
+[31m-8lw5zzse1Qp/klHqbDRsjSzJ6iL6F4aynBc6Euqt/8ccNAIz0rLjLhOraeyj4eNn[m
+[31m-8iokwMKiXpcrQLTKH+RH1JCuOVxQ436bJwbSsp1VwiqftPQieN+tzqy+EiHJJmGf[m
+[31m-TBAbWcncicCk9q2md+AmhNbvHO4PWbbz9TzC7HJb460jyWeuMEvw3gNIpEo2jYa9[m
+[31m-pMV6cVqnSa+wOc0D7pC9a6bne0bvLcm3S+w6I5iDB3lZsb3A9UtRiSP7aGSo7D72[m
+[31m-8tC8+cIgZcI7k9vjvOqH+d7sdOU2yPCnRY6wFh62/g8bDnUpr56nZN1G89GwM4d4[m
+[31m-r/TU7BQQIzsZgAiqOGXvVklIgAMiV0iucgf3rNBLjjeNEwNSTTG9F0CtQ+7JLwaE[m
+[31m-wSEuAuRm+pRqi8BRnQ/GKUcCAwEAAQ==[m
+[31m------END PUBLIC KEY-----[m
+[31m-PKDEV;[m
+[31m-    }[m
+[31m-[m
+[31m-    public static function getPKTags()[m
+[31m-    {[m
+[31m-        return <<<PKTAGS[m
+[31m------BEGIN PUBLIC KEY-----[m
+[31m-MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA0Vi/2K6apCVj76nCnCl2[m
+[31m-MQUPdK+A9eqkYBacXo2wQBYmyVlXm2/n/ZsX6pCLYPQTHyr5jXbkQzBw8SKqPdlh[m
+[31m-vA7NpbMeNCz7wP/AobvUXM8xQuXKbMDTY2uZ4O7sM+PfGbptKPBGLe8Z8d2sUnTO[m
+[31m-bXtX6Lrj13wkRto7st/w/Yp33RHe9SlqkiiS4MsH1jBkcIkEHsRaveZzedUaxY0M[m
+[31m-mba0uPhGUInpPzEHwrYqBBEtWvP97t2vtfx8I5qv28kh0Y6t+jnjL1Urid2iuQZf[m
+[31m-noCMFIOu4vksK5HxJxxrN0GOmGmwVQjOOtxkwikNiotZGPR4KsVj8NnBrLX7oGuM[m
+[31m-nQvGciiu+KoC2r3HDBrpDeBVdOWxDzT5R4iI0KoLzFh2pKqwbY+obNPS2bj+2dgJ[m
+[31m-rV3V5Jjry42QOCBN3c88wU1PKftOLj2ECpewY6vnE478IipiEu7EAdK8Zwj2LmTr[m
+[31m-RKQUSa9k7ggBkYZWAeO/2Ag0ey3g2bg7eqk+sHEq5ynIXd5lhv6tC5PBdHlWipDK[m
+[31m-tl2IxiEnejnOmAzGVivE1YGduYBjN+mjxDVy8KGBrjnz1JPgAvgdwJ2dYw4Rsc/e[m
+[31m-TzCFWGk/HM6a4f0IzBWbJ5ot0PIi4amk07IotBXDWwqDiQTwyuGCym5EqWQ2BD95[m
+[31m-RGv89BPD+2DLnJysngsvVaUCAwEAAQ==[m
+[31m------END PUBLIC KEY-----[m
+[31m-PKTAGS;[m
+[31m-    }[m
+[31m-}[m
+[31m-[m
+[31m-class ErrorHandler[m
+[31m-{[m
+[31m-    public $message;[m
+[31m-    protected $active;[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Handle php errors[m
+[31m-     *[m
+[31m-     * @param mixed $code The error code[m
+[31m-     * @param mixed $msg The error message[m
+[31m-     */[m
+[31m-    public function handleError($code, $msg)[m
+[31m-    {[m
+[31m-        if ($this->message) {[m
+[31m-            $this->message .= PHP_EOL;[m
+[31m-        }[m
+[31m-        $this->message .= preg_replace('{^file_get_contents\(.*?\): }', '', $msg);[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Starts error-handling if not already active[m
+[31m-     *[m
+[31m-     * Any message is cleared[m
+[31m-     */[m
+[31m-    public function start()[m
+[31m-    {[m
+[31m-        if (!$this->active) {[m
+[31m-            set_error_handler(array($this, 'handleError'));[m
+[31m-            $this->active = true;[m
+[31m-        }[m
+[31m-        $this->message = '';[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Stops error-handling if active[m
+[31m-     *[m
+[31m-     * Any message is preserved until the next call to start()[m
+[31m-     */[m
+[31m-    public function stop()[m
+[31m-    {[m
+[31m-        if ($this->active) {[m
+[31m-            restore_error_handler();[m
+[31m-            $this->active = false;[m
+[31m-        }[m
+[31m-    }[m
+[31m-}[m
+[31m-[m
+[31m-class NoProxyPattern[m
+[31m-{[m
+[31m-    private $composerInNoProxy = false;[m
+[31m-    private $rulePorts = array();[m
+[31m-[m
+[31m-    public function __construct($pattern)[m
+[31m-    {[m
+[31m-        $rules = preg_split('{[\s,]+}', $pattern, null, PREG_SPLIT_NO_EMPTY);[m
+[31m-[m
+[31m-        if ($matches = preg_grep('{getcomposer\.org(?::\d+)?}i', $rules)) {[m
+[31m-            $this->composerInNoProxy = true;[m
+[31m-[m
+[31m-            foreach ($matches as $match) {[m
+[31m-                if (strpos($match, ':') !== false) {[m
+[31m-                    list(, $port) = explode(':', $match);[m
+[31m-                    $this->rulePorts[] = (int) $port;[m
+[31m-                }[m
+[31m-            }[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * Returns true if NO_PROXY contains getcomposer.org[m
+[31m-     *[m
+[31m-     * @param string $url http(s)://getcomposer.org[m
+[31m-     *[m
+[31m-     * @return bool[m
+[31m-     */[m
+[31m-    public function test($url)[m
+[31m-    {[m
+[31m-        if (!$this->composerInNoProxy) {[m
+[31m-            return false;[m
+[31m-        }[m
+[31m-[m
+[31m-        if (empty($this->rulePorts)) {[m
+[31m-            return true;[m
+[31m-        }[m
+[31m-[m
+[31m-        if (strpos($url, 'http://') === 0) {[m
+[31m-            $port = 80;[m
+[31m-        } else {[m
+[31m-            $port = 443;[m
+[31m-        }[m
+[31m-[m
+[31m-        return in_array($port, $this->rulePorts);[m
+[31m-    }[m
+[31m-}[m
+[31m-[m
+[31m-class HttpClient {[m
+[31m-[m
+[31m-    /** @var null|string */[m
+[31m-    private static $caPath;[m
+[31m-[m
+[31m-    private $options = array('http' => array());[m
+[31m-    private $disableTls = false;[m
+[31m-[m
+[31m-    public function __construct($disableTls = false, $cafile = false)[m
+[31m-    {[m
+[31m-        $this->disableTls = $disableTls;[m
+[31m-        if ($this->disableTls === false) {[m
+[31m-            if (!empty($cafile) && !is_dir($cafile)) {[m
+[31m-                if (!is_readable($cafile) || !validateCaFile(file_get_contents($cafile))) {[m
+[31m-                    throw new RuntimeException('The configured cafile (' .$cafile. ') was not valid or could not be read.');[m
+[31m-                }[m
+[31m-            }[m
+[31m-            $options = $this->getTlsStreamContextDefaults($cafile);[m
+[31m-            $this->options = array_replace_recursive($this->options, $options);[m
+[31m-        }[m
+[31m-    }[m
+[31m-[m
+[31m-    public function get($url)[m
+[31m-    {[m
+[31m-        $context = $this->getStreamContext($url);[m
+[31m-        $result = file_get_contents($url, false, $context);[m
+[31m-[m
+[31m-        if ($result && extension_loaded('zlib')) {[m
+[31m-            $decode = false;[m
+[31m-            foreach ($http_response_header as $header) {[m
+[31m-                if (preg_match('{^content-encoding: *gzip *$}i', $header)) {[m
+[31m-                    $decode = true;[m
+[31m-                    continue;[m
+[31m-                } elseif (preg_match('{^HTTP/}i', $header)) {[m
+[31m-                    $decode = false;[m
+[31m-                }[m
+[31m-            }[m
+[31m-[m
+[31m-            if ($decode) {[m
+[31m-                if (version_compare(PHP_VERSION, '5.4.0', '>=')) {[m
+[31m-                    $result = zlib_decode($result);[m
+[31m-                } else {[m
+[31m-                    // work around issue with gzuncompress & co that do not work with all gzip checksums[m
+[31m-                    $result = file_get_contents('compress.zlib://data:application/octet-stream;base64,'.base64_encode($result));[m
+[31m-                }[m
+[31m-[m
+[31m-                if (!$result) {[m
+[31m-                    throw new RuntimeException('Failed to decode zlib stream');[m
+[31m-                }[m
+[31m-            }[m
+[31m-        }[m
+[31m-[m
+[31m-        return $result;[m
+[31m-    }[m
+[31m-[m
+[31m-    protected function getStreamContext($url)[m
+[31m-    {[m
+[31m-        if ($this->disableTls === false) {[m
+[31m-            if (PHP_VERSION_ID < 50600) {[m
+[31m-                $this->options['ssl']['SNI_server_name'] = parse_url($url, PHP_URL_HOST);[m
+[31m-            }[m
+[31m-        }[m
+[31m-        // Keeping the above mostly isolated from the code copied from Composer.[m
+[31m-        return $this->getMergedStreamContext($url);[m
+[31m-    }[m
+[31m-[m
+[31m-    protected function getTlsStreamContextDefaults($cafile)[m
+[31m-    {[m
+[31m-        $ciphers = implode(':', array([m
+[31m-            'ECDHE-RSA-AES128-GCM-SHA256',[m
+[31m-            'ECDHE-ECDSA-AES128-GCM-SHA256',[m
+[31m-            'ECDHE-RSA-AES256-GCM-SHA384',[m
+[31m-            'ECDHE-ECDSA-AES256-GCM-SHA384',[m
+[31m-            'DHE-RSA-AES128-GCM-SHA256',[m
+[31m-            'DHE-DSS-AES128-GCM-SHA256',[m
+[31m-            'kEDH+AESGCM',[m
+[31m-            'ECDHE-RSA-AES128-SHA256',[m
+[31m-            'ECDHE-ECDSA-AES128-SHA256',[m
+[31m-            'ECDHE-RSA-AES128-SHA',[m
+[31m-            'ECDHE-ECDSA-AES128-SHA',[m
+[31m-            'ECDHE-RSA-AES256-SHA384',[m
+[31m-            'ECDHE-ECDSA-AES256-SHA384',[m
+[31m-            'ECDHE-RSA-AES256-SHA',[m
+[31m-            'ECDHE-ECDSA-AES256-SHA',[m
+[31m-            'DHE-RSA-AES128-SHA256',[m
+[31m-            'DHE-RSA-AES128-SHA',[m
+[31m-            'DHE-DSS-AES128-SHA256',[m
+[31m-            'DHE-RSA-AES256-SHA256',[m
+[31m-            'DHE-DSS-AES256-SHA',[m
+[31m-            'DHE-RSA-AES256-SHA',[m
+[31m-            'AES128-GCM-SHA256',[m
+[31m-            'AES256-GCM-SHA384',[m
+[31m-            'AES128-SHA256',[m
+[31m-            'AES256-SHA256',[m
+[31m-            'AES128-SHA',[m
+[31m-            'AES256-SHA',[m
+[31m-            'AES',[m
+[31m-            'CAMELLIA',[m
+[31m-            'DES-CBC3-SHA',[m
+[31m-            '!aNULL',[m
+[31m-            '!eNULL',[m
+[31m-            '!EXPORT',[m
+[31m-            '!DES',[m
+[31m-            '!RC4',[m
+[31m-            '!MD5',[m
+[31m-            '!PSK',[m
+[31m-            '!aECDH',[m
+[31m-            '!EDH-DSS-DES-CBC3-SHA',[m
+[31m-            '!EDH-RSA-DES-CBC3-SHA',[m
+[31m-            '!KRB5-DES-CBC3-SHA',[m
+[31m-        ));[m
+[31m-[m
+[31m-        /**[m
+[31m-         * CN_match and SNI_server_name are only known once a URL is passed.[m
+[31m-         * They will be set in the getOptionsForUrl() method which receives a URL.[m
+[31m-         *[m
+[31m-         * cafile or capath can be overridden by passing in those options to constructor.[m
+[31m-         */[m
+[31m-        $options = array([m
+[31m-            'ssl' => array([m
+[31m-                'ciphers' => $ciphers,[m
+[31m-                'verify_peer' => true,[m
+[31m-                'verify_depth' => 7,[m
+[31m-                'SNI_enabled' => true,[m
+[31m-            )[m
+[31m-        );[m
+[31m-[m
+[31m-        /**[m
+[31m-         * Attempt to find a local cafile or throw an exception.[m
+[31m-         * The user may go download one if this occurs.[m
+[31m-         */[m
+[31m-        if (!$cafile) {[m
+[31m-            $cafile = self::getSystemCaRootBundlePath();[m
+[31m-        }[m
+[31m-        if (is_dir($cafile)) {[m
+[31m-            $options['ssl']['capath'] = $cafile;[m
+[31m-        } elseif ($cafile) {[m
+[31m-            $options['ssl']['cafile'] = $cafile;[m
+[31m-        } else {[m
+[31m-            throw new RuntimeException('A valid cafile could not be located automatically.');[m
+[31m-        }[m
+[31m-[m
+[31m-        /**[m
+[31m-         * Disable TLS compression to prevent CRIME attacks where supported.[m
+[31m-         */[m
+[31m-        if (version_compare(PHP_VERSION, '5.4.13') >= 0) {[m
+[31m-            $options['ssl']['disable_compression'] = true;[m
+[31m-        }[m
+[31m-[m
+[31m-        return $options;[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-     * function copied from Composer\Util\StreamContextFactory::initOptions[m
+[31m-     *[m
+[31m-     * Any changes should be applied there as well, or backported here.[m
+[31m-     *[m
+[31m-     * @param string $url URL the context is to be used for[m
+[31m-     * @return resource Default context[m
+[31m-     * @throws \RuntimeException if https proxy required and OpenSSL uninstalled[m
+[31m-     */[m
+[31m-    protected function getMergedStreamContext($url)[m
+[31m-    {[m
+[31m-        $options = $this->options;[m
+[31m-[m
+[31m-        // Handle HTTP_PROXY/http_proxy on CLI only for security reasons[m
+[31m-        if ((PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg') && (!empty($_SERVER['HTTP_PROXY']) || !empty($_SERVER['http_proxy']))) {[m
+[31m-            $proxy = parse_url(!empty($_SERVER['http_proxy']) ? $_SERVER['http_proxy'] : $_SERVER['HTTP_PROXY']);[m
+[31m-        }[m
+[31m-[m
+[31m-        // Prefer CGI_HTTP_PROXY if available[m
+[31m-        if (!empty($_SERVER['CGI_HTTP_PROXY'])) {[m
+[31m-            $proxy = parse_url($_SERVER['CGI_HTTP_PROXY']);[m
+[31m-        }[m
+[31m-[m
+[31m-        // Override with HTTPS proxy if present and URL is https[m
+[31m-        if (preg_match('{^https://}i', $url) && (!empty($_SERVER['HTTPS_PROXY']) || !empty($_SERVER['https_proxy']))) {[m
+[31m-            $proxy = parse_url(!empty($_SERVER['https_proxy']) ? $_SERVER['https_proxy'] : $_SERVER['HTTPS_PROXY']);[m
+[31m-        }[m
+[31m-[m
+[31m-        // Remove proxy if URL matches no_proxy directive[m
+[31m-        if (!empty($_SERVER['NO_PROXY']) || !empty($_SERVER['no_proxy']) && parse_url($url, PHP_URL_HOST)) {[m
+[31m-            $pattern = new NoProxyPattern(!empty($_SERVER['no_proxy']) ? $_SERVER['no_proxy'] : $_SERVER['NO_PROXY']);[m
+[31m-            if ($pattern->test($url)) {[m
+[31m-                unset($proxy);[m
+[31m-            }[m
+[31m-        }[m
+[31m-[m
+[31m-        if (!empty($proxy)) {[m
+[31m-            $proxyURL = isset($proxy['scheme']) ? $proxy['scheme'] . '://' : '';[m
+[31m-            $proxyURL .= isset($proxy['host']) ? $proxy['host'] : '';[m
+[31m-[m
+[31m-            if (isset($proxy['port'])) {[m
+[31m-                $proxyURL .= ":" . $proxy['port'];[m
+[31m-            } elseif (strpos($proxyURL, 'http://') === 0) {[m
+[31m-                $proxyURL .= ":80";[m
+[31m-            } elseif (strpos($proxyURL, 'https://') === 0) {[m
+[31m-                $proxyURL .= ":443";[m
+[31m-            }[m
+[31m-[m
+[31m-            // check for a secure proxy[m
+[31m-            if (strpos($proxyURL, 'https://') === 0) {[m
+[31m-                if (!extension_loaded('openssl')) {[m
+[31m-                    throw new RuntimeException('You must enable the openssl extension to use a secure proxy.');[m
+[31m-                }[m
+[31m-                if (strpos($url, 'https://') === 0) {[m
+[31m-                    throw new RuntimeException('PHP does not support https requests through a secure proxy.');[m
+[31m-                }[m
+[31m-            }[m
+[31m-[m
+[31m-            // http(s):// is not supported in proxy[m
+[31m-            $proxyURL = str_replace(array('http://', 'https://'), array('tcp://', 'ssl://'), $proxyURL);[m
+[31m-[m
+[31m-            $options['http'] = array([m
+[31m-                'proxy' => $proxyURL,[m
+[31m-            );[m
+[31m-[m
+[31m-            // add request_fulluri for http requests[m
+[31m-            if ('http' === parse_url($url, PHP_URL_SCHEME)) {[m
+[31m-                $options['http']['request_fulluri'] = true;[m
+[31m-            }[m
+[31m-[m
+[31m-            // handle proxy auth if present[m
+[31m-            if (isset($proxy['user'])) {[m
+[31m-                $auth = rawurldecode($proxy['user']);[m
+[31m-                if (isset($proxy['pass'])) {[m
+[31m-                    $auth .= ':' . rawurldecode($proxy['pass']);[m
+[31m-                }[m
+[31m-                $auth = base64_encode($auth);[m
+[31m-[m
+[31m-                $options['http']['header'] = "Proxy-Authorization: Basic {$auth}\r\n";[m
+[31m-            }[m
+[31m-        }[m
+[31m-[m
+[31m-        if (isset($options['http']['header'])) {[m
+[31m-            $options['http']['header'] .= "Connection: close\r\n";[m
+[31m-        } else {[m
+[31m-            $options['http']['header'] = "Connection: close\r\n";[m
+[31m-        }[m
+[31m-        if (extension_loaded('zlib')) {[m
+[31m-            $options['http']['header'] .= "Accept-Encoding: gzip\r\n";[m
+[31m-        }[m
+[31m-        $options['http']['header'] .= "User-Agent: ".COMPOSER_INSTALLER."\r\n";[m
+[31m-        $options['http']['protocol_version'] = 1.1;[m
+[31m-        $options['http']['timeout'] = 600;[m
+[31m-[m
+[31m-        return stream_context_create($options);[m
+[31m-    }[m
+[31m-[m
+[31m-    /**[m
+[31m-    * This method was adapted from Sslurp.[m
+[31m-    * https://github.com/EvanDotPro/Sslurp[m
+[31m-    *[m
+[31m-    * (c) Evan Coury <me@evancoury.com>[m
+[31m-    *[m
+[31m-    * For the full copyright and license information, please see below:[m
+[31m-    *[m
+[31m-    * Copyright (c) 2013, Evan Coury[m
+[31m-    * All rights reserved.[m
+[31m-    *[m
+[31m-    * Redistribution and use in source and binary forms, with or without modification,[m
+[31m-    * are permitted provided that the following conditions are met:[m
+[31m-    *[m
+[31m-    *     * Redistributions of source code must retain the above copyright notice,[m
+[31m-    *       this list of conditions and the following disclaimer.[m
+[31m-    *[m
+[31m-    *     * Redistributions in binary form must reproduce the above copyright notice,[m
+[31m-    *       this list of conditions and the following disclaimer in the documentation[m
+[31m-    *       and/or other materials provided with the distribution.[m
+[31m-    *[m
+[31m-    * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND[m
+[31m-    * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED[m
+[31m-    * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE[m
+[31m-    * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR[m
+[31m-    * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES[m
+[31m-    * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;[m
+[31m-    * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON[m
+[31m-    * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT[m
+[31m-    * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS[m
+[31m-    * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.[m
+[31m-    */[m
+[31m-    public static function getSystemCaRootBundlePath()[m
+[31m-    {[m
+[31m-        if (self::$caPath !== null) {[m
+[31m-            return self::$caPath;[m
+[31m-        }[m
+[31m-[m
+[31m-        // If SSL_CERT_FILE env variable points to a valid certificate/bundle, use that.[m
+[31m-        // This mimics how OpenSSL uses the SSL_CERT_FILE env variable.[m
+[31m-        $envCertFile = getenv('SSL_CERT_FILE');[m
+[31m-        if ($envCertFile && is_readable($envCertFile) && validateCaFile(file_get_contents($envCertFile))) {[m
+[31m-            return self::$caPath = $envCertFile;[m
+[31m-        }[m
+[31m-[m
+[31m-        // If SSL_CERT_DIR env variable points to a valid certificate/bundle, use that.[m
+[31m-        // This mimics how OpenSSL uses the SSL_CERT_FILE env variable.[m
+[31m-        $envCertDir = getenv('SSL_CERT_DIR');[m
+[31m-        if ($envCertDir && is_dir($envCertDir) && is_readable($envCertDir)) {[m
+[31m-            return self::$caPath = $envCertDir;[m
+[31m-        }[m
+[31m-[m
+[31m-        $configured = ini_get('openssl.cafile');[m
+[31m-        if ($configured && strlen($configured) > 0 && is_readable($configured) && validateCaFile(file_get_contents($configured))) {[m
+[31m-            return self::$caPath = $configured;[m
+[31m-        }[m
+[31m-[m
+[31m-        $configured = ini_get('openssl.capath');[m
+[31m-        if ($configured && is_dir($configured) && is_readable($configured)) {[m
+[31m-            return self::$caPath = $configured;[m
+[31m-        }[m
+[31m-[m
+[31m-        $caBundlePaths = array([m
+[31m-            '/etc/pki/tls/certs/ca-bundle.crt', // Fedora, RHEL, CentOS (ca-certificates package)[m
+[31m-            '/etc/ssl/certs/ca-certificates.crt', // Debian, Ubuntu, Gentoo, Arch Linux (ca-certificates package)[m
+[31m-            '/etc/ssl/ca-bundle.pem', // SUSE, openSUSE (ca-certificates package)[m
+[31m-            '/usr/local/share/certs/ca-root-nss.crt', // FreeBSD (ca_root_nss_package)[m
+[31m-            '/usr/ssl/certs/ca-bundle.crt', // Cygwin[m
+[31m-            '/opt/local/share/curl/curl-ca-bundle.crt', // OS X macports, curl-ca-bundle package[m
+[31m-            '/usr/local/share/curl/curl-ca-bundle.crt', // Default cURL CA bunde path (without --with-ca-bundle option)[m
+[31m-            '/usr/share/ssl/certs/ca-bundle.crt', // Really old RedHat?[m
+[31m-            '/etc/ssl/cert.pem', // OpenBSD[m
+[31m-            '/usr/local/etc/ssl/cert.pem', // FreeBSD 10.x[m
+[31m-            '/usr/local/etc/openssl/cert.pem', // OS X homebrew, openssl package[m
+[31m-            '/usr/local/etc/openssl@1.1/cert.pem', // OS X homebrew, openssl@1.1 package[m
+[31m-            '/opt/homebrew/etc/openssl@3/cert.pem', // macOS silicon homebrew, openssl@3 package[m
+[31m-            '/opt/homebrew/etc/openssl@1.1/cert.pem', // macOS silicon homebrew, openssl@1.1 package[m
+[31m-        );[m
+[31m-[m
+[31m-        foreach ($caBundlePaths as $caBundle) {[m
+[31m-            if (@is_readable($caBundle) && validateCaFile(file_get_contents($caBundle))) {[m
+[31m-                return self::$caPath = $caBundle;[m
+[31m-            }[m
+[31m-        }[m
+[31m-[m
+[31m-        foreach ($caBundlePaths as $caBundle) {[m
+[31m-            $caBundle = dirname($caBundle);[m
+[31m-            if (is_dir($caBundle) && glob($caBundle.'/*')) {[m
+[31m-                return self::$caPath = $caBundle;[m
+[31m-            }[m
+[31m-        }[m
+[31m-[m
+[31m-        return self::$caPath = false;[m
+[31m-    }[m
+[31m-[m
+[31m-    public static function getPackagedCaFile()[m
+[31m-    {[m
+[31m-        return <<<CACERT[m
+[31m-##[m
+[31m-## Bundle of CA Root Certificates for Let's Encrypt[m
+[31m-##[m
+[31m-## See https://letsencrypt.org/certificates/#root-certificates[m
+[31m-##[m
+[31m-## ISRG Root X1 (RSA 4096) expires Jun 04 11:04:38 2035 GMT[m
+[31m-## ISRG Root X2 (ECDSA P-384) expires Sep 17 16:00:00 2040 GMT[m
+[31m-##[m
+[31m-## Both these are self-signed CA root certificates[m
+[31m-##[m
+[31m-[m
+[31m-ISRG Root X1[m
+[31m-============[m
+[31m------BEGIN CERTIFICATE-----[m
+[31m-MIIFazCCA1OgAwIBAgIRAIIQz7DSQONZRGPgu2OCiwAwDQYJKoZIhvcNAQELBQAw[m
+[31m-TzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2Vh[m
+[31m-cmNoIEdyb3VwMRUwEwYDVQQDEwxJU1JHIFJvb3QgWDEwHhcNMTUwNjA0MTEwNDM4[m
+[31m-WhcNMzUwNjA0MTEwNDM4WjBPMQswCQYDVQQGEwJVUzEpMCcGA1UEChMgSW50ZXJu[m
+[31m-ZXQgU2VjdXJpdHkgUmVzZWFyY2ggR3JvdXAxFTATBgNVBAMTDElTUkcgUm9vdCBY[m
+[31m-MTCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAK3oJHP0FDfzm54rVygc[m
+[31m-h77ct984kIxuPOZXoHj3dcKi/vVqbvYATyjb3miGbESTtrFj/RQSa78f0uoxmyF+[m
+[31m-0TM8ukj13Xnfs7j/EvEhmkvBioZxaUpmZmyPfjxwv60pIgbz5MDmgK7iS4+3mX6U[m
+[31m-A5/TR5d8mUgjU+g4rk8Kb4Mu0UlXjIB0ttov0DiNewNwIRt18jA8+o+u3dpjq+sW[m
+[31m-T8KOEUt+zwvo/7V3LvSye0rgTBIlDHCNAymg4VMk7BPZ7hm/ELNKjD+Jo2FR3qyH[m
+[31m-B5T0Y3HsLuJvW5iB4YlcNHlsdu87kGJ55tukmi8mxdAQ4Q7e2RCOFvu396j3x+UC[m
+[31m-B5iPNgiV5+I3lg02dZ77DnKxHZu8A/lJBdiB3QW0KtZB6awBdpUKD9jf1b0SHzUv[m
+[31m-KBds0pjBqAlkd25HN7rOrFleaJ1/ctaJxQZBKT5ZPt0m9STJEadao0xAH0ahmbWn[m
+[31m-OlFuhjuefXKnEgV4We0+UXgVCwOPjdAvBbI+e0ocS3MFEvzG6uBQE3xDk3SzynTn[m
+[31m-jh8BCNAw1FtxNrQHusEwMFxIt4I7mKZ9YIqioymCzLq9gwQbooMDQaHWBfEbwrbw[m
+[31m-qHyGO0aoSCqI3Haadr8faqU9GY/rOPNk3sgrDQoo//fb4hVC1CLQJ13hef4Y53CI[m
+[31m-rU7m2Ys6xt0nUW7/vGT1M0NPAgMBAAGjQjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNV[m
+[31m-HRMBAf8EBTADAQH/MB0GA1UdDgQWBBR5tFnme7bl5AFzgAiIyBpY9umbbjANBgkq[m
+[31m-hkiG9w0BAQsFAAOCAgEAVR9YqbyyqFDQDLHYGmkgJykIrGF1XIpu+ILlaS/V9lZL[m
+[31m-ubhzEFnTIZd+50xx+7LSYK05qAvqFyFWhfFQDlnrzuBZ6brJFe+GnY+EgPbk6ZGQ[m
+[31m-3BebYhtF8GaV0nxvwuo77x/Py9auJ/GpsMiu/X1+mvoiBOv/2X/qkSsisRcOj/KK[m
+[31m-NFtY2PwByVS5uCbMiogziUwthDyC3+6WVwW6LLv3xLfHTjuCvjHIInNzktHCgKQ5[m
+[31m-ORAzI4JMPJ+GslWYHb4phowim57iaztXOoJwTdwJx4nLCgdNbOhdjsnvzqvHu7Ur[m
+[31m-TkXWStAmzOVyyghqpZXjFaH3pO3JLF+l+/+sKAIuvtd7u+Nxe5AW0wdeRlN8NwdC[m
+[31m-jNPElpzVmbUq4JUagEiuTDkHzsxHpFKVK7q4+63SM1N95R1NbdWhscdCb+ZAJzVc[m
+[31m-oyi3B43njTOQ5yOf+1CceWxG1bQVs5ZufpsMljq4Ui0/1lvh+wjChP4kqKOJ2qxq[m
+[31m-4RgqsahDYVvTH9w7jXbyLeiNdd8XM2w9U/t7y0Ff/9yi0GE44Za4rF2LN9d11TPA[m
+[31m-mRGunUHBcnWEvgJBQl9nJEiU0Zsnvgc/ubhPgXRR4Xq37Z0j4r7g1SgEEzwxA57d[m
+[31m-emyPxgcYxn/eR44/KJ4EBs+lVDR3veyJm+kXQ99b21/+jh5Xos1AnX5iItreGCc=[m
+[31m------END CERTIFICATE-----[m
+[31m-[m
+[31m-ISRG Root X2[m
+[31m-============[m
+[31m------BEGIN CERTIFICATE-----[m
+[31m-MIICGzCCAaGgAwIBAgIQQdKd0XLq7qeAwSxs6S+HUjAKBggqhkjOPQQDAzBPMQsw[m
+[31m-CQYDVQQGEwJVUzEpMCcGA1UEChMgSW50ZXJuZXQgU2VjdXJpdHkgUmVzZWFyY2gg[m
+[31m-R3JvdXAxFTATBgNVBAMTDElTUkcgUm9vdCBYMjAeFw0yMDA5MDQwMDAwMDBaFw00[m
+[31m-MDA5MTcxNjAwMDBaME8xCzAJBgNVBAYTAlVTMSkwJwYDVQQKEyBJbnRlcm5ldCBT[m
+[31m-ZWN1cml0eSBSZXNlYXJjaCBHcm91cDEVMBMGA1UEAxMMSVNSRyBSb290IFgyMHYw[m
+[31m-EAYHKoZIzj0CAQYFK4EEACIDYgAEzZvVn4CDCuwJSvMWSj5cz3es3mcFDR0HttwW[m
+[31m-+1qLFNvicWDEukWVEYmO6gbf9yoWHKS5xcUy4APgHoIYOIvXRdgKam7mAHf7AlF9[m
+[31m-ItgKbppbd9/w+kHsOdx1ymgHDB/qo0IwQDAOBgNVHQ8BAf8EBAMCAQYwDwYDVR0T[m
+[31m-AQH/BAUwAwEB/zAdBgNVHQ4EFgQUfEKWrt5LSDv6kviejM9ti6lyN5UwCgYIKoZI[m
+[31m-zj0EAwMDaAAwZQIwe3lORlCEwkSHRhtFcP9Ymd70/aTSVaYgLXTWNLxBo1BfASdW[m
+[31m-tL4ndQavEi51mI38AjEAi/V3bNTIZargCyzuFJ0nN6T5U6VR5CmD1/iQMVtCnwr1[m
+[31m-/q4AaOeMSQ+2b1tbFfLn[m
+[31m------END CERTIFICATE-----[m
+[31m-CACERT;[m
+[31m-    }[m
+[31m-}[m
+[1mdiff --git a/composer.json b/composer.json[m
+[1mindex 8f7dacc..c7523b5 100644[m
+[1m--- a/composer.json[m
+[1m+++ b/composer.json[m
+[36m@@ -8,8 +8,7 @@[m
+         "php": "^8.2",[m
+         "laravel/framework": "^12.0",[m
+         "laravel/sanctum": "^4.1",[m
+[31m-        "laravel/tinker": "^2.10.1",[m
+[31m-        "stripe/stripe-php": "^17.2"[m
+[32m+[m[32m        "laravel/tinker": "^2.10.1"[m
+     },[m
+     "require-dev": {[m
+         "fakerphp/faker": "^1.23",[m
+[1mdiff --git a/composer.lock b/composer.lock[m
+[1mindex 9a1f165..46918f7 100644[m
+[1m--- a/composer.lock[m
+[1m+++ b/composer.lock[m
+[36m@@ -4,7 +4,7 @@[m
+         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",[m
+         "This file is @generated automatically"[m
+     ],[m
+[31m-    "content-hash": "5ee146bdb68af54ec24892da2d36b107",[m
+[32m+[m[32m    "content-hash": "015e02e23a490fcf9d86230851cba120",[m
+     "packages": [[m
+         {[m
+             "name": "brick/math",[m
+[36m@@ -3350,65 +3350,6 @@[m
+             ],[m
+             "time": "2024-04-27T21:32:50+00:00"[m
+         },[m
+[31m-        {[m
+[31m-            "name": "stripe/stripe-php",[m
+[31m-            "version": "v17.2.1",[m
+[31m-            "source": {[m
+[31m-                "type": "git",[m
+[31m-                "url": "https://github.com/stripe/stripe-php.git",[m
+[31m-                "reference": "a84ec46e82e2d1f1dbd04cf332317923ade82ba6"[m
+[31m-            },[m
+[31m-            "dist": {[m
+[31m-                "type": "zip",[m
+[31m-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/a84ec46e82e2d1f1dbd04cf332317923ade82ba6",[m
+[31m-                "reference": "a84ec46e82e2d1f1dbd04cf332317923ade82ba6",[m
+[31m-                "shasum": ""[m
+[31m-            },[m
+[31m-            "require": {[m
+[31m-                "ext-curl": "*",[m
+[31m-                "ext-json": "*",[m
+[31m-                "ext-mbstring": "*",[m
+[31m-                "php": ">=5.6.0"[m
+[31m-            },[m
+[31m-            "require-dev": {[m
+[31m-                "friendsofphp/php-cs-fixer": "3.72.0",[m
+[31m-                "phpstan/phpstan": "^1.2",[m
+[31m-                "phpunit/phpunit": "^5.7 || ^9.0"[m
+[31m-            },[m
+[31m-            "type": "library",[m
+[31m-            "extra": {[m
+[31m-                "branch-alias": {[m
+[31m-                    "dev-master": "2.0-dev"[m
+[31m-                }[m
+[31m-            },[m
+[31m-            "autoload": {[m
+[31m-                "psr-4": {[m
+[31m-                    "Stripe\\": "lib/"[m
+[31m-                }[m
+[31m-            },[m
+[31m-            "notification-url": "https://packagist.org/downloads/",[m
+[31m-            "license": [[m
+[31m-                "MIT"[m
+[31m-            ],[m
+[31m-            "authors": [[m
+[31m-                {[m
+[31m-                    "name": "Stripe and contributors",[m
+[31m-                    "homepage": "https://github.com/stripe/stripe-php/contributors"[m
+[31m-                }[m
+[31m-            ],[m
+[31m-            "description": "Stripe PHP Library",[m
+[31m-            "homepage": "https://stripe.com/",[m
+[31m-            "keywords": [[m
+[31m-                "api",[m
+[31m-                "payment processing",[m
+[31m-                "stripe"[m
+[31m-            ],[m
+[31m-            "support": {[m
+[31m-                "issues": "https://github.com/stripe/stripe-php/issues",[m
+[31m-                "source": "https://github.com/stripe/stripe-php/tree/v17.2.1"[m
+[31m-            },[m
+[31m-            "time": "2025-05-19T19:03:41+00:00"[m
+[31m-        },[m
+         {[m
+             "name": "symfony/clock",[m
+             "version": "v7.2.0",[m
+[1mdiff --git a/composer.phar b/composer.phar[m
+[1mdeleted file mode 100755[m
+[1mindex bb6ba64..0000000[m
+Binary files a/composer.phar and /dev/null differ
+[1mdiff --git a/config/stripe.php b/config/stripe.php[m
+[1mdeleted file mode 100644[m
+[1mindex d6ac570..0000000[m
+[1m--- a/config/stripe.php[m
+[1m+++ /dev/null[m
+[36m@@ -1,6 +0,0 @@[m
+[31m-<?php[m
+[31m-[m
+[31m-return [[m
+[31m-    'sk' => env('STRIPE_SK'),[m
+[31m-    'pk' => env('STRIPE_PK'),[m
+[31m-];[m
+[1mdiff --git a/database/factories/UsuarioFactory.php b/database/factories/UsuarioFactory.php[m
+[1mindex 7e49ac2..5bb2623 100644[m
+[1m--- a/database/factories/UsuarioFactory.php[m
+[1m+++ b/database/factories/UsuarioFactory.php[m
+[36m@@ -4,6 +4,7 @@[m
+ [m
+ use App\Models\Usuario;[m
+ use Illuminate\Database\Eloquent\Factories\Factory;[m
+[32m+[m[32muse Illuminate\Support\Facades\Hash;[m
+ use Illuminate\Support\Str;[m
+ [m
+ class UsuarioFactory extends Factory[m
+[36m@@ -15,16 +16,11 @@[m [mpublic function definition(): array[m
+         return [[m
+             'nombre' => $this->faker->name(),[m
+             'email' => $this->faker->unique()->safeEmail(),[m
+[31m-            'password' => bcrypt('password'),[m
+[32m+[m[32m            'password' => bcrypt('password'), // password[m
+             'direccion' => $this->faker->address(),[m
+[31m-            'ciudad' => $this->faker->city(),[m
+[31m-            'pais' => $this->faker->country(),[m
+[31m-            'estado' => $this->faker->state(),[m
+[31m-            'codigo_postal' => $this->faker->postcode(),[m
+             'edad' => $this->faker->numberBetween(18, 65),[m
+             'dni' => $this->faker->unique()->numerify('########') . $this->faker->randomLetter(),[m
+[31m-            'prefijo_telefono' => '+34',[m
+[31m-            'telefono' => $this->faker->numerify('6########'),[m
+[32m+[m[32m            'telefono' => $this->faker->numerify('6########'), // Formato español: 9 dígitos[m
+             'remember_token' => Str::random(10),[m
+         ];[m
+     }[m
+[1mdiff --git a/database/migrations/2025_04_24_071127_create_usuarios_table.php b/database/migrations/2025_04_24_071127_create_usuarios_table.php[m
+[1mindex 5e06e50..5eef65d 100644[m
+[1m--- a/database/migrations/2025_04_24_071127_create_usuarios_table.php[m
+[1m+++ b/database/migrations/2025_04_24_071127_create_usuarios_table.php[m
+[36m@@ -18,13 +18,8 @@[m [mpublic function up(): void[m
+             $table->string('password');[m
+             $table->string('foto_perfil')->nullable();[m
+             $table->string('direccion');[m
+[31m-            $table->string('ciudad')->nullable(); // Nueva columna[m
+[31m-            $table->string('pais', 100)->nullable(); // Nueva columna[m
+[31m-            $table->string('estado', 100)->nullable(); // Nueva columna[m
+[31m-            $table->string('codigo_postal', 10)->nullable(); // Nueva columna[m
+             $table->tinyInteger('edad')->nullable();[m
+             $table->string('dni', 20)->nullable();[m
+[31m-            $table->string('prefijo_telefono', 10)->nullable(); // Nueva columna[m
+             $table->string('telefono', 20)->nullable();[m
+             $table->string('cv')->nullable();[m
+             $table->rememberToken();[m
+[1mdiff --git a/database/migrations/2025_04_24_071128_create_temas_table.php b/database/migrations/2025_04_24_071128_create_temas_table.php[m
+[1mindex 9752bf1..77059cd 100644[m
+[1m--- a/database/migrations/2025_04_24_071128_create_temas_table.php[m
+[1m+++ b/database/migrations/2025_04_24_071128_create_temas_table.php[m
+[36m@@ -16,9 +16,8 @@[m [mpublic function up(): void[m
+             $table->string('titulo');[m
+             $table->foreignId('id_curso')->constrained('cursos')->onDelete('cascade');[m
+             $table->foreignId('id_fase')->constrained('fases')->onDelete('cascade');[m
+[31m-            $table->enum('tipo', ['virtual', 'presencial', 'video']);[m
+[31m-            $table->string('url')->nullable();[m
+             $table->timestamps();[m
+[32m+[m[32m            $table->enum('tipo', ['virtual', 'presencial', 'video']);[m
+         });[m
+     }[m
+ [m
+[1mdiff --git a/database/migrations/2025_04_28_100850_create_compras_table.php b/database/migrations/2025_04_28_100850_create_compras_table.php[m
+[1mindex 1a4b1a5..9466a19 100644[m
+[1m--- a/database/migrations/2025_04_28_100850_create_compras_table.php[m
+[1m+++ b/database/migrations/2025_04_28_100850_create_compras_table.php[m
+[36m@@ -17,7 +17,6 @@[m [mpublic function up(): void[m
+             $table->foreignId('id_curso')->constrained('cursos');[m
+             $table->decimal('precio', 8, 2);[m
+             $table->enum('metodo_pago', ['stripe', 'paypal', 'apple pay']);[m
+[31m-            $table->string('id_sesion');[m
+             $table->timestamps();[m
+         });[m
+     }[m
+[1mdiff --git a/package-lock.json b/package-lock.json[m
+[1mindex 95f0c24..3341d67 100644[m
+[1m--- a/package-lock.json[m
+[1m+++ b/package-lock.json[m
+[36m@@ -7,9 +7,6 @@[m
+             "dependencies": {[m
+                 "@fortawesome/free-solid-svg-icons": "^6.7.2",[m
+                 "@fortawesome/react-fontawesome": "^0.2.2",[m
+[31m-                "@stripe/react-stripe-js": "^3.7.0",[m
+[31m-                "@stripe/stripe-js": "^7.3.0",[m
+[31m-                "ngrok": "^5.0.0-beta.2",[m
+                 "react": "^19.1.0",[m
+                 "react-dom": "^19.1.0",[m
+                 "react-icons": "^5.5.0",[m
+[36m@@ -1116,53 +1113,6 @@[m
+                 "win32"[m
+             ][m
+         },[m
+[31m-        "node_modules/@sindresorhus/is": {[m
+[31m-            "version": "4.6.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/@sindresorhus/is/-/is-4.6.0.tgz",[m
+[31m-            "integrity": "sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==",[m
+[31m-            "license": "MIT",[m
+[31m-            "engines": {[m
+[31m-                "node": ">=10"[m
+[31m-            },[m
+[31m-            "funding": {[m
+[31m-                "url": "https://github.com/sindresorhus/is?sponsor=1"[m
+[31m-            }[m
+[31m-        },[m
+[31m-        "node_modules/@stripe/react-stripe-js": {[m
+[31m-            "version": "3.7.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/@stripe/react-stripe-js/-/react-stripe-js-3.7.0.tgz",[m
+[31m-            "integrity": "sha512-PYls/2S9l0FF+2n0wHaEJsEU8x7CmBagiH7zYOsxbBlLIHEsqUIQ4MlIAbV9Zg6xwT8jlYdlRIyBTHmO3yM7kQ==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "prop-types": "^15.7.2"[m
+[31m-            },[m
+[31m-            "peerDependencies": {[m
+[31m-                "@stripe/stripe-js": ">=1.44.1 <8.0.0",[m
+[31m-                "react": ">=16.8.0 <20.0.0",[m
+[31m-                "react-dom": ">=16.8.0 <20.0.0"[m
+[31m-            }[m
+[31m-        },[m
+[31m-        "node_modules/@stripe/stripe-js": {[m
+[31m-            "version": "7.3.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/@stripe/stripe-js/-/stripe-js-7.3.0.tgz",[m
+[31m-            "integrity": "sha512-xnCyFIEI5SQnQrKkCxVj7nS5fWTZap+zuIGzmmxLMdlmgahFJaihK4zogqE8YyKKTLtrp/EldkEijSgtXsRVDg==",[m
+[31m-            "license": "MIT",[m
+[31m-            "engines": {[m
+[31m-                "node": ">=12.16"[m
+[31m-            }[m
+[31m-        },[m
+[31m-        "node_modules/@szmarczak/http-timer": {[m
+[31m-            "version": "4.0.6",[m
+[31m-            "resolved": "https://registry.npmjs.org/@szmarczak/http-timer/-/http-timer-4.0.6.tgz",[m
+[31m-            "integrity": "sha512-4BAffykYOgO+5nzBWYwE3W90sBgLJoUPRWWcL8wlyiM8IB8ipJz3UMJ9KXQd1RKQXpKp8Tutn80HZtWsu2u76w==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "defer-to-connect": "^2.0.0"[m
+[31m-            },[m
+[31m-            "engines": {[m
+[31m-                "node": ">=10"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/@tailwindcss/node": {[m
+             "version": "4.1.4",[m
+             "resolved": "https://registry.npmjs.org/@tailwindcss/node/-/node-4.1.4.tgz",[m
+[36m@@ -1477,18 +1427,6 @@[m
+                 "@babel/types": "^7.20.7"[m
+             }[m
+         },[m
+[31m-        "node_modules/@types/cacheable-request": {[m
+[31m-            "version": "6.0.3",[m
+[31m-            "resolved": "https://registry.npmjs.org/@types/cacheable-request/-/cacheable-request-6.0.3.tgz",[m
+[31m-            "integrity": "sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "@types/http-cache-semantics": "*",[m
+[31m-                "@types/keyv": "^3.1.4",[m
+[31m-                "@types/node": "*",[m
+[31m-                "@types/responselike": "^1.0.0"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/@types/estree": {[m
+             "version": "1.0.7",[m
+             "resolved": "https://registry.npmjs.org/@types/estree/-/estree-1.0.7.tgz",[m
+[36m@@ -1496,49 +1434,6 @@[m
+             "dev": true,[m
+             "license": "MIT"[m
+         },[m
+[31m-        "node_modules/@types/http-cache-semantics": {[m
+[31m-            "version": "4.0.4",[m
+[31m-            "resolved": "https://registry.npmjs.org/@types/http-cache-semantics/-/http-cache-semantics-4.0.4.tgz",[m
+[31m-            "integrity": "sha512-1m0bIFVc7eJWyve9S0RnuRgcQqF/Xd5QsUZAZeQFr1Q3/p9JWoQQEqmVy+DPTNpGXwhgIetAoYF8JSc33q29QA==",[m
+[31m-            "license": "MIT"[m
+[31m-        },[m
+[31m-        "node_modules/@types/keyv": {[m
+[31m-            "version": "3.1.4",[m
+[31m-            "resolved": "https://registry.npmjs.org/@types/keyv/-/keyv-3.1.4.tgz",[m
+[31m-            "integrity": "sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "@types/node": "*"[m
+[31m-            }[m
+[31m-        },[m
+[31m-        "node_modules/@types/node": {[m
+[31m-            "version": "22.15.21",[m
+[31m-            "resolved": "https://registry.npmjs.org/@types/node/-/node-22.15.21.tgz",[m
+[31m-            "integrity": "sha512-EV/37Td6c+MgKAbkcLG6vqZ2zEYHD7bvSrzqqs2RIhbA6w3x+Dqz8MZM3sP6kGTeLrdoOgKZe+Xja7tUB2DNkQ==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "undici-types": "~6.21.0"[m
+[31m-            }[m
+[31m-        },[m
+[31m-        "node_modules/@types/responselike": {[m
+[31m-            "version": "1.0.3",[m
+[31m-            "resolved": "https://registry.npmjs.org/@types/responselike/-/responselike-1.0.3.tgz",[m
+[31m-            "integrity": "sha512-H/+L+UkTV33uf49PH5pCAUBVPNj2nDBXTN+qS1dOwyyg24l3CcicicCA7ca+HMvJBZcFgl5r8e+RR6elsb4Lyw==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "@types/node": "*"[m
+[31m-            }[m
+[31m-        },[m
+[31m-        "node_modules/@types/yauzl": {[m
+[31m-            "version": "2.10.3",[m
+[31m-            "resolved": "https://registry.npmjs.org/@types/yauzl/-/yauzl-2.10.3.tgz",[m
+[31m-            "integrity": "sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==",[m
+[31m-            "license": "MIT",[m
+[31m-            "optional": true,[m
+[31m-            "dependencies": {[m
+[31m-                "@types/node": "*"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/@vitejs/plugin-react": {[m
+             "version": "4.4.1",[m
+             "resolved": "https://registry.npmjs.org/@vitejs/plugin-react/-/plugin-react-4.4.1.tgz",[m
+[36m@@ -1637,42 +1532,6 @@[m
+                 "node": "^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7"[m
+             }[m
+         },[m
+[31m-        "node_modules/buffer-crc32": {[m
+[31m-            "version": "0.2.13",[m
+[31m-            "resolved": "https://registry.npmjs.org/buffer-crc32/-/buffer-crc32-0.2.13.tgz",[m
+[31m-            "integrity": "sha512-VO9Ht/+p3SN7SKWqcrgEzjGbRSJYTx+Q1pTQC0wrWqHx0vpJraQ6GtHx8tvcg1rlK1byhU5gccxgOgj7B0TDkQ==",[m
+[31m-            "license": "MIT",[m
+[31m-            "engines": {[m
+[31m-                "node": "*"[m
+[31m-            }[m
+[31m-        },[m
+[31m-        "node_modules/cacheable-lookup": {[m
+[31m-            "version": "5.0.4",[m
+[31m-            "resolved": "https://registry.npmjs.org/cacheable-lookup/-/cacheable-lookup-5.0.4.tgz",[m
+[31m-            "integrity": "sha512-2/kNscPhpcxrOigMZzbiWF7dz8ilhb/nIHU3EyZiXWXpeq/au8qJ8VhdftMkty3n7Gj6HIGalQG8oiBNB3AJgA==",[m
+[31m-            "license": "MIT",[m
+[31m-            "engines": {[m
+[31m-                "node": ">=10.6.0"[m
+[31m-            }[m
+[31m-        },[m
+[31m-        "node_modules/cacheable-request": {[m
+[31m-            "version": "7.0.4",[m
+[31m-            "resolved": "https://registry.npmjs.org/cacheable-request/-/cacheable-request-7.0.4.tgz",[m
+[31m-            "integrity": "sha512-v+p6ongsrp0yTGbJXjgxPow2+DL93DASP4kXCDKb8/bwRtt9OEF3whggkkDkGNzgcWy2XaF4a8nZglC7uElscg==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "clone-response": "^1.0.2",[m
+[31m-                "get-stream": "^5.1.0",[m
+[31m-                "http-cache-semantics": "^4.0.0",[m
+[31m-                "keyv": "^4.0.0",[m
+[31m-                "lowercase-keys": "^2.0.0",[m
+[31m-                "normalize-url": "^6.0.1",[m
+[31m-                "responselike": "^2.0.0"[m
+[31m-            },[m
+[31m-            "engines": {[m
+[31m-                "node": ">=8"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/call-bind-apply-helpers": {[m
+             "version": "1.0.2",[m
+             "resolved": "https://registry.npmjs.org/call-bind-apply-helpers/-/call-bind-apply-helpers-1.0.2.tgz",[m
+[36m@@ -1753,18 +1612,6 @@[m
+                 "node": ">=12"[m
+             }[m
+         },[m
+[31m-        "node_modules/clone-response": {[m
+[31m-            "version": "1.0.3",[m
+[31m-            "resolved": "https://registry.npmjs.org/clone-response/-/clone-response-1.0.3.tgz",[m
+[31m-            "integrity": "sha512-ROoL94jJH2dUVML2Y/5PEDNaSHgeOdSDicUyS7izcF63G6sTc/FTjLub4b8Il9S8S0beOfYt0TaA5qvFK+w0wA==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "mimic-response": "^1.0.0"[m
+[31m-            },[m
+[31m-            "funding": {[m
+[31m-                "url": "https://github.com/sponsors/sindresorhus"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/color-convert": {[m
+             "version": "2.0.1",[m
+             "resolved": "https://registry.npmjs.org/color-convert/-/color-convert-2.0.1.tgz",[m
+[36m@@ -1844,6 +1691,7 @@[m
+             "version": "4.4.0",[m
+             "resolved": "https://registry.npmjs.org/debug/-/debug-4.4.0.tgz",[m
+             "integrity": "sha512-6WTZ/IxCY/T6BALoZHaE4ctp9xm+Z5kY/pzYaCHRFeyVhojxlrm+46y68HA6hr0TcwEssoxNiDEUJQjfPZ/RYA==",[m
+[32m+[m[32m            "dev": true,[m
+             "license": "MIT",[m
+             "dependencies": {[m
+                 "ms": "^2.1.3"[m
+[36m@@ -1857,42 +1705,6 @@[m
+                 }[m
+             }[m
+         },[m
+[31m-        "node_modules/decompress-response": {[m
+[31m-            "version": "6.0.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/decompress-response/-/decompress-response-6.0.0.tgz",[m
+[31m-            "integrity": "sha512-aW35yZM6Bb/4oJlZncMH2LCoZtJXTRxES17vE3hoRiowU2kWHaJKFkSBDnDR+cm9J+9QhXmREyIfv0pji9ejCQ==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "mimic-response": "^3.1.0"[m
+[31m-            },[m
+[31m-            "engines": {[m
+[31m-                "node": ">=10"[m
+[31m-            },[m
+[31m-            "funding": {[m
+[31m-                "url": "https://github.com/sponsors/sindresorhus"[m
+[31m-            }[m
+[31m-        },[m
+[31m-        "node_modules/decompress-response/node_modules/mimic-response": {[m
+[31m-            "version": "3.1.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/mimic-response/-/mimic-response-3.1.0.tgz",[m
+[31m-            "integrity": "sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==",[m
+[31m-            "license": "MIT",[m
+[31m-            "engines": {[m
+[31m-                "node": ">=10"[m
+[31m-            },[m
+[31m-            "funding": {[m
+[31m-                "url": "https://github.com/sponsors/sindresorhus"[m
+[31m-            }[m
+[31m-        },[m
+[31m-        "node_modules/defer-to-connect": {[m
+[31m-            "version": "2.0.1",[m
+[31m-            "resolved": "https://registry.npmjs.org/defer-to-connect/-/defer-to-connect-2.0.1.tgz",[m
+[31m-            "integrity": "sha512-4tvttepXG1VaYGrRibk5EwJd1t4udunSOVMdLSAL6mId1ix438oPwPZMALY41FCijukO1L0twNcGsdzS7dHgDg==",[m
+[31m-            "license": "MIT",[m
+[31m-            "engines": {[m
+[31m-                "node": ">=10"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/delayed-stream": {[m
+             "version": "1.0.0",[m
+             "resolved": "https://registry.npmjs.org/delayed-stream/-/delayed-stream-1.0.0.tgz",[m
+[36m@@ -1942,15 +1754,6 @@[m
+             "dev": true,[m
+             "license": "MIT"[m
+         },[m
+[31m-        "node_modules/end-of-stream": {[m
+[31m-            "version": "1.4.4",[m
+[31m-            "resolved": "https://registry.npmjs.org/end-of-stream/-/end-of-stream-1.4.4.tgz",[m
+[31m-            "integrity": "sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "once": "^1.4.0"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/enhanced-resolve": {[m
+             "version": "5.18.1",[m
+             "resolved": "https://registry.npmjs.org/enhanced-resolve/-/enhanced-resolve-5.18.1.tgz",[m
+[36m@@ -2065,35 +1868,6 @@[m
+                 "node": ">=6"[m
+             }[m
+         },[m
+[31m-        "node_modules/extract-zip": {[m
+[31m-            "version": "2.0.1",[m
+[31m-            "resolved": "https://registry.npmjs.org/extract-zip/-/extract-zip-2.0.1.tgz",[m
+[31m-            "integrity": "sha512-GDhU9ntwuKyGXdZBUgTIe+vXnWj0fppUEtMDL0+idd5Sta8TGpHssn/eusA9mrPr9qNDym6SxAYZjNvCn/9RBg==",[m
+[31m-            "license": "BSD-2-Clause",[m
+[31m-            "dependencies": {[m
+[31m-                "debug": "^4.1.1",[m
+[31m-                "get-stream": "^5.1.0",[m
+[31m-                "yauzl": "^2.10.0"[m
+[31m-            },[m
+[31m-            "bin": {[m
+[31m-                "extract-zip": "cli.js"[m
+[31m-            },[m
+[31m-            "engines": {[m
+[31m-                "node": ">= 10.17.0"[m
+[31m-            },[m
+[31m-            "optionalDependencies": {[m
+[31m-                "@types/yauzl": "^2.9.1"[m
+[31m-            }[m
+[31m-        },[m
+[31m-        "node_modules/fd-slicer": {[m
+[31m-            "version": "1.1.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/fd-slicer/-/fd-slicer-1.1.0.tgz",[m
+[31m-            "integrity": "sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "pend": "~1.2.0"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/fdir": {[m
+             "version": "6.4.4",[m
+             "resolved": "https://registry.npmjs.org/fdir/-/fdir-6.4.4.tgz",[m
+[36m@@ -2230,21 +2004,6 @@[m
+                 "node": ">= 0.4"[m
+             }[m
+         },[m
+[31m-        "node_modules/get-stream": {[m
+[31m-            "version": "5.2.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/get-stream/-/get-stream-5.2.0.tgz",[m
+[31m-            "integrity": "sha512-nBF+F1rAZVCu/p7rjzgA+Yb4lfYXrpl7a6VmJrU8wF9I1CKvP/QwPNZHnOlwbTkY6dvtFIzFMSyQXbLoTQPRpA==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "pump": "^3.0.0"[m
+[31m-            },[m
+[31m-            "engines": {[m
+[31m-                "node": ">=8"[m
+[31m-            },[m
+[31m-            "funding": {[m
+[31m-                "url": "https://github.com/sponsors/sindresorhus"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/globals": {[m
+             "version": "11.12.0",[m
+             "resolved": "https://registry.npmjs.org/globals/-/globals-11.12.0.tgz",[m
+[36m@@ -2268,31 +2027,6 @@[m
+                 "url": "https://github.com/sponsors/ljharb"[m
+             }[m
+         },[m
+[31m-        "node_modules/got": {[m
+[31m-            "version": "11.8.6",[m
+[31m-            "resolved": "https://registry.npmjs.org/got/-/got-11.8.6.tgz",[m
+[31m-            "integrity": "sha512-6tfZ91bOr7bOXnK7PRDCGBLa1H4U080YHNaAQ2KsMGlLEzRbk44nsZF2E1IeRc3vtJHPVbKCYgdFbaGO2ljd8g==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "@sindresorhus/is": "^4.0.0",[m
+[31m-                "@szmarczak/http-timer": "^4.0.5",[m
+[31m-                "@types/cacheable-request": "^6.0.1",[m
+[31m-                "@types/responselike": "^1.0.0",[m
+[31m-                "cacheable-lookup": "^5.0.3",[m
+[31m-                "cacheable-request": "^7.0.2",[m
+[31m-                "decompress-response": "^6.0.0",[m
+[31m-                "http2-wrapper": "^1.0.0-beta.5.2",[m
+[31m-                "lowercase-keys": "^2.0.0",[m
+[31m-                "p-cancelable": "^2.0.0",[m
+[31m-                "responselike": "^2.0.0"[m
+[31m-            },[m
+[31m-            "engines": {[m
+[31m-                "node": ">=10.19.0"[m
+[31m-            },[m
+[31m-            "funding": {[m
+[31m-                "url": "https://github.com/sindresorhus/got?sponsor=1"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/graceful-fs": {[m
+             "version": "4.2.11",[m
+             "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.11.tgz",[m
+[36m@@ -2352,32 +2086,6 @@[m
+                 "node": ">= 0.4"[m
+             }[m
+         },[m
+[31m-        "node_modules/hpagent": {[m
+[31m-            "version": "0.1.2",[m
+[31m-            "resolved": "https://registry.npmjs.org/hpagent/-/hpagent-0.1.2.tgz",[m
+[31m-            "integrity": "sha512-ePqFXHtSQWAFXYmj+JtOTHr84iNrII4/QRlAAPPE+zqnKy4xJo7Ie1Y4kC7AdB+LxLxSTTzBMASsEcy0q8YyvQ==",[m
+[31m-            "license": "MIT",[m
+[31m-            "optional": true[m
+[31m-        },[m
+[31m-        "node_modules/http-cache-semantics": {[m
+[31m-            "version": "4.2.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/http-cache-semantics/-/http-cache-semantics-4.2.0.tgz",[m
+[31m-            "integrity": "sha512-dTxcvPXqPvXBQpq5dUr6mEMJX4oIEFv6bwom3FDwKRDsuIjjJGANqhBuoAn9c1RQJIdAKav33ED65E2ys+87QQ==",[m
+[31m-            "license": "BSD-2-Clause"[m
+[31m-        },[m
+[31m-        "node_modules/http2-wrapper": {[m
+[31m-            "version": "1.0.3",[m
+[31m-            "resolved": "https://registry.npmjs.org/http2-wrapper/-/http2-wrapper-1.0.3.tgz",[m
+[31m-            "integrity": "sha512-V+23sDMr12Wnz7iTcDeJr3O6AIxlnvT/bmaAAAP/Xda35C90p9599p0F1eHR/N1KILWSoWVAiOMFjBBXaXSMxg==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "quick-lru": "^5.1.1",[m
+[31m-                "resolve-alpn": "^1.0.0"[m
+[31m-            },[m
+[31m-            "engines": {[m
+[31m-                "node": ">=10.19.0"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/is-fullwidth-code-point": {[m
+             "version": "3.0.0",[m
+             "resolved": "https://registry.npmjs.org/is-fullwidth-code-point/-/is-fullwidth-code-point-3.0.0.tgz",[m
+[36m@@ -2417,12 +2125,6 @@[m
+                 "node": ">=6"[m
+             }[m
+         },[m
+[31m-        "node_modules/json-buffer": {[m
+[31m-            "version": "3.0.1",[m
+[31m-            "resolved": "https://registry.npmjs.org/json-buffer/-/json-buffer-3.0.1.tgz",[m
+[31m-            "integrity": "sha512-4bV5BfR2mqfQTJm+V5tPPdf+ZpuhiIvTuAB5g8kcrXOZpTT/QwwVRWBywX1ozr6lEuPdbHxwaJlm9G6mI2sfSQ==",[m
+[31m-            "license": "MIT"[m
+[31m-        },[m
+         "node_modules/json5": {[m
+             "version": "2.2.3",[m
+             "resolved": "https://registry.npmjs.org/json5/-/json5-2.2.3.tgz",[m
+[36m@@ -2436,15 +2138,6 @@[m
+                 "node": ">=6"[m
+             }[m
+         },[m
+[31m-        "node_modules/keyv": {[m
+[31m-            "version": "4.5.4",[m
+[31m-            "resolved": "https://registry.npmjs.org/keyv/-/keyv-4.5.4.tgz",[m
+[31m-            "integrity": "sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "json-buffer": "3.0.1"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/laravel-vite-plugin": {[m
+             "version": "1.2.0",[m
+             "resolved": "https://registry.npmjs.org/laravel-vite-plugin/-/laravel-vite-plugin-1.2.0.tgz",[m
+[36m@@ -2711,12 +2404,6 @@[m
+             "dev": true,[m
+             "license": "MIT"[m
+         },[m
+[31m-        "node_modules/lodash.clonedeep": {[m
+[31m-            "version": "4.5.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz",[m
+[31m-            "integrity": "sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==",[m
+[31m-            "license": "MIT"[m
+[31m-        },[m
+         "node_modules/loose-envify": {[m
+             "version": "1.4.0",[m
+             "resolved": "https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz",[m
+[36m@@ -2729,15 +2416,6 @@[m
+                 "loose-envify": "cli.js"[m
+             }[m
+         },[m
+[31m-        "node_modules/lowercase-keys": {[m
+[31m-            "version": "2.0.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/lowercase-keys/-/lowercase-keys-2.0.0.tgz",[m
+[31m-            "integrity": "sha512-tqNXrS78oMOE73NMxK4EMLQsQowWf8jKooH9g7xPavRT706R6bkQJ6DY2Te7QukaZsulxa30wQ7bk0pm4XiHmA==",[m
+[31m-            "license": "MIT",[m
+[31m-            "engines": {[m
+[31m-                "node": ">=8"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/lru-cache": {[m
+             "version": "5.1.1",[m
+             "resolved": "https://registry.npmjs.org/lru-cache/-/lru-cache-5.1.1.tgz",[m
+[36m@@ -2781,19 +2459,11 @@[m
+                 "node": ">= 0.6"[m
+             }[m
+         },[m
+[31m-        "node_modules/mimic-response": {[m
+[31m-            "version": "1.0.1",[m
+[31m-            "resolved": "https://registry.npmjs.org/mimic-response/-/mimic-response-1.0.1.tgz",[m
+[31m-            "integrity": "sha512-j5EctnkH7amfV/q5Hgmoal1g2QHFJRraOtmx0JpIqkxhBhI/lJSl1nMpQ45hVarwNETOoWEimndZ4QK0RHxuxQ==",[m
+[31m-            "license": "MIT",[m
+[31m-            "engines": {[m
+[31m-                "node": ">=4"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/ms": {[m
+             "version": "2.1.3",[m
+             "resolved": "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz",[m
+             "integrity": "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==",[m
+[32m+[m[32m            "dev": true,[m
+             "license": "MIT"[m
+         },[m
+         "node_modules/nanoid": {[m
+[36m@@ -2815,29 +2485,6 @@[m
+                 "node": "^10 || ^12 || ^13.7 || ^14 || >=15.0.1"[m
+             }[m
+         },[m
+[31m-        "node_modules/ngrok": {[m
+[31m-            "version": "5.0.0-beta.2",[m
+[31m-            "resolved": "https://registry.npmjs.org/ngrok/-/ngrok-5.0.0-beta.2.tgz",[m
+[31m-            "integrity": "sha512-UzsyGiJ4yTTQLCQD11k1DQaMwq2/SsztBg2b34zAqcyjS25qjDpogMKPaCKHwe/APRTHeel3iDXcVctk5CNaCQ==",[m
+[31m-            "hasInstallScript": true,[m
+[31m-            "license": "BSD-2-Clause",[m
+[31m-            "dependencies": {[m
+[31m-                "extract-zip": "^2.0.1",[m
+[31m-                "got": "^11.8.5",[m
+[31m-                "lodash.clonedeep": "^4.5.0",[m
+[31m-                "uuid": "^7.0.0 || ^8.0.0",[m
+[31m-                "yaml": "^2.2.2"[m
+[31m-            },[m
+[31m-            "bin": {[m
+[31m-                "ngrok": "bin/ngrok"[m
+[31m-            },[m
+[31m-            "engines": {[m
+[31m-                "node": ">=14.2"[m
+[31m-            },[m
+[31m-            "optionalDependencies": {[m
+[31m-                "hpagent": "^0.1.2"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/node-releases": {[m
+             "version": "2.0.19",[m
+             "resolved": "https://registry.npmjs.org/node-releases/-/node-releases-2.0.19.tgz",[m
+[36m@@ -2845,18 +2492,6 @@[m
+             "dev": true,[m
+             "license": "MIT"[m
+         },[m
+[31m-        "node_modules/normalize-url": {[m
+[31m-            "version": "6.1.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/normalize-url/-/normalize-url-6.1.0.tgz",[m
+[31m-            "integrity": "sha512-DlL+XwOy3NxAQ8xuC0okPgK46iuVNAK01YN7RueYBqqFeGsBjV9XmCAzAdgt+667bCl5kPh9EqKKDwnaPG1I7A==",[m
+[31m-            "license": "MIT",[m
+[31m-            "engines": {[m
+[31m-                "node": ">=10"[m
+[31m-            },[m
+[31m-            "funding": {[m
+[31m-                "url": "https://github.com/sponsors/sindresorhus"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/object-assign": {[m
+             "version": "4.1.1",[m
+             "resolved": "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz",[m
+[36m@@ -2866,30 +2501,6 @@[m
+                 "node": ">=0.10.0"[m
+             }[m
+         },[m
+[31m-        "node_modules/once": {[m
+[31m-            "version": "1.4.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/once/-/once-1.4.0.tgz",[m
+[31m-            "integrity": "sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==",[m
+[31m-            "license": "ISC",[m
+[31m-            "dependencies": {[m
+[31m-                "wrappy": "1"[m
+[31m-            }[m
+[31m-        },[m
+[31m-        "node_modules/p-cancelable": {[m
+[31m-            "version": "2.1.1",[m
+[31m-            "resolved": "https://registry.npmjs.org/p-cancelable/-/p-cancelable-2.1.1.tgz",[m
+[31m-            "integrity": "sha512-BZOr3nRQHOntUjTrH8+Lh54smKHoHyur8We1V8DSMVrl5A2malOOwuJRnKRDjSnkoeBh4at6BwEnb5I7Jl31wg==",[m
+[31m-            "license": "MIT",[m
+[31m-            "engines": {[m
+[31m-                "node": ">=8"[m
+[31m-            }[m
+[31m-        },[m
+[31m-        "node_modules/pend": {[m
+[31m-            "version": "1.2.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/pend/-/pend-1.2.0.tgz",[m
+[31m-            "integrity": "sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==",[m
+[31m-            "license": "MIT"[m
+[31m-        },[m
+         "node_modules/picocolors": {[m
+             "version": "1.1.1",[m
+             "resolved": "https://registry.npmjs.org/picocolors/-/picocolors-1.1.1.tgz",[m
+[36m@@ -2957,28 +2568,6 @@[m
+             "dev": true,[m
+             "license": "MIT"[m
+         },[m
+[31m-        "node_modules/pump": {[m
+[31m-            "version": "3.0.2",[m
+[31m-            "resolved": "https://registry.npmjs.org/pump/-/pump-3.0.2.tgz",[m
+[31m-            "integrity": "sha512-tUPXtzlGM8FE3P0ZL6DVs/3P58k9nk8/jZeQCurTJylQA8qFYzHFfhBJkuqyE0FifOsQ0uKWekiZ5g8wtr28cw==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "end-of-stream": "^1.1.0",[m
+[31m-                "once": "^1.3.1"[m
+[31m-            }[m
+[31m-        },[m
+[31m-        "node_modules/quick-lru": {[m
+[31m-            "version": "5.1.1",[m
+[31m-            "resolved": "https://registry.npmjs.org/quick-lru/-/quick-lru-5.1.1.tgz",[m
+[31m-            "integrity": "sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==",[m
+[31m-            "license": "MIT",[m
+[31m-            "engines": {[m
+[31m-                "node": ">=10"[m
+[31m-            },[m
+[31m-            "funding": {[m
+[31m-                "url": "https://github.com/sponsors/sindresorhus"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/react": {[m
+             "version": "19.1.0",[m
+             "resolved": "https://registry.npmjs.org/react/-/react-19.1.0.tgz",[m
+[36m@@ -3073,24 +2662,6 @@[m
+                 "node": ">=0.10.0"[m
+             }[m
+         },[m
+[31m-        "node_modules/resolve-alpn": {[m
+[31m-            "version": "1.2.1",[m
+[31m-            "resolved": "https://registry.npmjs.org/resolve-alpn/-/resolve-alpn-1.2.1.tgz",[m
+[31m-            "integrity": "sha512-0a1F4l73/ZFZOakJnQ3FvkJ2+gSTQWz/r2KE5OdDY0TxPm5h4GkqkWWfM47T7HsbnOtcJVEF4epCVy6u7Q3K+g==",[m
+[31m-            "license": "MIT"[m
+[31m-        },[m
+[31m-        "node_modules/responselike": {[m
+[31m-            "version": "2.0.1",[m
+[31m-            "resolved": "https://registry.npmjs.org/responselike/-/responselike-2.0.1.tgz",[m
+[31m-            "integrity": "sha512-4gl03wn3hj1HP3yzgdI7d3lCkF95F21Pz4BPGvKHinyQzALR5CapwC8yIi0Rh58DEMQ/SguC03wFj2k0M/mHhw==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "lowercase-keys": "^2.0.0"[m
+[31m-            },[m
+[31m-            "funding": {[m
+[31m-                "url": "https://github.com/sponsors/sindresorhus"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/rollup": {[m
+             "version": "4.40.0",[m
+             "resolved": "https://registry.npmjs.org/rollup/-/rollup-4.40.0.tgz",[m
+[36m@@ -3281,12 +2852,6 @@[m
+             "dev": true,[m
+             "license": "0BSD"[m
+         },[m
+[31m-        "node_modules/undici-types": {[m
+[31m-            "version": "6.21.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/undici-types/-/undici-types-6.21.0.tgz",[m
+[31m-            "integrity": "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==",[m
+[31m-            "license": "MIT"[m
+[31m-        },[m
+         "node_modules/update-browserslist-db": {[m
+             "version": "1.1.3",[m
+             "resolved": "https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.1.3.tgz",[m
+[36m@@ -3318,15 +2883,6 @@[m
+                 "browserslist": ">= 4.21.0"[m
+             }[m
+         },[m
+[31m-        "node_modules/uuid": {[m
+[31m-            "version": "8.3.2",[m
+[31m-            "resolved": "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz",[m
+[31m-            "integrity": "sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==",[m
+[31m-            "license": "MIT",[m
+[31m-            "bin": {[m
+[31m-                "uuid": "dist/bin/uuid"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/vite": {[m
+             "version": "6.3.2",[m
+             "resolved": "https://registry.npmjs.org/vite/-/vite-6.3.2.tgz",[m
+[36m@@ -3444,12 +3000,6 @@[m
+                 "url": "https://github.com/chalk/wrap-ansi?sponsor=1"[m
+             }[m
+         },[m
+[31m-        "node_modules/wrappy": {[m
+[31m-            "version": "1.0.2",[m
+[31m-            "resolved": "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz",[m
+[31m-            "integrity": "sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==",[m
+[31m-            "license": "ISC"[m
+[31m-        },[m
+         "node_modules/y18n": {[m
+             "version": "5.0.8",[m
+             "resolved": "https://registry.npmjs.org/y18n/-/y18n-5.0.8.tgz",[m
+[36m@@ -3467,18 +3017,6 @@[m
+             "dev": true,[m
+             "license": "ISC"[m
+         },[m
+[31m-        "node_modules/yaml": {[m
+[31m-            "version": "2.8.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/yaml/-/yaml-2.8.0.tgz",[m
+[31m-            "integrity": "sha512-4lLa/EcQCB0cJkyts+FpIRx5G/llPxfP6VQU5KByHEhLxY3IJCH0f0Hy1MHI8sClTvsIb8qwRJ6R/ZdlDJ/leQ==",[m
+[31m-            "license": "ISC",[m
+[31m-            "bin": {[m
+[31m-                "yaml": "bin.mjs"[m
+[31m-            },[m
+[31m-            "engines": {[m
+[31m-                "node": ">= 14.6"[m
+[31m-            }[m
+[31m-        },[m
+         "node_modules/yargs": {[m
+             "version": "17.7.2",[m
+             "resolved": "https://registry.npmjs.org/yargs/-/yargs-17.7.2.tgz",[m
+[36m@@ -3507,16 +3045,6 @@[m
+             "engines": {[m
+                 "node": ">=12"[m
+             }[m
+[31m-        },[m
+[31m-        "node_modules/yauzl": {[m
+[31m-            "version": "2.10.0",[m
+[31m-            "resolved": "https://registry.npmjs.org/yauzl/-/yauzl-2.10.0.tgz",[m
+[31m-            "integrity": "sha512-p4a9I6X6nu6IhoGmBqAcbJy1mlC4j27vEPZX9F4L4/vZT3Lyq1VkFHw/V/PUcB9Buo+DG3iHkT0x3Qya58zc3g==",[m
+[31m-            "license": "MIT",[m
+[31m-            "dependencies": {[m
+[31m-                "buffer-crc32": "~0.2.3",[m
+[31m-                "fd-slicer": "~1.1.0"[m
+[31m-            }[m
+         }[m
+     }[m
+ }[m
+[1mdiff --git a/package.json b/package.json[m
+[1mindex c950b78..9116542 100644[m
+[1m--- a/package.json[m
+[1m+++ b/package.json[m
+[36m@@ -17,9 +17,6 @@[m
+     "dependencies": {[m
+         "@fortawesome/free-solid-svg-icons": "^6.7.2",[m
+         "@fortawesome/react-fontawesome": "^0.2.2",[m
+[31m-        "@stripe/react-stripe-js": "^3.7.0",[m
+[31m-        "@stripe/stripe-js": "^7.3.0",[m
+[31m-        "ngrok": "^5.0.0-beta.2",[m
+         "react": "^19.1.0",[m
+         "react-dom": "^19.1.0",[m
+         "react-icons": "^5.5.0",[m
+[1mdiff --git a/resources/js/index.html b/resources/js/index.html[m
+[1mindex 0d3c208..afbe8ee 100644[m
+[1m--- a/resources/js/index.html[m
+[1m+++ b/resources/js/index.html[m
+[36m@@ -1,7 +1,7 @@[m
+ <!doctype html>[m
+ <html lang="en">[m
+   <head>[m
+[31m-    <meta name="viewport" content="width=device-width, initial-scale=1">[m
+[32m+[m[32m    <meta charset="UTF-8" />[m
+     <link rel="icon" type="image/svg+xml" href="/vite.svg" />[m
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />[m
+     <title>Vite + React</title>[m
+[1mdiff --git a/resources/js/src/Inicio/InicioPl.css b/resources/js/src/Inicio/InicioPl.css[m
+[1mindex 55927bd..12d4984 100644[m
+[1m--- a/resources/js/src/Inicio/InicioPl.css[m
+[1m+++ b/resources/js/src/Inicio/InicioPl.css[m
+[36m@@ -19,7 +19,7 @@[m [m.plataforma-container {[m
+     display: flex;[m
+     justify-content: space-between;[m
+     align-items: center;[m
+[31m-    padding: 1rem 0.5rem;[m
+[32m+[m[32m    padding: 60px 90px;[m
+     box-sizing: border-box;[m
+     gap: 40px;[m
+ }[m
+[36m@@ -30,18 +30,10 @@[m [m.plataforma-left {[m
+     max-width: 50%;[m
+ }[m
+ [m
+[31m-.descripcion {[m
+[31m-    flex-direction: column;[m
+[31m-    gap: 10px;[m
+[31m-    display: flex;[m
+[31m-    font-size: 18px;[m
+[31m-    margin-bottom: 15px;[m
+[31m-}[m
+[31m-[m
+ .plataforma-titulo {[m
+     font-size: 36px;[m
+     font-weight: bold;[m
+[31m-    margin-bottom: 20px;[m
+[32m+[m[32m    margin-bottom: 30px;[m
+ }[m
+ [m
+ /* Botón volver */[m
+[1mdiff --git a/resources/js/src/Inicio/InicioPl.jsx b/resources/js/src/Inicio/InicioPl.jsx[m
+[1mindex 2926ec1..50cdf0f 100644[m
+[1m--- a/resources/js/src/Inicio/InicioPl.jsx[m
+[1m+++ b/resources/js/src/Inicio/InicioPl.jsx[m
+[36m@@ -2,20 +2,17 @@[m
+ // IMPORTACIONES[m
+ // ==============================[m
+ import React, { useState, useEffect } from 'react';[m
+[31m-import { useNavigate } from 'react-router-dom';[m
+ import './InicioPl.css';[m
+ import logo from '../assets/logos/logo.png';[m
+[31m-import Header from '../components/Headers/jsx/HeaderPl.jsx';[m
+[32m+[m[32mimport HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';[m
+ import Footer from '../components/Footer/Footer.jsx';[m
+[32m+[m[32mimport { useNavigate, useParams } from 'react-router-dom'; //importado para los cursos[m
+ [m
+ // ==============================[m
+ // CONSTANTES[m
+ // ==============================[m
+ const NIVELES = ['Base', 'Profesional', 'Avanzado', 'Experto'];[m
+ [m
+[31m-// Definir cursoId como constante[m
+[31m-const cursoId = 1; // id del curso actual[m
+[31m-[m
+ // ==============================[m
+ // FUNCIONES AUXILIARES[m
+ // ==============================[m
+[36m@@ -64,6 +61,10 @@[m [mfunction InicioPl() {[m
+     // EFECTO: CARGA INICIAL DE DATOS[m
+     // ------------------------------[m
+ [m
+[32m+[m[32m     // Definir cursoId como constante[m
+[32m+[m[32m            const { id } = useParams();[m
+[32m+[m[32m            const cursoId = parseInt(id); // convierto a número para que coincida con el id_curso de los temas[m
+[32m+[m
+     useEffect(() => {[m
+         const fetchDescripcion = async () => {[m
+             try {[m
+[36m@@ -133,7 +134,7 @@[m [mfunction InicioPl() {[m
+     return ([m
+         <div className={`inicio-wrapper ${isDarkMode ? 'dark-theme' : ''}`}>[m
+             {/* Encabezado con modo oscuro */}[m
+[31m-            <Header[m
+[32m+[m[32m            <HeaderPl[m
+                 toggleDarkMode={() => setIsDarkMode(prev => !prev)}[m
+                 isDarkMode={isDarkMode}[m
+             />[m
+[1mdiff --git a/resources/js/src/InicioUsuario/InicioComunidad.css b/resources/js/src/InicioUsuario/InicioComunidad.css[m
+[1mdeleted file mode 100644[m
+[1mindex feb8732..0000000[m
+[1m--- a/resources/js/src/InicioUsuario/InicioComunidad.css[m
+[1m+++ /dev/null[m
+[36m@@ -1,50 +0,0 @@[m
+[31m-.inicio-usuario {[m
+[31m-    background-color: #f0f0f0;[m
+[31m-    min-height: 100vh;[m
+[31m-}[m
+[31m-[m
+[31m-.hero-section {[m
+[31m-    display: flex;[m
+[31m-    justify-content: space-between;[m
+[31m-    align-items: center;[m
+[31m-    padding: 3rem;[m
+[31m-    background: url('../assets/imgs/fondo-ciudad.jpg') no-repeat center center/cover;[m
+[31m-    box-sizing: border-box;[m
+[31m-}[m
+[31m-[m
+[31m-.hero-content {[m
+[31m-    max-width: 600px;[m
+[31m-    background-color: rgba(255, 255, 255, 0.85);[m
+[31m-    padding: 2rem;[m
+[31m-}[m
+[31m-[m
+[31m-.hero-content h1 {[m
+[31m-    font-size: 2.5rem;[m
+[31m-    margin-bottom: 1rem;[m
+[31m-}[m
+[31m-[m
+[31m-.descripcion-lineas .linea {[m
+[31m-    height: 10px;[m
+[31m-    background-color: #888;[m
+[31m-    margin: 0.5rem 0;[m
+[31m-}[m
+[31m-[m
+[31m-.descripcion-lineas .linea.corta {[m
+[31m-    width: 70%;[m
+[31m-}[m
+[31m-[m
+[31m-.btn-entrar {[m
+[31m-    background-color: #ffea00;[m
+[31m-    color: black;[m
+[31m-    font-weight: bold;[m
+[31m-    border: none;[m
+[31m-    padding: 0.7rem 1.5rem;[m
+[31m-    margin-top: 1.5rem;[m
+[31m-    cursor: pointer;[m
+[31m-    transition: background-color 0.3s;[m
+[31m-}[m
+[31m-[m
+[31m-.btn-entrar:hover {[m
+[31m-    background-color: #fdd835;[m
+[31m-}[m
+[31m-[m
+[1mdiff --git a/resources/js/src/InicioUsuario/InicioComunidad.jsx b/resources/js/src/InicioUsuario/InicioComunidad.jsx[m
+[1mdeleted file mode 100644[m
+[1mindex 8d76c03..0000000[m
+[1m--- a/resources/js/src/InicioUsuario/InicioComunidad.jsx[m
+[1m+++ /dev/null[m
+[36m@@ -1,27 +0,0 @@[m
+[31m-import React from 'react';[m
+[31m-import Header from '../components/Headers/jsx/HeaderPl.jsx';[m
+[31m-import './InicioComunidad.css';[m
+[31m-// import tecnoCasa from '../assets/imgs/tecnoCasa.png'; // IMAGEN[m
+[31m-[m
+[31m-const InicioUsuario = () => {[m
+[31m-    return ([m
+[31m-        <div className="inicio-usuario">[m
+[31m-            <Header />[m
+[31m-[m
+[31m-            <div className="hero-section">[m
+[31m-                <div className="hero-content">[m
+[31m-                    <h1>Impulsa tu Éxito</h1>[m
+[31m-                    <div className="descripcion-lineas">[m
+[31m-                        <div className="linea"></div>[m
+[31m-                        <div className="linea"></div>[m
+[31m-                        <div className="linea corta"></div>[m
+[31m-                    </div>[m
+[31m-                    <button className="btn-entrar">Entrar</button>[m
+[31m-                </div>[m
+[31m-[m
+[31m-            </div>[m
+[31m-        </div>[m
+[31m-    );[m
+[31m-};[m
+[31m-[m
+[31m-export default InicioUsuario;[m
+[1mdiff --git a/resources/js/src/ListaCursos/ListaCursos.jsx b/resources/js/src/ListaCursos/ListaCursos.jsx[m
+[1mindex 21016b7..4797b6a 100644[m
+[1m--- a/resources/js/src/ListaCursos/ListaCursos.jsx[m
+[1m+++ b/resources/js/src/ListaCursos/ListaCursos.jsx[m
+[36m@@ -3,8 +3,9 @@[m
+ // ==============================[m
+ import React, { useEffect, useState } from 'react';[m
+ import './ListaCursos.css';[m
+[32m+[m[32mimport { useNavigate } from 'react-router-dom';  // --- AÑADIDO --- Importamos useNavigate para navegación[m
+ import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';[m
+[31m-import HeaderAd from '../components/Headers/jsx/HeaderAd.jsx';  //  import de HeaderAdmin para hacer los headers[m
+[32m+[m[32mimport HeaderAdmin from '../components/Headers/jsx/HeaderAd.jsx';  //  import de HeaderAdmin para hacer los headers[m
+ import Footer from '../components/Footer/Footer.jsx';[m
+ [m
+ // ==============================[m
+[36m@@ -22,18 +23,31 @@[m [mconst ListaCursos = () => {[m
+     const [loading, setLoading] = useState(true);[m
+     const [error, setError] = useState(null);[m
+ [m
+[32m+[m[32m        // Hook para navegación[m
+[32m+[m[32m    const navigate = useNavigate();[m
+[32m+[m
+      //Estado userType para guardar el tipo de usuario[m
+[31m-    const [userType, setUserType] = useState(null);[m
+[32m+[m[32m    const [userType, setUserType] = useState(null);[m[41m  [m
+ [m
+ // Lee el tipo de usuario desde localStorage al montar el componente[m
+     useEffect(() => {[m
+         const userData = localStorage.getItem("user");[m
+         if (userData) {[m
+[31m-            const user = JSON.parse(userData);[m
+[31m-            setUserType(user.tipo);[m
+[32m+[m[32m      try {[m
+[32m+[m[32m        const user = JSON.parse(userData);[m
+[32m+[m[32m        if (user && user.tipo) {[m
+[32m+[m[32m          setUserType(user.tipo);  // Aquí asignamos userType si está definido[m
+[32m+[m[32m        } else {[m
+[32m+[m[32m          setUserType('guest');    // Si no tiene tipo, asignamos guest como default[m
+         }[m
+[32m+[m[32m      } catch (error) {[m
+[32m+[m[32m        console.error('Error parseando userData:', error);[m
+[32m+[m[32m        setUserType('guest');      // En caso de error asignamos guest[m
+[32m+[m[32m      }[m
+[32m+[m[32m    } else {[m
+[32m+[m[32m      setUserType('guest');        // Si no hay datos, asignamos guest[m
+[32m+[m[32m    }[m
+     }, []);[m
+[31m-[m
+     // ------------------------------[m
+     // EFECTO: CARGA DE CURSOS[m
+     // ------------------------------[m
+[36m@@ -64,13 +78,17 @@[m [mconst ListaCursos = () => {[m
+         fetchCursos();[m
+     }, []);[m
+ [m
+[32m+[m[32m        // Aquí DEFINES rutaBase según userType[m
+[32m+[m[32m    // ====================================[m
+[32m+[m[32m    const rutaBase = userType === 'admin' ? 'admin' : 'pl';[m
+[32m+[m
+     // ------------------------------[m
+     // RENDERIZADO[m
+     // ------------------------------[m
+     return ([m
+         <div className="cursos-container">[m
+             {/* Mostrar Header según el tipo de usuario */}[m
+[31m-            {userType === 'admin' ? <HeaderAd /> : <HeaderPl />}[m
+[32m+[m[32m            {userType === 'admin' ? <HeaderAdmin /> : <HeaderPl />}[m
+ [m
+             {/* Sección principal de cursos */}[m
+             <div className="course-page">[m
+[36m@@ -97,7 +115,12 @@[m [mconst ListaCursos = () => {[m
+                                 {/* Botones de acción */}[m
+                                 <div className="button-group">[m
+                                     <button className="course-button">Detalles</button>[m
+[31m-                                    <button className="course-button">Acceder</button>[m
+[32m+[m[32m                                      <button[m
+[32m+[m[32m                                         className="course-button"[m
+[32m+[m[32m                                         onClick={() => navigate(`/${userType }/inicio/${course.id}`)}[m
+[32m+[m[32m                                         >[m
+[32m+[m[32m                                         Acceder[m
+[32m+[m[32m                                     </button>[m
+                                 </div>[m
+                             </div>[m
+                         ))}[m
+[1mdiff --git a/resources/js/src/Login/FormLogin.css b/resources/js/src/Login/FormLogin.css[m
+[1mindex 4f90b20..63e94dc 100644[m
+[1m--- a/resources/js/src/Login/FormLogin.css[m
+[1m+++ b/resources/js/src/Login/FormLogin.css[m
+[36m@@ -261,3 +261,68 @@[m [m.form-error {[m
+     font-size: 14px;[m
+     margin-top: 10px;[m
+ }[m
+[32m+[m[32m@media (max-width: 768px) {[m
+[32m+[m[32m  .intro-container {[m
+[32m+[m[32m    position: relative;[m
+[32m+[m[32m    z-index: 1;[m
+[32m+[m[32m    flex-direction: column;[m
+[32m+[m[32m    height: auto;[m
+[32m+[m[32m    padding: 2rem 0;[m
+[32m+[m[32m    justify-content: center;[m
+[32m+[m[32m    align-items: center;[m
+[32m+[m[32m    background-color: #E6D00A;[m[41m [m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  .half-circle {[m
+[32m+[m[32m    display: none;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  .intro-text {[m
+[32m+[m[32m    padding: 0;[m
+[32m+[m[32m    width: 100%;[m
+[32m+[m[32m    height: auto;[m
+[32m+[m[32m    text-align: center;[m
+[32m+[m[32m    align-items: center;[m
+[32m+[m[32m    color: black;[m
+[32m+[m[32m    background-color: transparent;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  .intro-title {[m
+[32m+[m[32m    font-size: 56px;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  .intro-subtitle {[m
+[32m+[m[32m    font-size: 32px;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  .login-container {[m
+[32m+[m[32m    position: relative;[m
+[32m+[m[32m    width: 100%;[m
+[32m+[m[32m    padding: 0 1rem;[m
+[32m+[m[32m    justify-content: center;[m
+[32m+[m[32m    background-color: white;[m
+[32m+[m[32m    z-index: 2; /* para que esté por encima de intro-container */[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  .login-form {[m
+[32m+[m[32m    width: 100%;[m
+[32m+[m[32m    max-width: 500px;[m
+[32m+[m[32m    padding: 1.5rem;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  .login-title {[m
+[32m+[m[32m    font-size: 36px;[m
+[32m+[m[32m    text-align: center;[m
+[32m+[m[32m    align-self: center;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m.mode-toggle-button {[m
+[32m+[m[32m    border-color: white !important;[m[41m [m
+[32m+[m[32m    color: white !important;[m[41m       [m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m.mode-toggle-button:hover {[m
+[32m+[m[32m    background-color: white !important;[m
+[32m+[m[32m    color: #E6D00A !important;[m
+[32m+[m[32m}[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
+[1mdiff --git a/resources/js/src/Login/FormLogin.jsx b/resources/js/src/Login/FormLogin.jsx[m
+[1mindex 5343fbe..8206aa6 100644[m
+[1m--- a/resources/js/src/Login/FormLogin.jsx[m
+[1m+++ b/resources/js/src/Login/FormLogin.jsx[m
+[36m@@ -63,7 +63,7 @@[m [mfunction FormLogin() {[m
+                 localStorage.setItem('user_data', JSON.stringify(data.user));[m
+                 localStorage.setItem('theme', data.user.theme || 'light');[m
+                 // Redirección según tipo de usuario[m
+[31m-                const route = data.user.role === 'admin' ? '/admin/cursos' : '/usuario/cursos';[m
+[32m+[m[32m                const route = '/cursos';[m
+                 window.location.href = route;[m
+                 navigate(route, { replace: true });[m
+             } else {[m
+[1mdiff --git a/resources/js/src/Notificaciones/Notificaciones.css b/resources/js/src/Notificaciones/Notificaciones.css[m
+[1mindex 9e8ed4b..e58405b 100644[m
+[1m--- a/resources/js/src/Notificaciones/Notificaciones.css[m
+[1m+++ b/resources/js/src/Notificaciones/Notificaciones.css[m
+[36m@@ -557,3 +557,59 @@[m [mbody.dark-mode .detalle-contenido::-webkit-scrollbar-thumb:hover {[m
+ body.dark-mode .mensaje-card.seleccionado:hover {[m
+     background-color: #E6D00A;[m
+ }[m
+[32m+[m
+[32m+[m[32m/*  responsive  */[m
+[32m+[m
+[32m+[m[32m@media (max-width: 768px) {[m
+[32m+[m[32m  .notificaciones-container {[m
+[32m+[m[32m    flex-direction: column;[m
+[32m+[m[32m    height: auto;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  .mensajes-lista {[m
+[32m+[m[32m    width: 100%;[m
+[32m+[m[32m    min-width: unset;[m
+[32m+[m[32m    border-right: none;[m
+[32m+[m[32m    border-bottom: 1px solid #ccc;[m
+[32m+[m[32m    height: auto;[m
+[32m+[m[32m    max-height: 300px;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  .mensaje-detalle {[m
+[32m+[m[32m    position: relative;[m
+[32m+[m[32m    padding-bottom: 60px;[m[41m [m
+[32m+[m[32m  }[m
+[32m+[m[32m  .agregar-btn {[m
+[32m+[m[32m    position: absolute;[m
+[32m+[m[32m    bottom: 10px;[m
+[32m+[m[32m    right: 10px;[m
+[32m+[m[32m    padding: 8px 12px;[m
+[32m+[m[32m    z-index: 10;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  .detalle-frame {[m
+[32m+[m[32m    width: 100%;[m
+[32m+[m[32m    height: auto;[m
+[32m+[m[32m    padding: 15px;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  .detalle-titulo {[m
+[32m+[m[32m    font-size: 24px;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  .detalle-admin {[m
+[32m+[m[32m    font-size: 18px;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  .detalle-contenido {[m
+[32m+[m[32m    font-size: 16px;[m
+[32m+[m[32m    height: auto;[m
+[32m+[m[32m    max-height: 300px;[m
+[32m+[m[32m    overflow-y: auto;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  .formulario-flotante {[m
+[32m+[m[32m    width: 90%;[m
+[32m+[m[32m    padding: 15px;[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
+[1mdiff --git a/resources/js/src/Notificaciones/NotificacionesAd.jsx b/resources/js/src/Notificaciones/NotificacionesAd.jsx[m
+[1mindex 5b758de..d4e50f1 100644[m
+[1m--- a/resources/js/src/Notificaciones/NotificacionesAd.jsx[m
+[1m+++ b/resources/js/src/Notificaciones/NotificacionesAd.jsx[m
+[36m@@ -5,7 +5,7 @@[m [mimport React, { useEffect, useState } from 'react';[m
+ import axios from 'axios';[m
+ import { FaEdit, FaTrash, FaPlus, FaEnvelope, FaTimes } from 'react-icons/fa';[m
+ import './Notificaciones.css';[m
+[31m-import Header from '../components/Headers/jsx/HeaderAd.jsx';[m
+[32m+[m[32mimport HeaderAd from '../components/Headers/jsx/HeaderAd.jsx';[m
+ import Footer from '../components/Footer/Footer.jsx';[m
+ [m
+ // ==============================[m
+[36m@@ -172,7 +172,7 @@[m [mconst NotificacionesAd = () => {[m
+     // ------------------------------[m
+     return ([m
+         <div className="container" style={{ position: 'relative', zIndex: 1 }}>[m
+[31m-            <Header />[m
+[32m+[m[32m            <HeaderAd />[m
+ [m
+             {/* Mensaje de error */}[m
+             {error && <div className="error-mensaje">{error}</div>}[m
+[1mdiff --git a/resources/js/src/Notificaciones/NotificacionesU.jsx b/resources/js/src/Notificaciones/NotificacionesU.jsx[m
+[1mindex 6ef986a..ee19607 100644[m
+[1m--- a/resources/js/src/Notificaciones/NotificacionesU.jsx[m
+[1m+++ b/resources/js/src/Notificaciones/NotificacionesU.jsx[m
+[36m@@ -4,7 +4,7 @@[m
+ import React, { useEffect, useState } from 'react';[m
+ import axios from 'axios';[m
+ import './Notificaciones.css';[m
+[31m-import Header from '../components/Headers/jsx/HeaderPl.jsx';[m
+[32m+[m[32mimport HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';[m
+ import Footer from '../components/Footer/Footer.jsx';[m
+ import { FaEnvelope, FaTimes } from "react-icons/fa";[m
+ [m
+[36m@@ -54,7 +54,7 @@[m [mconst NotificacionesU = () => {[m
+     // ------------------------------[m
+     return ([m
+         <div className="container">[m
+[31m-            <Header />[m
+[32m+[m[32m            <HeaderPl />[m
+ [m
+             {/* Mensaje de error */}[m
+             {error && <div className="error-mensaje">{error}</div>}[m
+[1mdiff --git a/resources/js/src/PasarelaPago/PasarelaPago.css b/resources/js/src/PasarelaPago/PasarelaPago.css[m
+[1mdeleted file mode 100644[m
+[1mindex 0d2126a..0000000[m
+[1m--- a/resources/js/src/PasarelaPago/PasarelaPago.css[m
+[1m+++ /dev/null[m
+[36m@@ -1,224 +0,0 @@[m
+[31m-/* Contenedor principal */[m
+[31m-.pasarela-container {[m
+[31m-    display: flex;[m
+[31m-    flex-direction: column;[m
+[31m-    align-items: center;[m
+[31m-    padding: 40px 90px;[m
+[31m-    font-family: 'Inter', sans-serif;[m
+[31m-}[m
+[31m-[m
+[31m-/* Formulario completo */[m
+[31m-.pasarela-form {[m
+[31m-    display: flex;[m
+[31m-    flex-wrap: wrap;[m
+[31m-    gap: 2rem;[m
+[31m-    justify-content: center;[m
+[31m-    width: 100%;[m
+[31m-    max-width: 1200px;[m
+[31m-    background-color: #ffffff;[m
+[31m-    padding: 2rem;[m
+[31m-}[m
+[31m-[m
+[31m-/* Columnas izquierda/derecha */[m
+[31m-.columna {[m
+[31m-    flex: 1;[m
+[31m-    min-width: 300px;[m
+[31m-    display: flex;[m
+[31m-    flex-direction: column;[m
+[31m-    gap: 1rem;[m
+[31m-}[m
+[31m-[m
+[31m-/* Contenedor de cada campo */[m
+[31m-.pasarela-input {[m
+[31m-    display: flex;[m
+[31m-    flex-direction: column;[m
+[31m-}[m
+[31m-[m
+[31m-.titulo {[m
+[31m-    font-size: 16px;[m
+[31m-    margin-bottom: 0.5rem;[m
+[31m-}[m
+[31m-[m
+[31m-/* Etiquetas */[m
+[31m-.pasarela-input label {[m
+[31m-    font-size: 14px;[m
+[31m-    color: #374151;[m
+[31m-    font-weight: 500;[m
+[31m-}[m
+[31m-[m
+[31m-/* Inputs de texto */[m
+[31m-.pasarela-input input {[m
+[31m-    padding: 17px;[m
+[31m-    border-radius: 6px;[m
+[31m-    border: 1.5px solid #CBD2E0;[m
+[31m-    font-size: 15px;[m
+[31m-    font-family: 'Inter', sans-serif;[m
+[31m-    outline: none;[m
+[31m-    background-color: #f9fafb;[m
+[31m-    color: #111827;[m
+[31m-}[m
+[31m-[m
+[31m-/* Botón del ícono */[m
+[31m-.pasarela-input .icon-button {[m
+[31m-    position: absolute;[m
+[31m-    top: 70%;[m
+[31m-    right: 15px;[m
+[31m-    transform: translateY(-50%);[m
+[31m-    background: none;[m
+[31m-    border: none;[m
+[31m-    cursor: pointer;[m
+[31m-    padding: 0;[m
+[31m-    font-size: 18px;[m
+[31m-    color: #6b7280; /* Color del ícono */[m
+[31m-}[m
+[31m-[m
+[31m-/* Dos campos en línea */[m
+[31m-.input-row {[m
+[31m-    display: flex;[m
+[31m-    gap: 1rem;[m
+[31m-}[m
+[31m-[m
+[31m-.input-row input {[m
+[31m-    flex: 1;[m
+[31m-    min-width: 0;[m
+[31m-    padding: 12px;[m
+[31m-    border-radius: 6px;[m
+[31m-    border: 1.5px solid #CBD2E0;[m
+[31m-    font-size: 15px;[m
+[31m-    background-color: #f9fafb;[m
+[31m-    color: #111827;[m
+[31m-}[m
+[31m-[m
+[31m-.input-row input:focus {[m
+[31m-    border-color: #E6D00A;[m
+[31m-    outline: none;[m
+[31m-}[m
+[31m-[m
+[31m-.telefono-row {[m
+[31m-    display: flex;[m
+[31m-    flex-direction: column;[m
+[31m-    gap: 0.5rem;[m
+[31m-}[m
+[31m-[m
+[31m-.telefono-row label {[m
+[31m-    font-size: 14px;[m
+[31m-    color: #374151;[m
+[31m-    font-weight: 500;[m
+[31m-}[m
+[31m-[m
+[31m-.telefono-row .telefono-input-container {[m
+[31m-    display: flex;[m
+[31m-    flex-direction: row;[m
+[31m-    align-items: center;[m
+[31m-    gap: 8px;[m
+[31m-}[m
+[31m-[m
+[31m-.telefono-prefijo {[m
+[31m-    width: 70px;[m
+[31m-    padding: 17px 12px;[m
+[31m-    border-radius: 6px;[m
+[31m-    border: 1.5px solid #CBD2E0;[m
+[31m-    background-color: #f9fafb;[m
+[31m-    font-size: 15px;[m
+[31m-    color: #111827;[m
+[31m-}[m
+[31m-[m
+[31m-.telefono-input {[m
+[31m-    flex: 1;[m
+[31m-    padding: 12px;[m
+[31m-    border-radius: 6px;[m
+[31m-    border: 1.5px solid #CBD2E0;[m
+[31m-    font-size: 15px;[m
+[31m-    background-color: #f9fafb;[m
+[31m-    color: #111827;[m
+[31m-}[m
+[31m-[m
+[31m-/* Resumen de compra */[m
+[31m-.detalles-compra {[m
+[31m-    margin-top: 3rem;[m
+[31m-    padding: 1.5rem;[m
+[31m-    background-color: #f3f4f6;[m
+[31m-    border-radius: 8px;[m
+[31m-    font-family: 'Inter', sans-serif;[m
+[31m-    color: #111827;[m
+[31m-    display: flex;[m
+[31m-    flex-direction: column;[m
+[31m-    gap: 1rem;[m
+[31m-    position: relative;[m
+[31m-}[m
+[31m-[m
+[31m-.detalles-compra-title {[m
+[31m-    font-weight: 600;[m
+[31m-    font-size: 16px;[m
+[31m-    margin-bottom: 0.5rem;[m
+[31m-    color: #111827;[m
+[31m-}[m
+[31m-[m
+[31m-.detalles-compra-item {[m
+[31m-    align-items: center;[m
+[31m-    font-size: 14px;[m
+[31m-    color: #111827;[m
+[31m-}[m
+[31m-[m
+[31m-.iva-label {[m
+[31m-    color: #E6D00A;[m
+[31m-    font-weight: 600;[m
+[31m-}[m
+[31m-[m
+[31m-.detalles-compra-total {[m
+[31m-    display: flex;[m
+[31m-    justify-content: space-between;[m
+[31m-    font-weight: 700;[m
+[31m-    font-size: 15px;[m
+[31m-    border-top: 1px solid #E5E7EB;[m
+[31m-    padding-top: 0.5rem;[m
+[31m-    margin-top: 0.5rem;[m
+[31m-    color: #111827;[m
+[31m-}[m
+[31m-[m
+[31m-/* Botón de pago */[m
+[31m-.pagar-btn {[m
+[31m-    margin-top: 0.70rem;[m
+[31m-    padding: 17.5px;[m
+[31m-    background-color: #E6D00A;[m
+[31m-    color: #111827;[m
+[31m-    border: none;[m
+[31m-    border-radius: 6px;[m
+[31m-    font-weight: 600;[m
+[31m-    font-size: 16px;[m
+[31m-    width: 100%;[m
+[31m-    text-align: center;[m
+[31m-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);[m
+[31m-}[m
+[31m-[m
+[31m-.pagar-btn.enabled {[m
+[31m-    cursor: pointer;[m
+[31m-}[m
+[31m-.pagar-btn:disabled {[m
+[31m-    cursor: not-allowed;[m
+[31m-}[m
+[31m-[m
+[31m-.pagar-btn:hover {[m
+[31m-    background-color: #d1bd00;[m
+[31m-}[m
+[31m-[m
+[31m-div#payment-element-container {[m
+[31m-    display: flex;[m
+[31m-    flex-direction: column;[m
+[31m-}[m
+[31m-[m
+[31m-/* Responsive para móviles */[m
+[31m-@media (max-width: 768px) {[m
+[31m-    .pasarela-form {[m
+[31m-        flex-direction: column;[m
+[31m-    }[m
+[31m-[m
+[31m-    .input-row {[m
+[31m-        flex-direction: column;[m
+[31m-    }[m
+[31m-[m
+[31m-    .pagar-btn {[m
+[31m-        width: 100%;[m
+[31m-        text-align: center;[m
+[31m-    }[m
+[31m-}[m
+[1mdiff --git a/resources/js/src/PasarelaPago/PasarelaPago.jsx b/resources/js/src/PasarelaPago/PasarelaPago.jsx[m
+[1mdeleted file mode 100644[m
+[1mindex 4eafdb7..0000000[m
+[1m--- a/resources/js/src/PasarelaPago/PasarelaPago.jsx[m
+[1m+++ /dev/null[m
+[36m@@ -1,290 +0,0 @@[m
+[31m-import React, { useState, useEffect } from 'react';[m
+[31m-import { loadStripe } from '@stripe/stripe-js';[m
+[31m-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';[m
+[31m-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';[m
+[31m-import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';[m
+[31m-import Header from '../components/Headers/jsx/HeaderPl.jsx';[m
+[31m-import Footer from '../components/Footer/Footer.jsx';[m
+[31m-import './PasarelaPago.css';[m
+[31m-[m
+[31m-const stripePromise = loadStripe('pk_test_51RGlsjB2ttGnV711RTjFq0AoULWgpTuCeOLL4W0rsi6UTCx7TI85kOW0KIwMN0vHIgrgfVuxDb0t1hbyZjNd2sWd00je0sxh6D');[m
+[31m-[m
+[31m-// Componente reutilizable para los campos de entrada[m
+[31m-function InputField({ label, name, type = "text", value, onChange, required = true, placeholder, children }) {[m
+[31m-    return ([m
+[31m-        <div className="pasarela-input" style={{ position: 'relative' }}>[m
+[31m-            {label && <label className="titulo">{label}</label>}[m
+[31m-            <input[m
+[31m-                name={name}[m
+[31m-                type={type}[m
+[31m-                placeholder={placeholder || label}[m
+[31m-                value={value}[m
+[31m-                onChange={onChange}[m
+[31m-                required={required}[m
+[31m-                autoComplete="off"[m
+[31m-            />[m
+[31m-            {children}[m
+[31m-        </div>[m
+[31m-    );[m
+[31m-}[m
+[31m-[m
+[31m-function PaymentForm() {[m
+[31m-    const stripe = useStripe();[m
+[31m-    const elements = useElements();[m
+[31m-    const [mostrarContrasena, setMostrarContrasena] = useState(false);[m
+[31m-    const [mostrarConfirmar, setMostrarConfirmar] = useState(false);[m
+[31m-    const [prefijo, setPrefijo] = useState('+34'); // Por defecto España[m
+[31m-    const [loading, setLoading] = useState(false);[m
+[31m-    const [formData, setFormData] = useState({[m
+[31m-        email: '',[m
+[31m-        nombreApellido: '',[m
+[31m-        contrasena: '',[m
+[31m-        confirmarContrasena: '',[m
+[31m-        direccion: '',[m
+[31m-        ciudad: '',[m
+[31m-        pais: '',[m
+[31m-        estado: '',[m
+[31m-        codigoPostal: '',[m
+[31m-        telefono: '',[m
+[31m-    });[m
+[31m-[m
+[31m-    const isFormValid = Object.values(formData).every(val => val.trim() !== '');[m
+[31m-[m
+[31m-    const handleChange = (e) => {[m
+[31m-        const { name, value } = e.target;[m
+[31m-        setFormData(prev => ({ ...prev, [name]: value }));[m
+[31m-    };[m
+[31m-[m
+[31m-    const handleSubmit = async (e) => {[m
+[31m-        e.preventDefault();[m
+[31m-        if (!stripe || !elements) return;[m
+[31m-        setLoading(true);[m
+[31m-[m
+[31m-        const { error } = await stripe.confirmPayment({[m
+[31m-            elements,[m
+[31m-            confirmParams: {[m
+[31m-                return_url: 'http://localhost:5173/confirmacion-pago',[m
+[31m-                payment_method_data: {[m
+[31m-                    billing_details: {[m
+[31m-                        address: {[m
+[31m-                            city: formData.ciudad,[m
+[31m-                            country: formData.pais,[m
+[31m-                            line1: formData.direccion,[m
+[31m-                            postal_code: formData.codigoPostal,[m
+[31m-                            state: formData.estado,[m
+[31m-                        },[m
+[31m-                        name: formData.nombreApellido,[m
+[31m-                        email: formData.email,[m
+[31m-                        phone: formData.telefono,[m
+[31m-                    }[m
+[31m-                }[m
+[31m-            }[m
+[31m-        });[m
+[31m-[m
+[31m-        if (error) {[m
+[31m-            console.error('Error en el pago:', error.message);[m
+[31m-        } else {[m
+[31m-            console.log('Pago exitoso');[m
+[31m-        }[m
+[31m-        setLoading(false);[m
+[31m-    };[m
+[31m-[m
+[31m-    return ([m
+[31m-        <div>[m
+[31m-            <Header />[m
+[31m-            <main className="pasarela-container">[m
+[31m-                <form className="pasarela-form" onSubmit={handleSubmit}>[m
+[31m-                    {/* Columna izquierda - Datos personales y dirección */}[m
+[31m-                    <div className="columna">[m
+[31m-                        <h2 className="pasarela-title">Datos personales</h2>[m
+[31m-                        <InputField[m
+[31m-                            label="Nombre y Apellido"[m
+[31m-                            name="nombreApellido"[m
+[31m-                            value={formData.nombreApellido}[m
+[31m-                            onChange={handleChange}[m
+[31m-                            placeholder="Nombre y Apellido"[m
+[31m-                        />[m
+[31m-                        <InputField[m
+[31m-                            label="Correo Electrónico"[m
+[31m-                            name="email"[m
+[31m-                            type="email"[m
+[31m-                            value={formData.email}[m
+[31m-                            onChange={handleChange}[m
+[31m-                            placeholder="Correo electrónico"[m
+[31m-                        />[m
+[31m-                        <InputField[m
+[31m-                            label="Contraseña"[m
+[31m-                            name="contrasena"[m
+[31m-                            type={mostrarContrasena ? "text" : "password"}[m
+[31m-                            value={formData.contrasena}[m
+[31m-                            onChange={handleChange}[m
+[31m-                            placeholder="Crear contraseña"[m
+[31m-                        >[m
+[31m-                            <button[m
+[31m-                                type="button"[m
+[31m-                                className="icon-button"[m
+[31m-                                onClick={() => setMostrarContrasena(!mostrarContrasena)}[m
+[31m-                                aria-label={mostrarContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'}[m
+[31m-                            >[m
+[31m-                                <FontAwesomeIcon icon={mostrarContrasena ? faEyeSlash : faEye} />[m
+[31m-                            </button>[m
+[31m-                        </InputField>[m
+[31m-[m
+[31m-                        <InputField[m
+[31m-                            label="Confirmar Contraseña"[m
+[31m-                            name="confirmarContrasena"[m
+[31m-                            type={mostrarConfirmar ? "text" : "password"}[m
+[31m-                            value={formData.confirmarContrasena}[m
+[31m-                            onChange={handleChange}[m
+[31m-                            placeholder="Confirmar contraseña"[m
+[31m-                        >[m
+[31m-                            <button[m
+[31m-                                type="button"[m
+[31m-                                className="icon-button"[m
+[31m-                                onClick={() => setMostrarConfirmar(!mostrarConfirmar)}[m
+[31m-                                aria-label={mostrarConfirmar ? 'Ocultar contraseña' : 'Mostrar contraseña'}[m
+[31m-                            >[m
+[31m-                                <FontAwesomeIcon icon={mostrarConfirmar ? faEyeSlash : faEye} />[m
+[31m-                            </button>[m
+[31m-                        </InputField>[m
+[31m-                        <h3 className="pasarela-title" style={{marginTop: '1rem'}}>Dirección de facturación</h3>[m
+[31m-                        <InputField[m
+[31m-                            label="Dirección"[m
+[31m-                            name="direccion"[m
+[31m-                            value={formData.direccion}[m
+[31m-                            onChange={handleChange}[m
+[31m-                            placeholder="Dirección"[m
+[31m-                        />[m
+[31m-                        <div className="input-row">[m
+[31m-                            <InputField[m
+[31m-                                label="Ciudad"[m
+[31m-                                name="ciudad"[m
+[31m-                                value={formData.ciudad}[m
+[31m-                                onChange={handleChange}[m
+[31m-                                placeholder="Ciudad"[m
+[31m-                            />[m
+[31m-                            <InputField[m
+[31m-                                label="Código Postal"[m
+[31m-                                name="codigoPostal"[m
+[31m-                                value={formData.codigoPostal}[m
+[31m-                                onChange={handleChange}[m
+[31m-                                placeholder="Código Postal"[m
+[31m-                            />[m
+[31m-                        </div>[m
+[31m-                        <div className="input-row">[m
+[31m-                            <InputField[m
+[31m-                                label="País"[m
+[31m-                                name="pais"[m
+[31m-                                value={formData.pais}[m
+[31m-                                onChange={handleChange}[m
+[31m-                                placeholder="País"[m
+[31m-                            />[m
+[31m-                            <InputField[m
+[31m-                                label="Estado/Provincia"[m
+[31m-                                name="estado"[m
+[31m-                                value={formData.estado}[m
+[31m-                                onChange={handleChange}[m
+[31m-                                placeholder="Estado/Provincia"[m
+[31m-                            />[m
+[31m-                        </div>[m
+[31m-                        <div className="pasarela-input telefono-row">[m
+[31m-                            <label className="titulo">Teléfono</label>[m
+[31m-                            <div className="telefono-input-container">[m
+[31m-                                <select[m
+[31m-                                    name="prefijo"[m
+[31m-                                    value={prefijo}[m
+[31m-                                    onChange={e => setPrefijo(e.target.value)}[m
+[31m-                                    className="telefono-prefijo"[m
+[31m-                                    required[m
+[31m-                                >[m
+[31m-                                    <option value="+34">+34</option>[m
+[31m-                                    <option value="+1">+1</option>[m
+[31m-                                    <option value="+44">+44</option>[m
+[31m-                                    <option value="+33">+33</option>[m
+[31m-                                </select>[m
+[31m-                                <input[m
+[31m-                                    name="telefono"[m
+[31m-                                    type="tel"[m
+[31m-                                    value={formData.telefono}[m
+[31m-                                    onChange={handleChange}[m
+[31m-                                    placeholder="Número de teléfono"[m
+[31m-                                    className="telefono-input"[m
+[31m-                                    required[m
+[31m-                                />[m
+[31m-                            </div>[m
+[31m-                        </div>[m
+[31m-                    </div>[m
+[31m-[m
+[31m-                    {/* Columna derecha - Datos de pago */}[m
+[31m-                    <div className="columna">[m
+[31m-                        <h2 className="pasarela-title">Datos de compra</h2>[m
+[31m-                        <div id="payment-element-container">[m
+[31m-                            <label className="titulo">Metodo de pago</label>[m
+[31m-                            <PaymentElement id="payment-element" />[m
+[31m-                            <div className="detalles-compra">[m
+[31m-                                <div className="detalles-compra-title">Resumen de compra</div>[m
+[31m-                                <div className="detalles-compra-item">[m
+[31m-                                    <span>Producto:</span>[m
+[31m-                                    <span>Curso React</span>[m
+[31m-                                </div>[m
+[31m-                                <div className="detalles-compra-item">[m
+[31m-                                    <span>Subtotal:</span>[m
+[31m-                                    <span>€20.00</span>[m
+[31m-                                </div>[m
+[31m-                                <div className="detalles-compra-item">[m
+[31m-                                    <span className="iva-label">IVA (21%):</span>[m
+[31m-                                    <span>€4.20</span>[m
+[31m-                                </div>[m
+[31m-                                <div className="detalles-compra-total">[m
+[31m-                                    <span>Total:</span>[m
+[31m-                                    <span>€24.20</span>[m
+[31m-                                </div>[m
+[31m-                            </div>[m
+[31m-                            <button[m
+[31m-                                type="submit"[m
+[31m-                                className={`pagar-btn${isFormValid && !loading ? ' enabled' : ''}`}[m
+[31m-                                disabled={!stripe || loading || !isFormValid}[m
+[31m-                            >[m
+[31m-                                {loading ? 'Procesando...' : 'Pagar'}[m
+[31m-                            </button>[m
+[31m-                        </div>[m
+[31m-                    </div>[m
+[31m-                </form>[m
+[31m-            </main>[m
+[31m-            <Footer />[m
+[31m-        </div>[m
+[31m-    );[m
+[31m-}[m
+[31m-[m
+[31m-export default function PasarelaPago() {[m
+[31m-    const [clientSecret, setClientSecret] = useState('');[m
+[31m-[m
+[31m-    useEffect(() => {[m
+[31m-        fetch('/api/create-payment-intent', {[m
+[31m-            method: 'POST',[m
+[31m-            headers: { 'Content-Type': 'application/json' },[m
+[31m-            body: JSON.stringify({[m
+[31m-                amount: 100, // Monto en centavos (ejemplo: 100 centavos = €1.00)[m
+[31m-            }),[m
+[31m-        })[m
+[31m-            .then(res => res.json())[m
+[31m-            .then(data => setClientSecret(data.clientSecret));[m
+[31m-    }, []);[m
+[31m-[m
+[31m-    const appearance = {[m
+[31m-        theme: 'stripe',[m
+[31m-        variables: {[m
+[31m-            colorPrimaryText: '#262626',[m
+[31m-        },[m
+[31m-    };[m
+[31m-[m
+[31m-    return ([m
+[31m-        clientSecret ? ([m
+[31m-            <Elements stripe={stripePromise} options={{ clientSecret, appearance }}>[m
+[31m-                <PaymentForm />[m
+[31m-            </Elements>[m
+[31m-        ) : ([m
+[31m-            <div>Cargando...</div>[m
+[31m-        )[m
+[31m-    );[m
+[31m-}[m
+[1mdiff --git a/resources/js/src/main.jsx b/resources/js/src/main.jsx[m
+[1mindex aac8bf5..339a0be 100644[m
+[1m--- a/resources/js/src/main.jsx[m
+[1m+++ b/resources/js/src/main.jsx[m
+[36m@@ -11,15 +11,12 @@[m [mconst ListaCursos = lazy(() => import('./ListaCursos/ListaCursos'));[m
+ const NotificacionesAd = lazy(() => import('./Notificaciones/NotificacionesAd'));[m
+ const InicioPl = lazy(() => import('./Inicio/InicioPl'));[m
+ const NotificacionesU = lazy(() => import('./Notificaciones/NotificacionesU'));[m
+[31m-const PasarelaPago = lazy(() => import('./PasarelaPago/PasarelaPago'));[m
+[31m-const InicioComunidad = lazy(() => import('./InicioUsuario/InicioComunidad'));[m
+ [m
+ export const AppRoutes = () => ([m
+     <Suspense fallback={<LoadingSpinner />}>[m
+         <Routes>[m
+             {/* Rutas públicas */}[m
+             <Route path="/login" element={<FormLogin />} />[m
+[31m-            <Route path="/pasarela" element={<PasarelaPago />} />[m
+ [m
+             {/* Rutas protegidas de administrador */}[m
+             <Route path="/admin/*" element={[m
+[36m@@ -28,7 +25,8 @@[m [mexport const AppRoutes = () => ([m
+                         <Route path="notificaciones" element={<NotificacionesAd />} />[m
+                         <Route path="inicio" element={<InicioPl />} />[m
+                         <Route path="cursos" element={<ListaCursos />} />[m
+[31m-                        <Route path="comunidad" element={<InicioComunidad />} />[m
+[32m+[m[32m                        {/* Añadida ruta para acceder de curso */}[m
+[32m+[m[32m                        <Route path="inicio/:id" element={<InicioPl />} />[m
+                     </Routes>[m
+                 </ProtectedRoute>[m
+             } />[m
+[36m@@ -40,7 +38,8 @@[m [mexport const AppRoutes = () => ([m
+                         <Route path="notificaciones" element={<NotificacionesU />} />[m
+                         <Route path="inicio" element={<InicioPl />} />[m
+                         <Route path="cursos" element={<ListaCursos />} />[m
+[31m-                        <Route path="comunidad" element={<InicioComunidad />} />[m
+[32m+[m[32m                        {/* Añadida ruta para acceder de curso */}[m
+[32m+[m[32m                        <Route path="inicio/:id" element={<InicioPl />} />[m
+                     </Routes>[m
+                 </ProtectedRoute>[m
+             } />[m
+[1mdiff --git a/resources/views/app.blade.php b/resources/views/app.blade.php[m
+[1mindex 13e6df1..8427041 100644[m
+[1m--- a/resources/views/app.blade.php[m
+[1m+++ b/resources/views/app.blade.php[m
+[36m@@ -1,7 +1,7 @@[m
+ <!DOCTYPE html>[m
+ <html lang="es">[m
+ <head>[m
+[31m-    <meta name="viewport" content="width=device-width, initial-scale=1.0">[m
+[32m+[m[32m    <meta charset="UTF-8">[m
+     <title>App React</title>[m
+     <meta name="csrf-token" content="{{ csrf_token() }}">[m
+     @viteReactRefresh[m
+[1mdiff --git a/resources/views/welcome.blade.php b/resources/views/welcome.blade.php[m
+[1mindex fdb6e2c..fd422c6 100644[m
+[1m--- a/resources/views/welcome.blade.php[m
+[1m+++ b/resources/views/welcome.blade.php[m
+[36m@@ -1,5 +1,5 @@[m
+ <head>[m
+[31m-    <meta name="viewport" content="width=device-width, initial-scale=1.0">[m
+[32m+[m[32m    <meta charset="UTF-8">[m
+     <title>Mi App Laravel + React</title>[m
+     @viteReactRefresh[m
+     @vite('resources/js/src/main.jsx')[m
+[1mdiff --git a/routes/api.php b/routes/api.php[m
+[1mindex 2c945ad..747811a 100644[m
+[1m--- a/routes/api.php[m
+[1m+++ b/routes/api.php[m
+[36m@@ -5,23 +5,18 @@[m
+ // ==============================[m
+ [m
+ // --- Controladores generales ---[m
+[32m+[m[32muse App\Http\Controllers\ExpedienteController;[m
+[32m+[m
+[32m+[m[32m// --- Controladores de administrador ---[m
+ use App\Http\Controllers\Admin\AuthController;[m
+[32m+[m[32muse App\Http\Controllers\Admin\CursoController;[m
+[32m+[m[32muse App\Http\Controllers\Admin\TemaController;[m
+ use App\Http\Controllers\Admin\ClaseController;[m
+ use App\Http\Controllers\Admin\NotificacionController;[m
+[31m-use App\Http\Controllers\Admin\TemaController;[m
+[31m-use App\Http\Controllers\CheckoutController;[m
+[31m-use App\Http\Controllers\CursoController;[m
+[31m-use App\Http\Controllers\ExpedienteController;[m
+[32m+[m
+ use Illuminate\Support\Facades\Auth;[m
+ use Illuminate\Support\Facades\Route;[m
+ [m
+[31m-// --- Controladores de administrador ---[m
+[31m-[m
+[31m-// ==============================[m
+[31m-// CHECKOUT (Stripe)[m
+[31m-// ==============================[m
+[31m-Route::post('/create-payment-intent', [CheckoutController::class, 'createPaymentIntent']);[m
+[31m-[m
+ // ==============================[m
+ // AUTENTICACIÓN[m
+ // ==============================[m
