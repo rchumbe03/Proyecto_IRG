@@ -25,6 +25,8 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesAd />} />
                         <Route path="inicio" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
+                        {/* Añadida ruta para acceder de curso */}
+                        <Route path="inicio/:id" element={<InicioPl />} />
                     </Routes>
                 </ProtectedRoute>
             } />
@@ -36,6 +38,8 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesU />} />
                         <Route path="inicio" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
+                        {/* Añadida ruta para acceder de curso */}
+                        <Route path="inicio/:id" element={<InicioPl />} />
                     </Routes>
                 </ProtectedRoute>
             } />

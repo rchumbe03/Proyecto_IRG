@@ -557,3 +557,59 @@ body.dark-mode .detalle-contenido::-webkit-scrollbar-thumb:hover {
 body.dark-mode .mensaje-card.seleccionado:hover {
     background-color: #E6D00A;
 }
+
+/*  responsive  */
+
+@media (max-width: 768px) {
+  .notificaciones-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .mensajes-lista {
+    width: 100%;
+    min-width: unset;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+    height: auto;
+    max-height: 300px;
+  }
+
+  .mensaje-detalle {
+    position: relative;
+    padding-bottom: 60px; 
+  }
+  .agregar-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 8px 12px;
+    z-index: 10;
+  }
+
+  .detalle-frame {
+    width: 100%;
+    height: auto;
+    padding: 15px;
+  }
+
+  .detalle-titulo {
+    font-size: 24px;
+  }
+
+  .detalle-admin {
+    font-size: 18px;
+  }
+
+  .detalle-contenido {
+    font-size: 16px;
+    height: auto;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .formulario-flotante {
+    width: 90%;
+    padding: 15px;
+  }
+}

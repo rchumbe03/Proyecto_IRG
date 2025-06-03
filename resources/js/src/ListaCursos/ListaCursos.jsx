@@ -3,6 +3,7 @@
 // ==============================
 import React, { useEffect, useState } from 'react';
 import './ListaCursos.css';
+import { useNavigate } from 'react-router-dom';  // --- AÑADIDO --- Importamos useNavigate para navegación
 import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';
 import HeaderAdmin from '../components/Headers/jsx/HeaderAd.jsx';  //  import de HeaderAdmin para hacer los headers
 import Footer from '../components/Footer/Footer.jsx';
@@ -22,6 +23,9 @@ const ListaCursos = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+        // Hook para navegación
+    const navigate = useNavigate();
+
      //Estado userType para guardar el tipo de usuario
     const [userType, setUserType] = useState(null);  
 
@@ -29,11 +33,21 @@ const ListaCursos = () => {
     useEffect(() => {
         const userData = localStorage.getItem("user");
         if (userData) {
-            const user = JSON.parse(userData);
-            setUserType(user.tipo);
+      try {
+        const user = JSON.parse(userData);
+        if (user && user.tipo) {
+          setUserType(user.tipo);  // Aquí asignamos userType si está definido
+        } else {
+          setUserType('guest');    // Si no tiene tipo, asignamos guest como default
         }
+      } catch (error) {
+        console.error('Error parseando userData:', error);
+        setUserType('guest');      // En caso de error asignamos guest
+      }
+    } else {
+      setUserType('guest');        // Si no hay datos, asignamos guest
+    }
     }, []);
-
     // ------------------------------
     // EFECTO: CARGA DE CURSOS
     // ------------------------------
@@ -63,6 +77,10 @@ const ListaCursos = () => {
         };
         fetchCursos();
     }, []);
+
+        // Aquí DEFINES rutaBase según userType
+    // ====================================
+    const rutaBase = userType === 'admin' ? 'admin' : 'pl';
 
     // ------------------------------
     // RENDERIZADO
@@ -97,7 +115,12 @@ const ListaCursos = () => {
                                 {/* Botones de acción */}
                                 <div className="button-group">
                                     <button className="course-button">Detalles</button>
-                                    <button className="course-button">Acceder</button>
+                                      <button
+                                         className="course-button"
+                                         onClick={() => navigate(`/${userType }/inicio/${course.id}`)}
+                                         >
+                                         Acceder
+                                     </button>
                                 </div>
                             </div>
                         ))}
