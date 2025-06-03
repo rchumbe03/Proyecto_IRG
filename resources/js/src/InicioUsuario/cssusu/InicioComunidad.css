@@ -1,0 +1,148 @@
+html, body {
+  margin: 0px;
+  padding: 0px;
+}
+
+.inicio-comunidad {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 600px;
+  background-color: #8f8f8f4d;
+}
+
+.titulo-comunidad {
+  font-size: 45px;
+  margin-bottom: 24px;
+}
+
+.carrusel-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+
+}
+
+.slides-container {
+  overflow: visible;
+}
+
+.slides {
+    display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  transform: none !important;
+  transition: none;
+}
+
+.nav {
+  display: none;
+}
+
+.slide {
+  flex: none;
+  box-sizing: border-box;
+  padding: 16px;
+  display: grid;
+}
+
+.texto {
+  font-style: italic;
+  margin-bottom: 16px;
+  line-height: 1.4;
+  text-align: center;
+}
+.autor {
+  text-align: right;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+/*Se activa el carrusel*/
+@media (max-width: 767px) {
+  .carrusel-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    max-width: 300px;
+    margin: 0px;
+  }
+
+  .slides-container {
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .slides {
+    display: flex;
+    transition: transform 1s ease;
+  }
+
+  .slide {
+    flex: 0 0 200px;
+    padding: 16px;
+    box-sizing: border-box;
+    display: block;  
+  }
+
+  .nav {
+    display: block;
+    background: #00000000;
+    border: none;
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    color: #333;
+    border-radius: 50%;
+    z-index: 5;
+    transition: background 0.2s;
+  }
+  .nav:hover {
+    background: #00000000;
+  }
+}
+
+/*SE ENCUENTRA EL MODO OSCURO*/
+
+.dark .inicio-comunidad {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 600px;
+  background-color: #2C2C2C;
+  color: #fff;
+}
+
+.dark .autor {
+  text-align: right;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+}
+
+/*Se activa el carrusel*/
+@media (max-width: 767px) {
+
+  .dark .nav {
+    display: block;
+    background: #2C2C2C;
+    border: none;
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    color: #fff;
+    border-radius: 50%;
+    z-index: 5;
+    transition: background 0.2s;
+  }
+  .dark .nav:hover {
+    background: #2C2C2C;
+    color: #fff;
+  }
+}

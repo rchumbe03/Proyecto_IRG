@@ -1,6 +1,4 @@
 .footer {
-    bottom: 0;
-    left: 0;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -9,6 +7,7 @@
     padding: 40px 70px;
     font-family: sans-serif;
     box-sizing: border-box;
+    position: relative;
 }
 
 .footer-left {

@@ -9,37 +9,38 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 15px;  /* Añadir padding de 15px a los laterales para que no esté pegado al borde */
+
+    padding: 8px 15px;  /* Añadir padding de 15px a los laterales para que no esté pegado al borde */
     background-color: #F3F3F5;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid black;
-    top: 0;
-    left: 0;
-    right: 0;
     width: 100%;
     z-index: 100;  /* Asegura que el header esté encima del contenido */
 }
 
 .logo {
-  display: flex;
-  align-items: center;
+  height: 70px;
+  width: auto;
 }
 
 .logo-img {
+  display: block;
   height: 40px;
+  width: auto;
+  margin-top: 15px;
 }
 
 .right-section {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
   margin-left: auto;
 }
 
 /* Íconos generales */
 .icon {
   color: #000;
-  font-size: 22px;
+  font-size:20px;
   cursor: pointer;
   transition: transform 0.5s ease, color 0.3s ease;
 }
@@ -48,15 +49,7 @@
   transform: rotate(360deg);
 }
 
-/* Íconos con texto */
-.icon-with-label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  min-width: 50px;
-}
+
 
 .icon-label {
   margin-top: 10px;
@@ -64,16 +57,48 @@
   font-size: 14px;
   height: 14px; /* Reservamos altura aunque no haya texto */
 }
-
-/* NotificacionesAd: icono y texto alineados en fila */
+/*seccion del icono de notificaciones*/
 .notification-section {
-  flex-direction: row;
-  gap: 8px;
+  position: relatative;
+  display: inline-flex;
+  align-items: center;
+  cursor:pointer;
 }
 
-.notification-section .icon-label {
-  margin-top: 0; /* Para que el texto esté al lado */
+.icon-text-button {
+  display: flex;             /* Flexbox para alinearlos en una fila */
+  justify-content: flex-start; /* Alinea los iconos al inicio (de izquierda a derecha) */
+  align-items: center;       /* Alinea los iconos verticalmente en el centro */
+  font-size:20px;
 }
+
+.icon-text-button span {
+  font-family: Arial, sans-serif;
+  white-space: nowrap;
+  opacity: 0;
+  width: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size:20px;
+}
+.icon-text-button:hover {
+  color: #E6D00A;                /* Mismo color hover que los iconos */
+}
+.icon-text-button:hover span {
+  opacity: 1;
+  width: auto;  /* Deja que tome el tamaño del texto */
+  margin-left: 8px; /* Separación entre icono y texto */
+  padding-right: 15px; 
+}
+
+.notification-section:hover .icon-label {
+  display: block;
+  font-size:20px;
+  padding-bottom: 30px;
+}
+
+
+
 
 /* Modo Oscuro: icono y texto alineados en fila */
 .darkmode-section {
@@ -81,8 +106,18 @@
   gap: 8px;
 }
 
+.darkmode-section .icon{
+  font-size:20px;
+  margin-top: 4px;
+}
+
 .darkmode-section .icon-label {
   margin-top: 0;
+  padding-right: 10px;
+}
+
+.darkmode-section .icon:hover{
+  color: #f1c40f; /* Cambia el color al pasar el mouse */
 }
 
 /* Perfil */
@@ -132,12 +167,22 @@
   font-size: 14px;
 }
 
-/* Animación para abrir el dropdown */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Animación para el dropdown */
+@keyframes spin {
+  from {
+      transform: rotate(0deg) scale(1);
+  }
+  to {
+      transform: rotate(360deg) scale(1.2);
+  }
+}
+.spin svg{
+  animation: spin 0.5s ease-in-out;
 }
 
+.icon-text-button svg{
+  transition: transform 0.3s ease;
+}
 /* Modo Oscuro */
 body.dark-mode {
   background-color: #121212;
@@ -145,7 +190,7 @@ body.dark-mode {
 }
 
 body.dark-mode .header {
-  background-color: #1f1f1f;
+  background-color: #474444be;
   border-bottom: 1px solid white;
 }
 
