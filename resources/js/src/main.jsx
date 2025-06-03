@@ -4,11 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext.jsx';
 import LoadingSpinner from './components/common/LoadingSpinner.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
-import InicioComunidad from './InicioUsuario/jsx/InicioComunidad.jsx'; 
-import FormaParte from './InicioUsuario/jsx/FormaParte.jsx'; 
-import PreguntasFrecuentes from './InicioUsuario/jsx/PreguntasFrecuentes.jsx'
-import LandingSecciones from './InicioUsuario/jsx/LandingSecciones.jsx';
-import InformacionPersonal from './InformacionPersonal/InformacionPersonal.jsx';
+import InicioUsuario from './InicioUsuario/Avatar.jsx';
 
 // Lazy loading de componentes
 const FormLogin = lazy(() => import('./Login/FormLogin'));
@@ -30,11 +26,7 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesAd />} />
                         <Route path="inicio" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
-                        <Route path="comunidad" element={<InicioComunidad />} />
-                        <Route path="formaparte" element={<FormaParte/>} />
-                        <Route path="preguntasfrecuentes" element={<PreguntasFrecuentes/>} />
-                        <Route path="usuario" element={<LandingSecciones/>} />
-                        <Route path="InformacionPersonal" element={<InformacionPersonal />}/>
+                        <Route path="avatar" element={<InicioUsuario />}/>
                     </Routes>
                 </ProtectedRoute>
             } />
@@ -46,13 +38,7 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesU />} />
                         <Route path="inicio" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
-                        <Route path="Inicio" element={<InicioComunidad />} />
-                        <Route path="comunidad" element={<InicioComunidad />} /> 
-                        <Route path="formaparte" element={<FormaParte/>} />
-                        <Route path="preguntasfrecuentes" element={<PreguntasFrecuentes/>} />
-                        <Route path="usuario" element={<LandingSecciones/>} />
-                        <Route path="InformacionPersonal" element={<InformacionPersonal />}/>
-
+                        <Route path="avatar" element={<InicioUsuario />}/>
                     </Routes>
                 </ProtectedRoute>
             } />
