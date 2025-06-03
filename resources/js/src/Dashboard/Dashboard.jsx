@@ -2,7 +2,7 @@
 // IMPORTACIONES
 // ==============================
 import React, { useState, useEffect } from 'react';
-import './InicioPl.css';
+import './Dashboard.css';
 import logo from '../assets/logos/logo.png';
 import Header from '../components/Headers/jsx/HeaderPl.jsx';
 import Footer from '../components/Footer/Footer.jsx';
@@ -42,7 +42,7 @@ const fetchWithErrorHandling = async (url) => {
  * Componente principal de la plataforma de inicio.
  * Muestra los temas y clases filtrados por nivel y búsqueda.
  */
-function InicioPl() {
+function Dashboard() {
     // ------------------------------
     // ESTADOS
     // ------------------------------
@@ -264,4 +264,4 @@ function InicioPl() {
     );
 }
 
-export default InicioPl;
+export default Dashboard;

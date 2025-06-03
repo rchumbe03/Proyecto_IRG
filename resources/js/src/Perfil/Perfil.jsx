@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import '../InformacionPersonal/InformacionPersonal.css';
+import './Perfil.css';
 import HeaderIn from '../components/Headers/jsx/HeaderIn.jsx';
 import Footer from '../components/Footer/Footer.jsx';
 import defaultAvatar from '../assets/avatars/avatarDefault.png';
 import axios from 'axios';
 import { FaSave } from 'react-icons/fa';
 
-const InformacionPersonal = () => {
+const Perfil = () => {
     const [userData, setUserData] = useState(null);
     const [editMode, setEditMode] = useState(false);
     const [formData, setFormData] = useState({
@@ -52,12 +52,12 @@ const InformacionPersonal = () => {
     const fetchUserData = async () => {
         try {
             await getCsrfToken();
-            
+
             const response = await axios.get(
-                'http://localhost:8000/api/perfil-usuario', 
+                'http://localhost:8000/api/perfil-usuario',
                 config
             );
-            
+
             if (response.data) {
                 const parsedData = parseUserData(response.data);
                 setUserData(response.data);
@@ -75,7 +75,7 @@ const InformacionPersonal = () => {
     // Parsear datos de la base de datos al formato del formulario
     const parseUserData = (data) => {
         if (!data) return formData;
-        
+
         // Procesar dirección (asumiendo formato: "dirección apt ciudad región país código postal")
         const addressParts = data.direction ? data.direction.split(' ') : [];
         const postalCode = addressParts.pop() || '';
@@ -84,17 +84,17 @@ const InformacionPersonal = () => {
         const city = addressParts.pop() || '';
         const apt = addressParts.pop() || '';
         const addressLine1 = addressParts.join(' ') || '';
-        
+
         // Procesar teléfono
         const rawPhone = data.telefono || '';
         let phonePrefix = '+34';
         let phoneNumber = rawPhone.replace(/\D/g, '');
-        
+
         if (rawPhone.includes('+')) {
             phonePrefix = rawPhone.substring(0, rawPhone.indexOf(' ') || rawPhone.length);
             phoneNumber = rawPhone.replace(phonePrefix, '').trim();
         }
-        
+
         return {
             nombre: data.nombre || '',
             email: data.email || '',
@@ -125,7 +125,7 @@ const InformacionPersonal = () => {
     const handleSave = async () => {
         try {
             await getCsrfToken();
-            
+
             // Reconstruir datos para la base de datos
             const updatedData = {
                 nombre: formData.nombre,
@@ -135,13 +135,13 @@ const InformacionPersonal = () => {
                 edad: Math.round(formData.progreso / 2).toString(),
                 cv: formData.cv
             };
-            
+
             const response = await axios.put(
                 'http://localhost:8000/api/perfil-usuario',
                 updatedData,
                 config
             );
-            
+
             if (response.data) {
                 setUserData(response.data);
                 setEditMode(false);
@@ -218,7 +218,7 @@ const InformacionPersonal = () => {
                                 readOnly
                             />
                         </div>
-                        
+
                         <div className="dato-direccion">
                             <h1>Dirección</h1>
                             <div className="grupo-direccion">
@@ -235,7 +235,7 @@ const InformacionPersonal = () => {
                                         readOnly={!editMode}
                                     />
                                 </div>
-                                
+
                                 <div className="dato-suit">
                                     <label className="suit" htmlFor="Apt">Apt, Suit</label>
                                     <input
@@ -305,7 +305,7 @@ const InformacionPersonal = () => {
                                 />
                             </div>
                         </div>
-                        
+
                         <h1>Teléfono</h1>
                         <div className="grupo-telefono-cv">
                             <div className="dato-telefono">
@@ -351,7 +351,7 @@ const InformacionPersonal = () => {
                                 </div>
                             )}
                         </div>
-                                
+
                         <div className="dato-cv">
                             <label htmlFor="cv">CV</label>
                             {editMode ? (
@@ -489,4 +489,4 @@ const InformacionPersonal = () => {
     );
 }
 
-export default InformacionPersonal;
+export default Perfil;

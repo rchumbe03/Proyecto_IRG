@@ -9,10 +9,10 @@ import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
 const FormLogin = lazy(() => import('./Login/FormLogin'));
 const ListaCursos = lazy(() => import('./ListaCursos/ListaCursos'));
 const NotificacionesAd = lazy(() => import('./Notificaciones/NotificacionesAd'));
-const InicioPl = lazy(() => import('./Inicio/InicioPl'));
+const InicioPl = lazy(() => import('./Dashboard/./Dashboard'));
 const NotificacionesU = lazy(() => import('./Notificaciones/NotificacionesU'));
 const PasarelaPago = lazy(() => import('./PasarelaPago/PasarelaPago'));
-const InicioComunidad = lazy(() => import('./InicioUsuario/InicioComunidad'));
+const InicioComunidad = lazy(() => import('./Inicio/InicioComunidad'));
 
 export const AppRoutes = () => (
     <Suspense fallback={<LoadingSpinner />}>
@@ -26,9 +26,9 @@ export const AppRoutes = () => (
                 <ProtectedRoute requiredRole="admin">
                     <Routes>
                         <Route path="notificaciones" element={<NotificacionesAd />} />
-                        <Route path="inicio" element={<InicioPl />} />
+                        <Route path="dashboard" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
-                        <Route path="comunidad" element={<InicioComunidad />} />
+                        <Route path="inicio" element={<InicioComunidad />} />
                     </Routes>
                 </ProtectedRoute>
             } />
@@ -38,9 +38,9 @@ export const AppRoutes = () => (
                 <ProtectedRoute requiredRole="user">
                     <Routes>
                         <Route path="notificaciones" element={<NotificacionesU />} />
-                        <Route path="inicio" element={<InicioPl />} />
+                        <Route path="dashboard" element={<InicioPl />} />
                         <Route path="cursos" element={<ListaCursos />} />
-                        <Route path="comunidad" element={<InicioComunidad />} />
+                        <Route path="inicio" element={<InicioComunidad />} />
                     </Routes>
                 </ProtectedRoute>
             } />

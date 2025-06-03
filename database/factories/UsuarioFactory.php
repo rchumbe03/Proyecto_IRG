@@ -28,4 +28,16 @@ class UsuarioFactory extends Factory
             'remember_token' => Str::random(10),
         ];
     }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Usuario $usuario) {
+            if ($usuario->id === 1) {
+                $usuario->update([
+                    'email' => 'admin@test.com',
+                    'password' => bcrypt('Password#123/'),
+                ]);
+            }
+        });
+    }
 }

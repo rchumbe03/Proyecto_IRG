@@ -26,10 +26,12 @@ class NotificacionFactory extends Factory
     public function definition(): array
     {
         $admin = Admin::factory()->create();
+        $curso = \App\Models\Curso::inRandomOrder()->first();
 
         return [
             'id_admin' => $admin->id,
             'nombre_admin' => $admin->nombre,
+            'id_curso' => $curso ? $curso->id : null,
             'titulo' => fake()->sentence(),
             'contenido' => fake()->paragraph(),
             'created_at' => now(),
