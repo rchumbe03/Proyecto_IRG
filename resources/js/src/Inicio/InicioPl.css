@@ -13,7 +13,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0.5rem;
+    width: 1512px;
+    height: 877px;
     box-sizing: border-box;
     gap: 40px;
 }

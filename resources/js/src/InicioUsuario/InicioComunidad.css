@@ -1,50 +1,211 @@
+/* ==================== MODO CLARO ==================== */
 .inicio-usuario {
-    background-color: #f0f0f0;
-    min-height: 100vh;
+  background: #f0f0f0;
+  color: #333;
 }
 
+/* Hero Section */
 .hero-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 3rem;
-    background: url('../assets/imgs/fondo-ciudad.jpg') no-repeat center center/cover;
-    box-sizing: border-box;
+  background-size: cover;
+  width: 100%;
+  height: auto;
+  min-height: 600px;
+  padding: 276px 104px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.hero-section .container {
+  text-align: left;
+}
+.hero-section h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
+}
+.hero-section .btn {
+  margin-top: 20px;
 }
 
-.hero-content {
-    max-width: 600px;
-    background-color: rgba(255, 255, 255, 0.85);
-    padding: 2rem;
+/* Placeholder lines */
+.text-placeholder {
+  display: block;
+  height: 10px;
+  margin: 8px 0;
+  border-radius: 4px;
 }
 
-.hero-content h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+/* Features Section */
+.features-section {
+  background: #F3F3F5;
+  width: 100%;
+  padding: 60px 20px;
+}
+.features-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+}
+.feature {
+  text-align: center;
+  width: 300px;
+  min-height: 150px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #F6F4E8;
+}
+.feature-icon {
+  font-size: 50px;
+  color: #7A3F00;
+  margin-bottom: 15px;
+}
+.feature h3 {
+  font-size: 1.3em;
+  margin-bottom: 10px;
+}
+.feature .btn {
+  margin-top: 10px;
 }
 
-.descripcion-lineas .linea {
-    height: 10px;
-    background-color: #888;
-    margin: 0.5rem 0;
+/* Courses Section */
+.courses-section {
+  background: #fff;
+  width: 100%;
+  padding: 60px 20px;
+}
+.courses-section h2 {
+  text-align: center;
+  font-size: 1.8em;
+  margin-bottom: 40px;
+}
+.courses-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+.course-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: left;
+  overflow: hidden; /* IMPORTANTE para que la imagen no sobresalga */
+  padding: 0; /* Elimina el padding general */
+}
+.course-content {
+  padding: 24px;
+  padding-bottom: 40px; /* para que no quede pegado el botón */
+}
+.course-image {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
-.descripcion-lineas .linea.corta {
-    width: 70%;
+.course-card h3 {
+  font-size: 1.2em;
+  margin: 15px 0;
+}
+.course-card .btn {
+  margin-top: 15px;
+  margin: 15px auto 0 auto; 
+  display: block;
 }
 
-.btn-entrar {
-    background-color: #ffea00;
-    color: black;
-    font-weight: bold;
-    border: none;
-    padding: 0.7rem 1.5rem;
-    margin-top: 1.5rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
+/* Botones */
+.btn {
+  background-color: #E6D00A;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: #E6D00A;
 }
 
-.btn-entrar:hover {
-    background-color: #fdd835;
+/* ==================== MODO OSCURO ==================== */
+body.dark-theme {
+  background-color: #121212;
+  color: #f0f0f0;
 }
+
+body.dark-theme .hero-section .container h1,
+body.dark-theme .courses-section h2,
+body.dark-theme .feature h3,
+body.dark-theme .course-card h3,
+body.dark-theme .course-card p {
+  color: #f0f0f0;
+}
+
+body.dark-theme .btn-entrar,
+body.dark-theme .feature .btn,
+body.dark-theme .course-card .btn {
+  background-color: #E6D00A;
+  color: #000;
+}
+body.dark-theme .features-section {
+  background-color: #1e1e1e;
+}
+body.dark-theme .feature {
+  background-color: #423e27;
+}
+body.dark-theme .feature-icon {
+  color: #E6D00A;
+}
+body.dark-theme .courses-section {
+  background-color: #000;
+}
+body.dark-theme .course-card {
+  background-color: #1e1e1e;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+/* ==================== MEDIA QUERIES ==================== */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .hero-section {
+    padding: 180px 60px;
+  }
+  .feature {
+    width: 45%;
+  }
+  .course-card {
+    width: 45%;
+  }
+}
+
+/* Móviles */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 100px 20px;
+    flex-direction: column;
+    text-align: center;
+    align-items: flex-start;
+  }
+  .hero-section .container {
+    width: 100%;
+    text-align: left;
+  }
+  .hero-section h1 {
+    font-size: 2em;
+  }
+  .text-placeholder.long,
+  .text-placeholder.short {
+    width: 90%;
+  }
+  .feature {
+    width: 100%;
+  }
+  .course-card {
+    width: 100%;
+  }
+}
+
+
+
 
