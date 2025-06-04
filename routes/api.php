@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\TemaController;
 use App\Http\Controllers\Admin\ClaseController;
 use App\Http\Controllers\Admin\NotificacionController;
 use App\Http\Controllers\ExpedienteController;
+use App\Http\Controllers\InformacionUsuarioController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -40,11 +41,11 @@ Route::post('/notificaciones', [NotificacionController::class, 'store']);
 Route::put('/notificaciones/{id}', [NotificacionController::class, 'update']);
 Route::delete('/notificaciones/{id}', [NotificacionController::class, 'destroy']);
 
-// Rutas protegidas para usuarios normales (ajusta el middleware según necesites)
+// Rutas protegidas para usuarios normales
 Route::middleware(['auth.cookie'])->prefix('user')->group(function () {
     // Perfil de usuario
-    Route::get('/perfil', [\App\Http\Controllers\Admin\UsuarioController::class, 'getProfile']);
-    Route::put('/perfil', [\App\Http\Controllers\Admin\UsuarioController::class, 'updateProfile']);
+    Route::get('/perfil-usuario', [InformacionUsuarioController::class, 'index']);
+    Route::put('/perfil-usuario', [InformacionUsuarioController::class, 'update']);
 });
 
 Route::get('/expediente/{userId}', [ExpedienteController::class, 'show']);
