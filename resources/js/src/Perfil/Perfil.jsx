@@ -52,8 +52,18 @@ const InformacionPersonal = () => {
     // Obtener los datos del usuario desde la API y actualizar el estado
     const fetchUserData = async () => {
         try {
+<<<<<<< HEAD:resources/js/src/InformacionPersonal/InformacionPersonal.jsx
             await getCsrfToken(); // Obtener token CSRF
             const response = await axios.get('http://localhost:8000/api/perfil-usuario', config);
+=======
+            await getCsrfToken();
+
+            const response = await axios.get(
+                'http://localhost:8000/api/perfil-usuario',
+                config
+            );
+
+>>>>>>> 6b332eb82fdffa68ed6b1ae8cb26a538753c6133:resources/js/src/Perfil/Perfil.jsx
             if (response.data) {
                 const parsedData = parseUserData(response.data); // Procesar datos
                 setUserData(response.data); // Guardar en estado original
@@ -72,7 +82,11 @@ const InformacionPersonal = () => {
     const parseUserData = (data) => {
         if (!data) return formData;
 
+<<<<<<< HEAD:resources/js/src/InformacionPersonal/InformacionPersonal.jsx
         // Dividir la dirección completa en partes (no ideal, pero usado aquí como solución rápida)
+=======
+        // Procesar dirección (asumiendo formato: "dirección apt ciudad región país código postal")
+>>>>>>> 6b332eb82fdffa68ed6b1ae8cb26a538753c6133:resources/js/src/Perfil/Perfil.jsx
         const addressParts = data.direction ? data.direction.split(' ') : [];
         const postalCode = addressParts.pop() || '';
         const country = addressParts.pop() || 'España';
@@ -81,16 +95,27 @@ const InformacionPersonal = () => {
         const apt = addressParts.pop() || '';
         const addressLine1 = addressParts.join(' ') || '';
 
+<<<<<<< HEAD:resources/js/src/InformacionPersonal/InformacionPersonal.jsx
         // Procesar número de teléfono
         const rawPhone = data.telefono || '';
         let phonePrefix = '+34';
         let phoneNumber = rawPhone.replace(/\D/g, '');
+=======
+        // Procesar teléfono
+        const rawPhone = data.telefono || '';
+        let phonePrefix = '+34';
+        let phoneNumber = rawPhone.replace(/\D/g, '');
+
+>>>>>>> 6b332eb82fdffa68ed6b1ae8cb26a538753c6133:resources/js/src/Perfil/Perfil.jsx
         if (rawPhone.includes('+')) {
             phonePrefix = rawPhone.substring(0, rawPhone.indexOf(' ') || rawPhone.length);
             phoneNumber = rawPhone.replace(phonePrefix, '').trim();
         }
 
+<<<<<<< HEAD:resources/js/src/InformacionPersonal/InformacionPersonal.jsx
         // Devolver datos procesados para el formulario
+=======
+>>>>>>> 6b332eb82fdffa68ed6b1ae8cb26a538753c6133:resources/js/src/Perfil/Perfil.jsx
         return {
             nombre: data.nombre || '',
             email: data.email || '',
@@ -121,6 +146,11 @@ const InformacionPersonal = () => {
     const handleSave = async () => {
         try {
             await getCsrfToken();
+<<<<<<< HEAD:resources/js/src/InformacionPersonal/InformacionPersonal.jsx
+=======
+
+            // Reconstruir datos para la base de datos
+>>>>>>> 6b332eb82fdffa68ed6b1ae8cb26a538753c6133:resources/js/src/Perfil/Perfil.jsx
             const updatedData = {
                 nombre: formData.nombre,
                 direction: `${formData.direccionLinea1} ${formData.apt} ${formData.ciudad} ${formData.region} ${formData.pais} ${formData.codigoPostal}`,
@@ -129,7 +159,17 @@ const InformacionPersonal = () => {
                 edad: Math.round(formData.progreso / 2).toString(),
                 cv: formData.cv
             };
+<<<<<<< HEAD:resources/js/src/InformacionPersonal/InformacionPersonal.jsx
             const response = await axios.put('http://localhost:8000/api/perfil-usuario', updatedData, config);
+=======
+
+            const response = await axios.put(
+                'http://localhost:8000/api/perfil-usuario',
+                updatedData,
+                config
+            );
+
+>>>>>>> 6b332eb82fdffa68ed6b1ae8cb26a538753c6133:resources/js/src/Perfil/Perfil.jsx
             if (response.data) {
                 setUserData(response.data); // Actualizar datos del usuario
                 setEditMode(false); // Salir del modo edición
@@ -207,7 +247,7 @@ const InformacionPersonal = () => {
                                 readOnly
                             />
                         </div>
-                        
+
                         <div className="dato-direccion">
                             <h1>Dirección</h1>
                             <div className="grupo-direccion">
@@ -224,7 +264,7 @@ const InformacionPersonal = () => {
                                         readOnly={!editMode}
                                     />
                                 </div>
-                                
+
                                 <div className="dato-suit">
                                     <label className="suit" htmlFor="Apt">Apt, Suit</label>
                                     <input
@@ -294,7 +334,7 @@ const InformacionPersonal = () => {
                                 />
                             </div>
                         </div>
-                        
+
                         <h1>Teléfono</h1>
                         <div className="grupo-telefono-cv">
                             <div className="dato-telefono">
@@ -340,7 +380,7 @@ const InformacionPersonal = () => {
                                 </div>
                             )}
                         </div>
-                                
+
                         <div className="dato-cv">
                             <label htmlFor="cv">CV</label>
                             {editMode ? (
@@ -478,4 +518,4 @@ const InformacionPersonal = () => {
     );
 }
 
-export default InformacionPersonal;
+export default Perfil;

@@ -1,3 +1,6 @@
+// ==============================
+// IMPORTACIONES
+// ==============================
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -5,75 +8,68 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './FormLogin.css';
 
-// Configuración global de axios
+// ==============================
+// CONFIGURACIÓN GLOBAL DE AXIOS
+// ==============================
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
 
+// ==============================
+// COMPONENTE PRINCIPAL
+// ==============================
 /**
- * Componente FormLogin
- * Maneja la autenticación de usuarios y administradores
- *
- * @returns {JSX.Element} Formulario de inicio de sesión
+ * FormLogin maneja la autenticación de usuarios y administradores.
  */
 function FormLogin() {
-    // Estados del formulario
+    // ------------------------------
+    // ESTADOS
+    // ------------------------------
     const [email, setEmail] = useState('');
     const [contrasena, setContrasena] = useState('');
     const [mostrarContrasena, setMostrarContrasena] = useState(false);
     const [error, setError] = useState('');
     const [darkMode, setDarkMode] = useState(false);
 
-    // Hook de navegación
+    // ------------------------------
+    // HOOKS
+    // ------------------------------
     const navigate = useNavigate();
 
-    /**
-     * Alterna entre modo claro y oscuro
-     */
+    // ------------------------------
+    // FUNCIONES AUXILIARES
+    // ------------------------------
+    // Alterna entre modo claro y oscuro
     const toggleDarkMode = () => {
         setDarkMode(!darkMode);
         document.body.classList.toggle('dark-mode');
     };
 
-    /**
-     * Maneja el envío del formulario de inicio de sesión
-     * @param {Event} e - Evento del formulario
-     */
+    // Maneja el envío del formulario de inicio de sesión
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-
         try {
-            // 1. Obtener token CSRF
+            // Obtener token CSRF
             await axios.get('/sanctum/csrf-cookie');
-
-            // 2. Intento de inicio de sesión
+            // Intento de inicio de sesión
             const response = await axios.post('/api/login', {
                 email,
                 password: contrasena
             });
-
             const { data } = response;
-
-            // 3. Procesamiento de respuesta exitosa
             if (data.user) {
-                // Almacenar datos del usuario
                 localStorage.setItem('user_data', JSON.stringify(data.user));
                 localStorage.setItem('theme', data.user.theme || 'light');
-
-                // Determinar ruta según tipo de usuario
-                const route = data.user.type === 'admin' ? '/cursos' : '/cursos';
-
-                // Redirección doble para mayor seguridad
+                // Redirección según tipo de usuario
+                const route = data.user.role === 'admin' ? '/usuario/cursos' : '/admin/cursos';
                 window.location.href = route;
                 navigate(route, { replace: true });
             } else {
                 setError('Error: No se recibieron datos del usuario');
             }
         } catch (error) {
-            // Manejo de errores de autenticación
-            console.error('Error:', error);
             setError(error.response?.status === 401
                 ? 'Credenciales inválidas'
                 : 'Error al conectar con el servidor'
@@ -81,6 +77,9 @@ function FormLogin() {
         }
     };
 
+    // ------------------------------
+    // RENDERIZADO
+    // ------------------------------
     return (
         <div className="login-wrapper">
             {/* Sección de introducción */}

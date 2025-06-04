@@ -1,0 +1,224 @@
+/* Contenedor principal */
+.pasarela-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 90px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Formulario completo */
+.pasarela-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    background-color: #ffffff;
+    padding: 2rem;
+}
+
+/* Columnas izquierda/derecha */
+.columna {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Contenedor de cada campo */
+.pasarela-input {
+    display: flex;
+    flex-direction: column;
+}
+
+.titulo {
+    font-size: 16px;
+    margin-bottom: 0.5rem;
+}
+
+/* Etiquetas */
+.pasarela-input label {
+    font-size: 14px;
+    color: #374151;
+    font-weight: 500;
+}
+
+/* Inputs de texto */
+.pasarela-input input {
+    padding: 17px;
+    border-radius: 6px;
+    border: 1.5px solid #CBD2E0;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    background-color: #f9fafb;
+    color: #111827;
+}
+
+/* Botón del ícono */
+.pasarela-input .icon-button {
+    position: absolute;
+    top: 70%;
+    right: 15px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 18px;
+    color: #6b7280; /* Color del ícono */
+}
+
+/* Dos campos en línea */
+.input-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.input-row input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1.5px solid #CBD2E0;
+    font-size: 15px;
+    background-color: #f9fafb;
+    color: #111827;
+}
+
+.input-row input:focus {
+    border-color: #E6D00A;
+    outline: none;
+}
+
+.telefono-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.telefono-row label {
+    font-size: 14px;
+    color: #374151;
+    font-weight: 500;
+}
+
+.telefono-row .telefono-input-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.telefono-prefijo {
+    width: 70px;
+    padding: 17px 12px;
+    border-radius: 6px;
+    border: 1.5px solid #CBD2E0;
+    background-color: #f9fafb;
+    font-size: 15px;
+    color: #111827;
+}
+
+.telefono-input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1.5px solid #CBD2E0;
+    font-size: 15px;
+    background-color: #f9fafb;
+    color: #111827;
+}
+
+/* Resumen de compra */
+.detalles-compra {
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background-color: #f3f4f6;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    color: #111827;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+}
+
+.detalles-compra-title {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 0.5rem;
+    color: #111827;
+}
+
+.detalles-compra-item {
+    align-items: center;
+    font-size: 14px;
+    color: #111827;
+}
+
+.iva-label {
+    color: #E6D00A;
+    font-weight: 600;
+}
+
+.detalles-compra-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    font-size: 15px;
+    border-top: 1px solid #E5E7EB;
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+    color: #111827;
+}
+
+/* Botón de pago */
+.pagar-btn {
+    margin-top: 0.70rem;
+    padding: 17.5px;
+    background-color: #E6D00A;
+    color: #111827;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.pagar-btn.enabled {
+    cursor: pointer;
+}
+.pagar-btn:disabled {
+    cursor: not-allowed;
+}
+
+.pagar-btn:hover {
+    background-color: #d1bd00;
+}
+
+div#payment-element-container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .pasarela-form {
+        flex-direction: column;
+    }
+
+    .input-row {
+        flex-direction: column;
+    }
+
+    .pagar-btn {
+        width: 100%;
+        text-align: center;
+    }
+}

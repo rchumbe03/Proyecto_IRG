@@ -20,4 +20,16 @@ class AdminFactory extends Factory
             'remember_token' => Str::random(10),
         ];
     }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Admin $admin) {
+            if ($admin->id === 1) {
+                $admin->update([
+                    'email' => 'admin@example.com',
+                    'password' => Hash::make('Password%123/'),
+                ]);
+            }
+        });
+    }
 }

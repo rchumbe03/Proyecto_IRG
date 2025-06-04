@@ -1,3 +1,9 @@
+
+/* ==============================
+   ESTRUCTURA PRINCIPAL
+   ============================== */
+
+/* Contenedor principal de la intro */
 .intro-container {
     position: fixed;
     height: 100%;
@@ -6,7 +12,7 @@
     justify-content: flex-start;
 }
 
-/* Estilos para el círculo */
+/* Círculo decorativo izquierdo */
 .half-circle {
     position: fixed;
     width: 640px;
@@ -19,7 +25,10 @@
     z-index: 1;
 }
 
-/* Texto de bienvenida */
+/* ==============================
+   TEXTO DE BIENVENIDA
+   ============================== */
+
 .intro-text {
     z-index: 3;
     padding-left: 4rem;
@@ -47,7 +56,10 @@
     margin: 0;
 }
 
-/* Sección de login (derecha) */
+/* ==============================
+   SECCIÓN DE LOGIN (DERECHA)
+   ============================== */
+
 .login-container {
     position: fixed;
     width: 95%;
@@ -59,7 +71,10 @@
     background: none;
 }
 
-/* Estilos del formulario */
+/* ==============================
+   FORMULARIO DE LOGIN
+   ============================== */
+
 .login-form {
     width: 647px;
     height: 326px;
@@ -79,7 +94,10 @@
     align-self: flex-start;
 }
 
-/* Estilos de los campos de entrada */
+/* ==============================
+   CAMPOS DE ENTRADA
+   ============================== */
+
 .form-group {
     display: flex;
     flex-direction: column;
@@ -112,9 +130,39 @@
     font-family: 'Inter', sans-serif;
 }
 
+/* Campo de contraseña con botón de mostrar */
 .password-input {
     justify-content: space-between;
+    padding-right: 8px; /* Ajuste de padding para el botón */
 }
+
+.password-input input {
+    padding-right: 10px; /* Espacio para el botón de mostrar */
+}
+
+/* ==============================
+   BOTÓN DE LOGIN
+   ============================== */
+
+.login-button {
+    width: 238px;
+    height: 40px;
+    padding: 5px 24px;
+    background-color: #E6D00A;
+    box-shadow: inset 0 0 0 2px #333333;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    align-self: center;
+}
+
+/* ==============================
+   BOTÓN DE MOSTRAR CONTRASEÑA
+   ============================== */
 
 .icon-button {
     width: 24px;
@@ -134,24 +182,10 @@
     color: #E6D00A;
 }
 
-/* Estilos del botón de login */
-.login-button {
-    width: 238px;
-    height: 40px;
-    padding: 5px 24px;
-    background-color: #E6D00A;
-    box-shadow: inset 0 0 0 2px #333333;
-    color: white;
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    align-self: center;
-}
+/* ==============================
+   MODO OSCURO
+   ============================== */
 
-/* Estilos para el modo oscuro */
 body.dark-mode {
     background-color: #1e1e1e;
 }
@@ -188,9 +222,10 @@ body.dark-mode .login-button {
     box-shadow: inset 0 0 0 2px white;
 }
 
+/* ==============================
+   BOTÓN DE CAMBIO DE MODO
+   ============================== */
 
-
-/* Botón para cambiar el modo */
 .mode-toggle {
     position: fixed;
     top: 20px;
@@ -199,17 +234,17 @@ body.dark-mode .login-button {
 }
 
 .mode-toggle-button {
-    width: 50px;  /* Fuerza tamaño fijo */
-    height: 50px; /* Fuerza tamaño fijo */
+    width: 50px;
+    height: 50px;
     background: none;
     border: 2px solid #E6D00A;
     color: #E6D00A;
     border-radius: 50%;
     font-size: 24px;
     cursor: pointer;
-    display: flex;            /* Centrado del icono */
-    align-items: center;      /* Centrado vertical */
-    justify-content: center;  /* Centrado horizontal */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .mode-toggle-button:hover {
@@ -217,20 +252,77 @@ body.dark-mode .login-button {
     color: white;
 }
 
-/* Error de login */
+/* ==============================
+   MENSAJE DE ERROR
+   ============================== */
+
 .form-error {
     color: red;
     font-size: 14px;
     margin-top: 10px;
 }
+@media (max-width: 768px) {
+  .intro-container {
+    position: relative;
+    z-index: 1;
+    flex-direction: column;
+    height: auto;
+    padding: 2rem 0;
+    justify-content: center;
+    align-items: center;
+    background-color: #E6D00A; 
+  }
 
-/* Ajustes adicionales para el botón de mostrar contraseña */
+  .half-circle {
+    display: none;
+  }
 
-/* Ajuste del padding del input de contraseña */
-.password-input input {
-    padding-right: 10px;
+  .intro-text {
+    padding: 0;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    align-items: center;
+    color: black;
+    background-color: transparent;
+  }
+
+  .intro-title {
+    font-size: 56px;
+  }
+
+  .intro-subtitle {
+    font-size: 32px;
+  }
+
+  .login-container {
+    position: relative;
+    width: 100%;
+    padding: 0 1rem;
+    justify-content: center;
+    background-color: white;
+    z-index: 2; /* para que esté por encima de intro-container */
+  }
+
+  .login-form {
+    width: 100%;
+    max-width: 500px;
+    padding: 1.5rem;
+  }
+
+  .login-title {
+    font-size: 36px;
+    text-align: center;
+    align-self: center;
+  }
+
+.mode-toggle-button {
+    border-color: white !important; 
+    color: white !important;       
+  }
+
+.mode-toggle-button:hover {
+    background-color: white !important;
+    color: #E6D00A !important;
 }
-
-.password-input {
-    padding-right: 8px;
 }
