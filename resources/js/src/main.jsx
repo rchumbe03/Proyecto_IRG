@@ -13,6 +13,7 @@ const InicioPl = lazy(() => import('./Dashboard/./Dashboard'));
 const NotificacionesU = lazy(() => import('./Notificaciones/NotificacionesU'));
 const PasarelaPago = lazy(() => import('./PasarelaPago/PasarelaPago'));
 const Inicio = lazy(() => import('./Inicio/Inicio.jsx'));
+const Contenido = lazy(() => import('./ContenidoCursos/ContenidoCursos.jsx'));
 
 export const AppRoutes = () => (
     <Suspense fallback={<LoadingSpinner />}>
