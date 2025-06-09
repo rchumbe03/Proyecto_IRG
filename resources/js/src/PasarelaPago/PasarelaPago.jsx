@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js';x
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
