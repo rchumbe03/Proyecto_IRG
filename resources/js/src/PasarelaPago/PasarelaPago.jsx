@@ -90,13 +90,15 @@ function PasarelaPago() {
 
                         <div className="detalles-compra">
                             <h3 className="detalles-compra-title">Detalles de la compra</h3>
-                            <div className="barra-de-progreso"></div>
+                            <div className="barra-progreso">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
                             <div className="detalles-compra-item">
                                 <span className="tooltip">?</span>
                                 <span className="iva-label">IVA</span>
                                 <div className="detalles-compra-total">
-                                    <span>Total a pagar</span>
-                                    <span>0.00€</span>
+                                <div className="detalles-compra-total">
+                                <div className="total-label">Total a pagar</div>
+                                <div className="total-valor">0.00€</div>
+                                </div>
                                 </div>
                             </div>
                         </div>
