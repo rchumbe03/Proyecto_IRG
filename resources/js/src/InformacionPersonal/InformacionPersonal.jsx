@@ -34,6 +34,7 @@ const InformacionPersonal = () => {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`, 
         }
     };
 
@@ -53,7 +54,7 @@ const InformacionPersonal = () => {
     const fetchUserData = async () => {
         try {
             await getCsrfToken(); // Obtener token CSRF
-            const response = await axios.get('http://localhost:8000/api/perfil-usuario', config);
+            const response = await axios.get('http://localhost:8000/api/user/perfil-usuario', config);
             if (response.data) {
                 const parsedData = parseUserData(response.data); // Procesar datos
                 setUserData(response.data); // Guardar en estado original
@@ -129,7 +130,7 @@ const InformacionPersonal = () => {
                 edad: Math.round(formData.progreso / 2).toString(),
                 cv: formData.cv
             };
-            const response = await axios.put('http://localhost:8000/api/perfil-usuario', updatedData, config);
+            const response = await axios.put('http://localhost:8000/api/user/perfil-usuario', updatedData, config);
             if (response.data) {
                 setUserData(response.data); // Actualizar datos del usuario
                 setEditMode(false); // Salir del modo edición

@@ -1,0 +1,193 @@
+/**PANTALLAS GRANDES**/
+
+
+.contenedor-encabezado{
+    text-align: center;
+    padding: 25px 0px 20px 0px;
+}
+
+.contenedor-encabezado h2{
+    font-size: 48px;
+    font-weight: 1;
+}
+
+.dudas p{
+    color: #E6D00A;
+    padding-bottom: 5px;
+    font-size: 32px;
+}
+
+.contenedor-contenido{
+    background-color: #8f8f8f17;
+    display: flex;
+    flex-direction: wrap;
+    padding-left: 100px;
+    padding-bottom: 35px;
+    gap: 150px;
+}
+
+.consultas{
+    margin:10px 0px 10px 30px;
+}
+
+.informacion-consultas{
+    font-size: 40px;
+}
+.enviar{
+    color: #E6D00A;
+}
+
+.correo-telefono{
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    font-size: 20px;
+}
+
+.logo-email, .logo-llamada{
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+}
+
+
+.sede{
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+    margin-top: 20px;
+    font-size: 25px;
+    width: 50%;
+    gap: 20px;
+}
+
+.sede p{
+    margin-top: 5px;
+    font-size: 16px !important;
+    width: 500px;
+}
+
+/**FORMULARIO**/
+.formulario-contacto {
+  background-color: #fff;
+  border: 1px solid #CBD2E0;
+  border-radius: 8px;
+  padding: 32px;
+  width: 100%;
+  max-width: 500px;
+  margin-right: 400px;
+  margin-top: 30px;
+  box-sizing: border-box;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.campo-formulario {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.campo-formulario label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.campo-formulario input,
+.campo-formulario textarea {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #CBD2E0;
+  font-size: 15px;
+  font-family: inherit;
+  resize: none;
+}
+
+.boton-enviar {
+  background-color: #FFD600;
+  color: #000;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.boton-enviar:hover {
+  background-color: #e6c300;
+}
+
+/**MODO RESPONSIVE**/
+@media (max-width: 768px) {
+  .contenedor-encabezado h2 {
+    font-size: 28px;
+  }
+
+  .dudas p {
+    font-size: 20px;
+  }
+
+  .contenedor-contenido {
+    flex-direction: column;
+    padding-left: 20px;
+    padding-right: 20px;
+    gap: 50px;
+  }
+
+  .sede {
+    width: 100%;
+    font-size: 20px;
+    margin-left: 0;
+  }
+
+  .sede p {
+    width: 100%;
+    font-size: 14px !important;
+  }
+
+  .informacion-consultas {
+    font-size: 24px;
+  }
+
+  .correo-telefono {
+    flex-direction: column;
+    font-size: 16px;
+  }
+
+  .formulario-contacto {
+    margin-right: 0;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .boton-enviar {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+}
+
+
+/**MODO OSCURO**/
+.dark .contenedor-encabezado{
+    background-color: #000000;
+    color: white;
+}
+
+.dark .contenedor-contenido{
+    background-color: #2C2C2C;
+    color: white;
+}
+
+.dark .formulario-contacto{
+    background-color: #000000;
+}

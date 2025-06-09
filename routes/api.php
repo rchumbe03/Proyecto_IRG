@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ClaseController;
 use App\Http\Controllers\Admin\NotificacionController;
 use App\Http\Controllers\Admin\TemaController;
+use App\Http\Controllers\Admin\UsuarioController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\ExpedienteController;
@@ -59,6 +60,7 @@ Route::delete('/notificaciones/{id}', [NotificacionController::class, 'destroy']
 // ==============================
 // RECURSOS ADMINISTRADOR (PROTEGIDOS)
 // ==============================
+//                  auth:sanctum
 Route::middleware(['auth.cookie'])->prefix('admin')->group(function () {
     Route::apiResource('cursos', CursoController::class);
     Route::apiResource('temas', TemaController::class);
@@ -72,6 +74,7 @@ Route::put('/notificaciones/{id}', [NotificacionController::class, 'update']);
 Route::delete('/notificaciones/{id}', [NotificacionController::class, 'destroy']);
 
 // Rutas protegidas para usuarios normales
+//                  auth:sanctum
 Route::middleware(['auth.cookie'])->prefix('user')->group(function () {
     // Perfil de usuario
     Route::get('/perfil-usuario', [InformacionUsuarioController::class, 'index']);
