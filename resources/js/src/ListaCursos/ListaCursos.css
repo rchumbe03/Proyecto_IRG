@@ -1,20 +1,22 @@
-/* Agregar Flexbox al contenedor */
+/* ====== CONTENEDOR PRINCIPAL ====== */
 .cursos-container {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     gap: 30px;
+
 }
 
-/* Flex en .course-page para que ocupe todo el espacio disponible */
+/* ====== PÁGINA DE CURSOS ====== */
 .course-page {
     display: flex;
     align-self: center;
     flex-direction: column;
     gap: 20px;
     width: auto;
-    height: 545px;
+    height: 548px;
 }
+
 .description {
     width: 647px;
     font-weight: 600;
@@ -22,6 +24,7 @@
     line-height: 16px;
     margin-bottom: 10px;
 }
+
 .title-container {
     display: flex;
     justify-content: space-between;
@@ -34,6 +37,7 @@
     line-height: 24px;
 }
 
+/* ====== LISTADO DE CURSOS ====== */
 .course-list {
     display: flex;
     flex-wrap: wrap;
@@ -42,7 +46,6 @@
 }
 
 .course-card {
-    border: 1px solid #ccc;
     width: 329px;
     height: 470px;
     background-color: #fff;
@@ -52,6 +55,7 @@
     flex-direction: column;
     align-items: center;
     padding-bottom: 20px;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
 .course-img {
@@ -60,6 +64,7 @@
     height: 329px;
     border-radius: 6px 6px 0 0;
     margin-bottom: 12px;
+    object-fit: cover;
 }
 
 .course-title {
@@ -67,16 +72,21 @@
     font-size: 16px;
     line-height: 24px;
     margin: 0;
-}
-
-.course-desc {
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 120%;
-    margin: 0 0 12px 0;
+    color: #000;
     text-align: center;
 }
 
+.course-developer,
+.course-desc {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 120%;
+    margin: 0 0 12px 0;
+    text-align: center;
+    color: #333;
+}
+
+/* ====== BOTONES ====== */
 .button-group {
     display: flex;
     gap: 10px;
@@ -94,11 +104,17 @@
     line-height: 24px;
     border: none;
     border-radius: 4px;
-    background-color: #e6d00a;
+    background-color: #E6D00A;
     color: #000;
     cursor: pointer;
+    transition: background 0.3s;
 }
 
+.course-button:hover {
+    background-color: #E6D00A;
+}
+
+/* ====== BOTÓN AGREGAR ====== */
 .agregar-btn {
     background-color: #E6D00A;
     border: none;
@@ -109,3 +125,97 @@
     border-radius: 5px;
     cursor: pointer;
 }
+
+/* ====== MODO OSCURO ====== */
+.dark-theme .cursos-container {
+    background-color: #000;
+    color: #f4f4f4;
+}
+
+.dark-theme .title {
+    color: #f4f4f4;
+}
+
+.dark-theme .course-card {
+    background-color: #000;
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
+}
+
+.dark-theme .course-title {
+    color: #fff;
+}
+
+.dark-theme .course-developer,
+.dark-theme .course-desc {
+    color: #ccc;
+}
+
+
+.dark-theme .course-button {
+    background-color: #E6D00A;
+    color: #000;
+}
+
+.dark-theme .course-button:hover {
+    background-color: #E6D00A;
+}
+
+.dark-theme .agregar-btn {
+    background-color: #E6D00A;
+    color: #000;
+}
+/* ====== RESPONSIVE DESIGN ====== */
+@media (max-width: 768px) {
+
+    .course-page {
+        width: 100%;
+        height: auto;
+        padding: 0 10px;
+        align-items: center;
+    }
+
+    .description {
+        width: 100%;
+        font-size: 14px;
+        line-height: 1.4;
+        text-align: center;
+    }
+
+    .title-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .course-list {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .course-card {
+        width: 100%;
+        max-width: 360px;
+        height: auto;
+    }
+
+    .course-img {
+        height: auto;
+        max-height: 250px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 8px;
+        max-width: 100%;
+        width: 100%;
+        align-items: center;
+    }
+
+    .course-button {
+        width: 90%;
+        font-size: 16px;
+        height: 32px;
+    }
+}
+

@@ -1,25 +1,43 @@
 /* ====== ESTILOS GENERALES ====== */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    color: #000;
+    font-family: Arial, sans-serif;
+}
+
+body.dark-theme,
+html.dark-theme {
+    background-color: #1e1e1e;
+    color: #f4f4f4;
+}
+
 .inicio-wrapper {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    font-family: Arial, sans-serif;
 }
 
 /* ====== SECCIÓN PLATAFORMA ====== */
-/* Contenedor principal de la plataforma */
 .plataforma-container {
     flex: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 1512px;
-    height: 877px;
+    width: 100%;
+    max-width: 1512px;
+    height: auto;
+    padding: 40px;
     box-sizing: border-box;
     gap: 40px;
 }
 
-/* Panel izquierdo */
+.dark-theme .plataforma-container {
+    background-color: #000;
+}
+
 .plataforma-left {
     flex: 1;
     max-width: 50%;
@@ -31,7 +49,11 @@
     margin-bottom: 30px;
 }
 
-/* Botón volver */
+.dark-theme .plataforma-titulo,
+.dark-theme .porcentaje {
+    color: #fff;
+}
+
 .volver-btn {
     background: none;
     border: none;
@@ -40,6 +62,10 @@
     font-size: 16px;
     cursor: pointer;
     margin-bottom: 20px;
+}
+
+.dark-theme .volver-btn {
+    color: #fff;
 }
 
 /* Barra de progreso */
@@ -66,6 +92,10 @@
     right: 15px;
 }
 
+.dark-theme .barra-progreso {
+    background-color: #333;
+}
+
 .relleno {
     height: 100%;
     background: #f2cd00;
@@ -83,7 +113,6 @@
     text-align: left;
 }
 
-/* Botón amarillo */
 .ver-btn {
     background-color: #f2cd00;
     color: #000;
@@ -100,7 +129,6 @@
     background-color: #e0bc00;
 }
 
-/* Panel derecho */
 .plataforma-right {
     flex: 1;
     display: flex;
@@ -118,7 +146,13 @@
     margin: 0;
     padding: 40px;
     background-color: #f4f4f4;
+    color: #000;
     flex: 1;
+}
+
+.dark-theme .contenidos {
+    background-color: #1e1e1e;
+    color: #f4f4f4;
 }
 
 /* Tabs de navegación */
@@ -139,8 +173,17 @@
     cursor: pointer;
 }
 
+.dark-theme .tab {
+    color:#ffffff;
+    border-color: transparent;
+}
+
 .tab.active {
     border-color: black;
+}
+
+.dark-theme .tab.active {
+    border-color: #f2cd00;
 }
 
 /* Barra de búsqueda */
@@ -149,6 +192,12 @@
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+.dark-theme .search {
+    background-color: #333;
+    color: #f4f4f4;
+    border: 1px solid #555;
 }
 
 /* Lista de contenidos */
@@ -163,6 +212,10 @@
     padding: 15px;
     border-left: 5px solid #ffd700;
     border-radius: 5px;
+}
+
+.dark-theme .contenido-item {
+    background-color: #2c2c2c;
 }
 
 /* Cabecera de items */
@@ -187,7 +240,6 @@
     flex-shrink: 0;
 }
 
-/* Información del contenido */
 .info {
     flex: 1;
     display: flex;
@@ -200,7 +252,10 @@
     color: #333;
 }
 
-/* Estados */
+.dark-theme .contenido-titulo {
+    color: #ffffff;
+}
+
 .estado {
     font-size: 14px;
     font-weight: bold;
@@ -211,22 +266,24 @@
 .estado.proceso { color: orange; }
 .estado.bloqueado { color: red; }
 
-/* Botón toggle */
+.dark-theme .estado.completado { color: #00ff88; }
+.dark-theme .estado.proceso { color: #ffbb33; }
+.dark-theme .estado.bloqueado { color: #ff6666; }
+
 .toggle {
     background: none;
     border: none;
     font-size: 20px;
     cursor: pointer;
     flex-shrink: 0;
+    color: inherit;
 }
 
-/* Cuerpo expandible */
 .item-body {
     margin-top: 10px;
     padding-left: 30px;
 }
 
-/* Lista de clases */
 .clases-lista {
     list-style: none;
     padding: 0;
@@ -243,9 +300,14 @@
     border-radius: 4px;
 }
 
+.dark-theme .clase-item {
+    background-color: #2d2d2d;
+}
+
 .clase-titulo {
     font-weight: 500;
     flex: 1;
+    color: inherit;
 }
 
 .clase-tipo {
@@ -253,6 +315,11 @@
     border-radius: 4px;
     font-size: 0.9em;
     background-color: #e0e0e0;
+}
+
+.dark-theme .clase-tipo {
+    background-color: #404040;
+    color: #fff;
 }
 
 .clase-link {
@@ -269,35 +336,6 @@
     text-decoration: none !important;
 }
 
-/* ====== MODO OSCURO ====== */
-.dark-theme {
-    background-color: #1e1e1e;
-    color: #f4f4f4;
-}
-
-.dark-theme .contenido-item {
-    background-color: #2c2c2c;
-}
-
-.dark-theme .contenido-titulo {
-    color: #ffffff;
-}
-
-.dark-theme .clase-item {
-    background-color: #2d2d2d;
-}
-
-.dark-theme .clase-tipo {
-    background-color: #404040;
-    color: #fff;
-}
-
-.dark-theme .search {
-    background-color: #333;
-    color: #f4f4f4;
-    border: 1px solid #555;
-}
-
 /* ====== ENLACES ====== */
 .item-body a {
     color: #000;
@@ -309,19 +347,77 @@
     text-decoration: underline;
 }
 
+.dark-theme .item-body a {
+    color: #fff;
+}
+
+.dark-theme .item-body a:hover {
+    color: #ccc;
+}
+
 /* ====== RESPONSIVE ====== */
 @media (max-width: 768px) {
     .plataforma-container {
-        flex-direction: column;
-        padding: 30px;
+        flex-direction: column-reverse;
+        align-items: center;
+        padding: 20px;
+        gap: 20px;
     }
 
     .plataforma-left,
     .plataforma-right {
+        width: 100%;
         max-width: 100%;
     }
 
+    .plataforma-right {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
     .logo-img {
-        height: 200px;
+        height: 150px;
+        width: auto;
+    }
+
+    .plataforma-titulo {
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .volver-btn {
+        width: 100%;
+        text-align: left;
+    }
+
+    .ver-btn {
+        font-size: 16px;
+        padding: 10px 20px;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    .barras h3 {
+        font-size: 14px;
+        text-align: justify;
+    }
+
+    .barra-progreso-contenedor {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .barra-progreso {
+        width: 100%;
+    }
+}
+
+@media (min-width: 769px) {
+    .plataforma-left,
+    .plataforma-right {
+        max-width: 50%;
     }
 }

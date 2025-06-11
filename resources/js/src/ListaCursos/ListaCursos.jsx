@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './ListaCursos.css';
 import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';
 import Footer from '../components/Footer/Footer.jsx';
+import img from '../assets/img/98.png';
 
 const ListaCursos = () => {
     const [cursos, setCursos] = useState([]);
@@ -15,12 +16,10 @@ const ListaCursos = () => {
             credentials: 'include',
         })
             .then(res => {
-                console.log('Response:', res);
                 if (!res.ok) throw new Error('Error al obtener cursos');
                 return res.json();
             })
             .then(data => {
-                console.log('Cursos:', data);
                 setCursos(data);
             })
             .catch(err => console.error('Error de fetch:', err));
@@ -35,7 +34,7 @@ const ListaCursos = () => {
                     {cursos.map(course => (
                         <div key={course.id} className="course-card">
                             <img
-                                src={course.imagen || '/images/default-course.png'}
+                                src={course.imagen || img}
                                 alt={course.titulo}
                                 className="course-img"
                             />
@@ -55,3 +54,4 @@ const ListaCursos = () => {
 };
 
 export default ListaCursos;
+
