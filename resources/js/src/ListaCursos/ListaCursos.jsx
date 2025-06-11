@@ -4,9 +4,8 @@
 import React, { useEffect, useState } from 'react';
 import './ListaCursos.css';
 import { useNavigate } from 'react-router-dom';  // --- AÑADIDO --- Importamos useNavigate para navegación
-import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';
-import HeaderAd from '../components/Headers/jsx/HeaderAd.jsx';  //  import de HeaderAdmin para hacer los headers
 import Footer from '../components/Footer/Footer.jsx';
+import Header from "../components/Headers/jsx/HeaderPl.jsx";
 
 // ==============================
 // COMPONENTE PRINCIPAL
@@ -23,7 +22,7 @@ const ListaCursos = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-        // Hook para navegación
+    // Hook para navegación
     const navigate = useNavigate();
 
      //Estado userType para guardar el tipo de usuario
@@ -31,22 +30,22 @@ const ListaCursos = () => {
 
 // Lee el tipo de usuario desde localStorage al montar el componente
     useEffect(() => {
-        const userData = localStorage.getItem("user");
+        const userData = localStorage.getItem("user_data");
         if (userData) {
-      try {
-        const user = JSON.parse(userData);
-        if (user && user.tipo) {
-          setUserType(user.tipo);  // Aquí asignamos userType si está definido
+            try {
+                const user = JSON.parse(userData);
+                if (user && user.type) {
+                    setUserType(user.type); // Asegúrate de usar "type" en lugar de "tipo"
+                } else {
+                    setUserType('guest'); // Valor predeterminado si no hay tipo
+                }
+            } catch (error) {
+                console.error('Error parseando userData:', error);
+                setUserType('guest'); // En caso de error, asigna "guest"
+            }
         } else {
-          setUserType('guest');    // Si no tiene tipo, asignamos guest como default
+            setUserType('guest'); // Si no hay datos, asigna "guest"
         }
-      } catch (error) {
-        console.error('Error parseando userData:', error);
-        setUserType('guest');      // En caso de error asignamos guest
-      }
-    } else {
-      setUserType('guest');        // Si no hay datos, asignamos guest
-    }
     }, []);
     // ------------------------------
     // EFECTO: CARGA DE CURSOS
@@ -78,17 +77,13 @@ const ListaCursos = () => {
         fetchCursos();
     }, []);
 
-        // Aquí DEFINES rutaBase según userType
-    // ====================================
-    const rutaBase = userType === 'admin' ? 'admin' : 'pl';
-
     // ------------------------------
     // RENDERIZADO
     // ------------------------------
     return (
         <div className="cursos-container">
             {/* Mostrar Header según el tipo de usuario */}
-            {userType === 'admin' ? <HeaderAd /> : <HeaderPl />}
+            <Header />
 
             {/* Sección principal de cursos */}
             <div className="course-page">
@@ -117,7 +112,7 @@ const ListaCursos = () => {
                                     <button className="course-button">Detalles</button>
                                       <button
                                          className="course-button"
-                                         onClick={() => navigate(`/${userType }/inicio/${course.id}`)}
+                                         onClick={() => navigate(`/${userType }/dashboard`)}
                                          >
                                          Acceder
                                      </button>

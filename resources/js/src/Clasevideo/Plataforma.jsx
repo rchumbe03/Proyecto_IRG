@@ -9,7 +9,7 @@ import {
 } from 'react-icons/fa';
 import './LiveClass.css';
 import spotify from '../../../js/src/assets/logos/spotify.png';
-import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';
+import Header from '../components/Headers/jsx/HeaderPl.jsx';
 import Footer from '../components/Footer/Footer.jsx';
 
 export default function LiveClass() {
@@ -28,7 +28,7 @@ export default function LiveClass() {
 
   return (
     <div className="live-class">
-      <HeaderPl />
+      <Header />
 
       <div className="lc-header-wrapper lc-header">
         <button className="lc-back">

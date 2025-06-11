@@ -1,92 +1,104 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
 import '../css/HeaderPl.css';
-import perfilIcon from '../../../assets/usuario/perfil-icon.png';
-import spotify from '../../../assets/logos/spotify.png';
+import { useNavigate } from 'react-router-dom';
+import { FaBell, FaMoon, FaSun } from 'react-icons/fa';
+import adidas2 from '../../../assets/logos/adidas2.png';
+import defaultAvatar from '../../../assets/avatars/avatarDefault.png';
 
-// Importa los iconos de React Icons
-import { FaBell, FaSun, FaMoon } from 'react-icons/fa';
+const HeaderPl = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [isSpinning, setIsSpinning] = useState(false); // ← nuevo
+  const profileRef = useRef(null);
+  const navigate = useNavigate();
+//
+ const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
 
-export default function Header() {
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [isDarkMode, setIsDarkMode] = useState(false);  // Para el cambio de tema
-    const profileRef = useRef(null);
-    const navigate = useNavigate();
+  const toggleTheme = () => {
+     setIsSpinning(true);
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
+     setDarkMode(d => {
+       const next = !d;
+       document.body.classList.toggle('dark-mode', next);
+       return next;
+     });
+
+     setTimeout(() => setIsSpinning(false), 500);
+   };
+//
+  const handleClickOutside = (event) => {
+    if (profileRef.current && !profileRef.current.contains(event.target)) {
+      setDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
     };
+  }, []);
 
-    const toggleTheme = () => {
-        setIsDarkMode(!isDarkMode);
+  return (
+    <header className="header">
+      <div className="logo" onClick={() => navigate('/admin/cursos')}>
+        <img src={adidas2} alt="Logo" className="logo-img" />
+      </div>
 
-        // Cambiar la clase 'dark-theme' en el body y header
-        if (!isDarkMode) {
-            document.body.classList.add('dark-theme');
-        } else {
-            document.body.classList.remove('dark-theme');
-        }
-    };
+      <div className="right-section">
+          <div
+              className="icon-text-button"
+              onClick={() => {
+                  const userData = JSON.parse(localStorage.getItem('user_data'));
+                  const userType = userData?.type;
 
-    useEffect(() => {
-        function handleClickOutside(event) {
-            if (profileRef.current && !profileRef.current.contains(event.target)) {
-                setIsDropdownOpen(false);
-            }
-        }
+                  if (userType === 'admin') {
+                      navigate('/admin/notificaciones');
+                  } else if (userType === 'usuario') {
+                      navigate('/usuario/notificaciones');
+                  } else {
+                      console.error('Tipo de usuario no reconocido');
+                  }
+              }}
+          >
+              <span>Notificaciones</span>
+              <FaBell />
+          </div>
 
-        if (isDropdownOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
-        } else {
-            document.removeEventListener('mousedown', handleClickOutside);
-        }
+        {/* Modo Oscuro */}
+         <div
+         className={`icon-with-label darkmode-section ${isSpinning ? 'spin' : ''}`}
+         onClick={toggleTheme}>
 
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [isDropdownOpen]);
+         {darkMode
+           ? <FaSun className="icon" />
+           : <FaMoon className="icon" />
+         }
+       </div>
 
-    return (
-        <header className={isDarkMode ? 'dark-theme' : ''}>
-            <div className="left">
-                <img src={spotify} alt="Logo" className="logo" onClick={() => navigate('/cursos')} />
-            </div>
-            <div className="right">
-                <div className="icons">
+        {/* Perfil */}
+<div className="profile" ref={profileRef}>
+  <img
+    src={ defaultAvatar }
+    alt="Perfil"
+    className="profile-icon"
+    onError={e => { e.currentTarget.src = defaultAvatar }}
+    onClick={toggleDropdown}
+  />
+  { dropdownOpen && (
+    <div className="dropdown"> <ul>
+    <li><a href="/perfil">Mi Perfil</a></li>
+    <li><a href="/configuracion">Configuración</a></li>
+    <li><a href="/logout">Cerrar sesión</a></li>
+  </ul> </div>
+  ) }
+</div>
 
-                    {/* NotificacionesAd */}
-                    <button className="icon-text-button" onClick={() => navigate('/usuario/notificaciones')}>
-                        <span>Notificaciones</span>
-                        <FaBell />
-                    </button>
+      </div>
+    </header>
+  );
+};
 
-
-                    {/* Modo Día/Noche */}
-                    <button className="icon-text-button" onClick={toggleTheme}>
-                        {isDarkMode ? <FaSun /> : <FaMoon />}
-                    </button>
-                </div>
-
-                <div className="profile" ref={profileRef}>
-                    <img
-                        src={perfilIcon}
-                        alt="Perfil"
-                        className="profile-icon"
-                        onClick={toggleDropdown}
-                    />
-                    {isDropdownOpen && (
-                        <div className="dropdown">
-                            <ul>
-                                <li><a href="#">Ver perfil</a></li>
-                                <li><a href="#">Configuración</a></li>
-                                <li><a href="#">Cerrar sesión</a></li>
-                            </ul>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </header>
-    );
-}
-
-
+export default HeaderPl;

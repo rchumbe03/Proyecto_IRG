@@ -9,7 +9,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
 const FormLogin = lazy(() => import('./Login/FormLogin'));
 const ListaCursos = lazy(() => import('./ListaCursos/ListaCursos'));
 const NotificacionesAd = lazy(() => import('./Notificaciones/NotificacionesAd'));
-const InicioPl = lazy(() => import('./Dashboard/./Dashboard'));
+const Dashboard = lazy(() => import('./Dashboard/./Dashboard'));
 const NotificacionesU = lazy(() => import('./Notificaciones/NotificacionesU'));
 const PasarelaPago = lazy(() => import('./PasarelaPago/PasarelaPago'));
 const Inicio = lazy(() => import('./Inicio/Inicio.jsx'));
@@ -27,7 +27,7 @@ export const AppRoutes = () => (
                 <ProtectedRoute requiredRole="admin">
                     <Routes>
                         <Route path="notificaciones" element={<NotificacionesAd />} />
-                        <Route path="dashboard" element={<InicioPl />} />
+                        <Route path="dashboard" element={<Dashboard />} />
                         <Route path="cursos" element={<ListaCursos />} />
                     </Routes>
                 </ProtectedRoute>
@@ -35,17 +35,17 @@ export const AppRoutes = () => (
 
             {/* Rutas protegidas de usuario */}
             <Route path="/usuario/*" element={
-                <ProtectedRoute requiredRole="user">
+                <ProtectedRoute requiredRole="usuario">
                     <Routes>
                         <Route path="notificaciones" element={<NotificacionesU />} />
-                        <Route path="dashboard" element={<InicioPl />} />
+                        <Route path="dashboard" element={<Dashboard />} />
                         <Route path="cursos" element={<ListaCursos />} />
                     </Routes>
                 </ProtectedRoute>
             } />
 
             {/* Redirección por defecto */}
-            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/" element={<Navigate to="/inicio" replace />} />
         </Routes>
     </Suspense>
 );

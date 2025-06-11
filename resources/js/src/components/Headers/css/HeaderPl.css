@@ -4,208 +4,230 @@
     box-sizing: border-box;
 }
 
-body {
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Asegura que el header ocupe todo el ancho y esté alineado arriba */
-header {
+.header {
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: Arial, Helvetica, sans-serif;
-    padding: 20px 15px;  /* Añadir padding de 15px a los laterales para que no esté pegado al borde */
+
+    padding: 16.6px 30px;  /* Añadir padding de 15px a los laterales para que no esté pegado al borde */
     background-color: #F3F3F5;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid black;
-    top: 0;
-    left: 0;
-    right: 0;
     width: 100%;
     z-index: 100;  /* Asegura que el header esté encima del contenido */
 }
 
-/* Logo en el header */
-.logo {
-    height: 40px;
-    width: auto;
-    margin-left: 20px;
-    cursor: pointer;
+.logo-img {
+  display: block;
+  height: 40px;
+  width: auto;
 }
 
-/* Contenedor para los elementos a la derecha del header */
-.right {
-    display: flex;
-    align-items: center;
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
 }
 
-.icons {
-    display: flex;             /* Flexbox para alinearlos en una fila */
-    justify-content: flex-start; /* Alinea los iconos al inicio (de izquierda a derecha) */
-    align-items: center;       /* Alinea los iconos verticalmente en el centro */
-    gap: 10px;                 /* Espacio entre los iconos */
+/* Íconos generales */
+.icon {
+  color: #000;
+  font-size:20px;
+  cursor: pointer;
+  transition: transform 0.5s ease, color 0.3s ease;
 }
 
-/* Estilos para los iconos (botones simples, solo icono) */
-.icon-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;           /* Tamaño de los iconos */
-    color: black;              /* Color de los iconos */
-    transition: color 0.3s ease;
-    padding: 8px;
+.icon:active {
+  transform: rotate(360deg);
 }
 
-.icon-button:hover {
-    color: #E6D00A;            /* Color cuando se pasa el ratón por encima */
+
+
+.icon-label {
+  margin-top: 10px;
+  color: #555;
+  font-size: 14px;
+  height: 14px; /* Reservamos altura aunque no haya texto */
+}
+/*seccion del icono de notificaciones*/
+.notification-section {
+  display: inline-flex;
+  align-items: center;
+  cursor:pointer;
 }
 
-/* NUEVA clase para botones con texto + icono */
 .icon-text-button {
-    display: flex;
-    align-items: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: black;
-    font-size: 20px;
-    padding: 5px 0; /* Menos padding para que quede compacto */
-    overflow: hidden; /* Para que el texto no se salga */
-    transition: padding 0.7s ease;
+  display: flex;             /* Flexbox para alinearlos en una fila */
+  justify-content: flex-start; /* Alinea los iconos al inicio (de izquierda a derecha) */
+  align-items: center;       /* Alinea los iconos verticalmente en el centro */
+  font-size:20px;
 }
+
 .icon-text-button span {
-    font-family: Arial, sans-serif;
-    white-space: nowrap;
-    opacity: 0;
-    width: 0;
-    margin: 0;
-    transition: opacity 0.3s ease, width 0.3s ease, margin 0.3s ease;
-    overflow: hidden;
+  font-family: Arial, sans-serif;
+  white-space: nowrap;
+  opacity: 0;
+  width: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size:20px;
 }
 .icon-text-button:hover {
-    color: #E6D00A;                /* Mismo color hover que los iconos */
+  color: #E6D00A;                /* Mismo color hover que los iconos */
 }
 .icon-text-button:hover span {
-    opacity: 1;
-    width: auto;  /* Deja que tome el tamaño del texto */
-    margin-left: 8px; /* Separación entre icono y texto */
-    padding-right: 15px; 
-}
-/* Estilos para el perfil */
-.profile-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  opacity: 1;
+  width: auto;  /* Deja que tome el tamaño del texto */
+  margin-left: 8px; /* Separación entre icono y texto */
+  padding-right: 15px;
 }
 
+.notification-section:hover .icon-label {
+  display: block;
+  font-size:20px;
+  padding-bottom: 30px;
+}
+
+/* Modo Oscuro: icono y texto alineados en fila */
+.darkmode-section {
+  flex-direction: row;
+  gap: 8px;
+}
+
+.darkmode-section .icon{
+  font-size:20px;
+  margin-top: 4px;
+}
+
+.darkmode-section .icon-label {
+  margin-top: 0;
+  padding-right: 10px;
+}
+
+.darkmode-section .icon:hover{
+  color: #f1c40f; /* Cambia el color al pasar el mouse */
+}
+
+/* Perfil */
+.profile {
+  position: relative;
+}
 
 .profile-icon {
-    width: 30px;            
-    height: 30px;
-    border-radius: 50%;
-    overflow: hidden;       
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #E6D00A;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+  object-fit: cover; /* Para que la imagen no se deforme */
 }
 
-
-/* Estilos del dropdown */
+/* Dropdown del perfil */
 .dropdown {
-    position: absolute;
-    top: 50px;
-    right: 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-    min-width: 150px;
-    animation: fadeIn 0.3s ease;
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 150px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  animation: fadeIn 0.3s ease;
 }
 
 .dropdown ul {
-    list-style: none;
-    margin: 0;
-    padding: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 10px 0;
 }
 
-.dropdown ul li {
-    margin: 10px 0;
+.dropdown li {
+  padding: 8px 15px;
 }
 
-.dropdown ul li a {
-    text-decoration: none;
-    color: #333;
+.dropdown li:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown a {
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
 }
 
 /* Animación para el dropdown */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+@keyframes spin {
+  from {
+      transform: rotate(0deg) scale(1);
+  }
+  to {
+      transform: rotate(360deg) scale(1.2);
+  }
+}
+.spin svg{
+  animation: spin 0.5s ease-in-out;
 }
 
-/* --- Estilos para el modo oscuro --- */
-
-/* Estilo para el body cuando está en modo oscuro */
-body.dark-theme {
-    background-color: #333; /* Fondo oscuro */
-    color: #f5f5f5; /* Texto claro */
+.icon-text-button svg{
+  transition: transform 0.3s ease;
+}
+/* Modo Oscuro */
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
 }
 
-/* Estilo para el header en modo oscuro */
-header.dark-theme {
-    background-color: #333;  /* Fondo oscuro */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);  /* Sombra más marcada */
+body.dark-mode .header {
+  background-color: #474444be;
+  border-bottom: 1px solid white;
 }
 
-/* Estilo para los iconos en el modo oscuro */
-header.dark-theme .icon-text-button {
-    color: #f5f5f5;  /* Iconos claros */
+body.dark-mode .icon {
+  color: #f1c40f;
 }
 
-/* Estilo para los botones en el modo oscuro */
-button.icon-text-button {
-    color: black;
+body.dark-mode .icon-label {
+  color: #e5d8d8;
 }
 
-button.icon-text-button:hover {
-    color: #E6D00A;
+body.dark-mode .profile-icon {
+  border: 2px solid #f1c40f;
 }
 
-button.icon-text-button.dark-theme {
-    color: #f5f5f5;  /* Color claro en el botón en modo oscuro */
+body.dark-mode .dropdown {
+  background-color: #2a2a2a;
+  border: 1px solid #444;
 }
 
-/* Estilo para el icono de perfil en el modo oscuro */
-header.dark-theme .profile-icon {
-    background-color: #333; /* Fondo oscuro en el ícono del perfil */
+body.dark-mode .dropdown a {
+  color: #eee;
 }
 
-/* Estilos para el fondo de los cursos en modo oscuro */
-.course-card.dark-theme {
-    background-color: #333;
-    border: 1px solid #555;
+body.dark-mode .dropdown li:hover {
+  background-color: #3a3a3a;
 }
 
-.course-title.dark-theme {
-    color: #f5f5f5;
+/* NOTIFICACIONES: icono y texto alineados en fila */
+.notification-section {
+  flex-direction: row;
+  gap: 8px;
+  transition: transform 0.5s ease, color 0.3s ease; /* para suavizar animaciones */
+  cursor: pointer; /* que aparezca la manito */
 }
 
-.course-theme.dark-theme {
-    color: #b0b0b0;
+.notification-section:hover .icon,
+.notification-section:hover .icon-label {
+  color: #f1c40f; /* Cambia el color al pasar el mouse */
+
 }
 
-.contenido-lista.dark-theme{
-    color: #333;
+/* Íconos generales */
+.icon {
+  color: #000;
+  font-size: 22px;
+  transition: transform 0.5s ease, color 0.3s ease;
 }
 
+/* Ya no hace falta que roten sólo al click */

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
  import axios from 'axios';
  import { FaEdit, FaTrash, FaPlus, FaEnvelope, FaTimes } from 'react-icons/fa';
  import './Notificaciones.css';
- import Header from '../components/Headers/jsx/HeaderAd.jsx';
+ import Header from '../components/Headers/jsx/HeaderPl.jsx';
  import Footer from '../components/Footer/Footer.jsx';
 
 const config = {

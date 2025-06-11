@@ -46,7 +46,7 @@ class AuthController extends Controller
                     'id' => $usuario->id,
                     'nombre' => $usuario->nombre,
                     'email' => $usuario->email,
-                    'type' => 'user',
+                    'type' => 'usuario',
                     'theme' => 'light'
                 ];
 
