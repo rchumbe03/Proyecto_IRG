@@ -40,7 +40,7 @@ class CursoController extends Controller
     public function show(string $id) {
 
         // Encontrar el curso por ID
-        $curso = Curso::find($id);
+$curso = Curso::with('temas')->find($id);
 
         // Si el curso no existe, devolver un error 404
         if (!$curso) {

@@ -88,7 +88,7 @@ const ListaCursos = () => {
     return (
         <div className="cursos-container">
             {/* Mostrar Header según el tipo de usuario */}
-            {userType === 'admin' ? <HeaderAd /> : <HeaderPl />}
+            {userType === 'admin' ? <HeaderPl /> : <HeaderAd />}
 
             {/* Sección principal de cursos */}
             <div className="course-page">

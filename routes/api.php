@@ -50,6 +50,37 @@ Route::apiResource('cursos', CursoController::class)->only(['index', 'show', 'st
 Route::get('/expediente/{userId}', [ExpedienteController::class, 'show']);
 
 // ==============================
+// RUTA: Temas por Curso (pública)
+// GET /api/cursos/{id}/temas
+// ==============================
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+
+Route::get('/temas-por-curso-fase', function (Request $request) {
+    $curso_id = $request->query('curso_id');
+    $fase = $request->query('fase');
+
+    // Buscar id de la fase según nombre y curso_id
+    $faseRow = DB::table('fases')
+        ->where('nombre', $fase)
+        ->where('curso_id', $curso_id)
+        ->first();
+
+    if (!$faseRow) return response()->json([]);
+
+    // Trae los temas de ese curso y fase
+    $temas = DB::table('temas')
+        ->where('id_curso', $curso_id)
+        ->where('id_fase', $faseRow->id)
+        ->select('id', 'titulo')
+        ->get();
+
+    return response()->json($temas);
+});
+
+
+// ==============================
 // NOTIFICACIONES (ADMIN Y USUARIO)
 // ==============================
 Route::get('/notificaciones', [NotificacionController::class, 'index']);
