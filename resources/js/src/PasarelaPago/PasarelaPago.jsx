@@ -3,7 +3,7 @@ import { loadStripe } from '@stripe/stripe-js';x
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import Header from '../components/Headers/jsx/HeaderPl.jsx';
+import Header from '../components/Headers/jsx/HeaderIn.jsx';
 import Footer from '../components/Footer/Footer.jsx';
 import './PasarelaPago.css';
 

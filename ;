@@ -2938,8 +2938,8 @@ Binary files a/composer.phar and /dev/null differ
  import './ListaCursos.css';[m
 [32m+[m[32mimport { useNavigate } from 'react-router-dom';  // --- AÑADIDO --- Importamos useNavigate para navegación[m
  import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';[m
-[31m-import HeaderAd from '../components/Headers/jsx/HeaderAd.jsx';  //  import de HeaderAdmin para hacer los headers[m
-[32m+[m[32mimport HeaderAdmin from '../components/Headers/jsx/HeaderAd.jsx';  //  import de HeaderAdmin para hacer los headers[m
+[31m-import HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';  //  import de HeaderAdmin para hacer los headers[m
+[32m+[m[32mimport HeaderAdmin from '../components/Headers/jsx/HeaderPl.jsx';  //  import de HeaderAdmin para hacer los headers[m
  import Footer from '../components/Footer/Footer.jsx';[m
  [m
  // ==============================[m
@@ -2993,7 +2993,7 @@ Binary files a/composer.phar and /dev/null differ
      return ([m
          <div className="cursos-container">[m
              {/* Mostrar Header según el tipo de usuario */}[m
-[31m-            {userType === 'admin' ? <HeaderAd /> : <HeaderPl />}[m
+[31m-            {userType === 'admin' ? <HeaderPl /> : <HeaderPl />}[m
 [32m+[m[32m            {userType === 'admin' ? <HeaderAdmin /> : <HeaderPl />}[m
  [m
              {/* Sección principal de cursos */}[m
@@ -3172,8 +3172,8 @@ Binary files a/composer.phar and /dev/null differ
  import axios from 'axios';[m
  import { FaEdit, FaTrash, FaPlus, FaEnvelope, FaTimes } from 'react-icons/fa';[m
  import './Notificaciones.css';[m
-[31m-import Header from '../components/Headers/jsx/HeaderAd.jsx';[m
-[32m+[m[32mimport HeaderAd from '../components/Headers/jsx/HeaderAd.jsx';[m
+[31m-import Header from '../components/Headers/jsx/HeaderPl.jsx';[m
+[32m+[m[32mimport HeaderPl from '../components/Headers/jsx/HeaderPl.jsx';[m
  import Footer from '../components/Footer/Footer.jsx';[m
  [m
  // ==============================[m
@@ -3182,7 +3182,7 @@ Binary files a/composer.phar and /dev/null differ
      return ([m
          <div className="container" style={{ position: 'relative', zIndex: 1 }}>[m
 [31m-            <Header />[m
-[32m+[m[32m            <HeaderAd />[m
+[32m+[m[32m            <HeaderPl />[m
  [m
              {/* Mensaje de error */}[m
              {error && <div className="error-mensaje">{error}</div>}[m

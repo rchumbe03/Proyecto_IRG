@@ -63,9 +63,13 @@ function FormLogin() {
                 localStorage.setItem('user_data', JSON.stringify(data.user));
                 localStorage.setItem('theme', data.user.theme || 'light');
                 // Redirección según tipo de usuario
-                const route = data.user.role === 'admin' ? '/usuario/cursos' : '/admin/cursos';
-                window.location.href = route;
-                navigate(route, { replace: true });
+                if (data.user.type === 'admin') {
+                    navigate('/admin/cursos', { replace: true });
+                } else if (data.user.type === 'usuario') {
+                    navigate('/usuario/cursos', { replace: true });
+                } else {
+                    setError('Tipo de usuario no reconocido');
+                }
             } else {
                 setError('Error: No se recibieron datos del usuario');
             }

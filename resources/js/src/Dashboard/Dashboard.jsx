@@ -2,16 +2,19 @@
 // IMPORTACIONES
 // ==============================
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 import logo from '../assets/logos/logo.png';
 import Header from '../components/Headers/jsx/HeaderPl.jsx';
 import Footer from '../components/Footer/Footer.jsx';
-import { useNavigate, useParams } from 'react-router-dom'; //importado para los cursos
 
 // ==============================
 // CONSTANTES
 // ==============================
 const NIVELES = ['Base', 'Profesional', 'Avanzado', 'Experto'];
+
+// Definir cursoId como constante
+const cursoId = 1; // id del curso actual
 
 // ==============================
 // FUNCIONES AUXILIARES
@@ -60,10 +63,6 @@ function Dashboard() {
     // ------------------------------
     // EFECTO: CARGA INICIAL DE DATOS
     // ------------------------------
-
-     // Definir cursoId como constante
-            const { id } = useParams();
-            const cursoId = parseInt(id); // convierto a número para que coincida con el id_curso de los temas
 
     useEffect(() => {
         const fetchDescripcion = async () => {
@@ -142,7 +141,7 @@ function Dashboard() {
             {/* Sección de Plataforma */}
             <div className="plataforma-container">
                 <div className="plataforma-left">
-                    <button className="volver-btn" onClick={() => navigate('/cursos')}>
+                    <button className="volver-btn" onClick={() => navigate('/admin/cursos')}>
                         ← Volver
                     </button>
                     <h1 className="plataforma-titulo">¡Pasa al siguiente nivel!</h1>
