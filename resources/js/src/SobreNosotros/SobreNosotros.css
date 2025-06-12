@@ -1,0 +1,243 @@
+/* ==================== RESET GENERAL ==================== */
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+.desktop-container {
+  width: 100%;
+}
+
+/* ==================== MODO CLARO ==================== */
+
+.equipo-section {
+  background-color: #E3D872;
+  padding: 60px 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100%;
+  height: 380px;
+}
+
+.equipo-icon {
+  flex: 0 0 auto;
+  font-size: 150px;
+  color: #000;
+}
+
+.equipo-content {
+  flex: 1;
+  padding-left: 300px;
+}
+
+.equipo-content p {
+  font-size: 28px;
+  font-weight: 500;
+  text-align: left;
+  color: #333;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ==================== SECCIONES GENERALES ==================== */
+
+.section-box {
+  background-color: #F3F3F5;
+  padding: 60px 80px;
+  width: 100%;
+  height: 380px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.section-box1 {
+  background-color: #F3F3F5;
+  padding: 60px 80px;
+  width: 100%;
+  height: 490px;
+  box-sizing: border-box;
+}
+
+.section-box h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* ==================== PLACEHOLDER DE TEXTO ==================== */
+
+.text-placeholder {
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  color: #444;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.text-placeholder.long {
+  width: 100%;
+}
+
+.text-placeholder.short {
+  width: 80%;
+}
+
+/* ==================== EQUIPO EDUCATIVO ==================== */
+
+.equipo-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 20px;
+  flex-wrap: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.equipo-img {
+  width: 300px;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.equipo-image {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+  object-fit: cover;
+  max-width: 100%;
+}
+
+.equipo-personas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.persona {
+  min-width: 200px;
+  max-width: 250px;
+  flex: 1 1 200px;
+  margin-left: 200px;
+}
+
+.persona h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.text-placeholder.short {
+  width: 100%;
+}
+
+/* ==================== MODO OSCURO ==================== */
+
+body.dark-theme {
+  color: #f0f0f0;
+}
+
+body.dark-theme .equipo-section {
+  background-color: #E3D872;
+}
+
+body.dark-theme .section-box,
+body.dark-theme .section-box1 {
+  background-color: #000;
+}
+
+body.dark-theme .equipo-content p,
+body.dark-theme .section-box h2,
+body.dark-theme .persona h3, 
+body.dark-theme .text-placeholder {
+  color: #f0f0f0;
+}
+
+/* ==================== MEDIA QUERIES ==================== */
+
+@media (max-width: 1024px) {
+  .equipo-section,
+  .section-box,
+  .section-box1 {
+    padding: 40px 24px;
+  }
+
+  .equipo-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .equipo-img {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .equipo-image {
+    width: 90%;
+    max-width: 320px;
+    border-radius: 12px;
+  }
+
+  .equipo-personas {
+    flex-direction: column;
+    align-items: center;
+    padding: 0 16px;
+  }
+
+  .persona {
+    margin-left: 0;
+    text-align: center;
+    margin-bottom: 30px;
+    width: 90%;
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .equipo-section {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: auto;
+    gap: 24px;
+  }
+
+  .equipo-icon {
+    font-size: 100px;
+    padding-left: 0;
+  }
+
+  .equipo-content {
+    padding-left: 0;
+  }
+
+  .equipo-content p {
+    font-size: 20px;
+  }
+
+  .section-box,
+  .section-box1 {
+    padding: 30px 16px;
+    height: auto !important;
+  }
+
+  .persona {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+  }
+}
