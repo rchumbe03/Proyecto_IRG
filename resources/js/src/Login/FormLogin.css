@@ -226,14 +226,14 @@ body.dark-mode .login-button {
    BOTÓN DE CAMBIO DE MODO
    ============================== */
 
-.mode-toggle {
+.theme-toggle {
     position: fixed;
     top: 20px;
     right: 20px;
     z-index: 10;
 }
 
-.mode-toggle-button {
+.theme-toggle-button {
     width: 50px;
     height: 50px;
     background: none;
@@ -270,7 +270,7 @@ body.dark-mode .login-button {
     padding: 2rem 0;
     justify-content: center;
     align-items: center;
-    background-color: #E6D00A; 
+    background-color: #E6D00A;
   }
 
   .half-circle {
@@ -317,8 +317,8 @@ body.dark-mode .login-button {
   }
 
 .mode-toggle-button {
-    border-color: white !important; 
-    color: white !important;       
+    border-color: white !important;
+    color: white !important;
   }
 
 .mode-toggle-button:hover {

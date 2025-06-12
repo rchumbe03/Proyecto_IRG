@@ -6,13 +6,15 @@ import LoadingSpinner from './components/common/LoadingSpinner.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
 
 // Lazy loading de componentes
+const Inicio = lazy(() => import('./Inicio/Inicio.jsx'));
+const PasarelaPago = lazy(() => import('./PasarelaPago/PasarelaPago'));
 const FormLogin = lazy(() => import('./Login/FormLogin'));
 const ListaCursos = lazy(() => import('./ListaCursos/ListaCursos'));
-const NotificacionesAd = lazy(() => import('./Notificaciones/NotificacionesAd'));
 const Dashboard = lazy(() => import('./Dashboard/./Dashboard'));
+const VideoTema = lazy(() => import('./VideoPl/VideoPl'));
+const NotificacionesAd = lazy(() => import('./Notificaciones/NotificacionesAd'));
 const NotificacionesU = lazy(() => import('./Notificaciones/NotificacionesU'));
-const PasarelaPago = lazy(() => import('./PasarelaPago/PasarelaPago'));
-const Inicio = lazy(() => import('./Inicio/Inicio.jsx'));
+const Perfil = lazy(() => import('./Perfil/Perfil.jsx'));
 
 export const AppRoutes = () => (
     <Suspense fallback={<LoadingSpinner />}>
@@ -29,6 +31,8 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesAd />} />
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="cursos" element={<ListaCursos />} />
+                        <Route path="video/:id" element={<VideoTema />} />
+                        <Route path="perfil" element={<Perfil />} />
                     </Routes>
                 </ProtectedRoute>
             } />
@@ -40,6 +44,8 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesU />} />
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="cursos" element={<ListaCursos />} />
+                        <Route path="video/:id" element={<VideoTema />} />
+                        <Route path="perfil" element={<Perfil />} />
                     </Routes>
                 </ProtectedRoute>
             } />

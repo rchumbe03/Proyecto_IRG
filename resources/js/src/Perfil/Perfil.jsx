@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import './Perfil.css';
-import HeaderIn from '../components/Headers/jsx/HeaderIn.jsx';
+import Header from '../components/Headers/jsx/HeaderPl.jsx';
 import Footer from '../components/Footer/Footer.jsx';
 import defaultAvatar from '../assets/avatars/avatarDefault.png';
 import axios from 'axios';
@@ -167,7 +167,7 @@ const Perfil = () => {
 
     return (
         <>
-            <HeaderIn />
+            <Header />
             <section className="contenedor-informacion-personal">
                 <div className="informacion-personal">
                     <div className="cabecera-perfil">

@@ -172,7 +172,7 @@ const Inicio = () => {
                 <ul className="lista">
                     {preguntas.map((item, i) => (
                         <li key={i} className="faq-item">
-                            <div className="header" onClick={() => togglePregunta(i)}>
+                            <div className="header-lista" onClick={() => togglePregunta(i)}>
                                 <span className="numero">{String(i + 1).padStart(2, "0")}</span>
                                 <span className="pregunta"><b>{item.pregunta}</b></span>
                                 <span className="simbolo">{abierta === i ? "−" : "+"}</span>

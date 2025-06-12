@@ -57,7 +57,6 @@ function Dashboard() {
     const [temas, setTemas] = useState([]); // Lista de temas cargados
     const [loading, setLoading] = useState(true); // Estado de carga
     const [error, setError] = useState(null); // Mensaje de error
-
     const navigate = useNavigate();
 
     // ------------------------------
@@ -141,9 +140,6 @@ function Dashboard() {
             {/* Sección de Plataforma */}
             <div className="plataforma-container">
                 <div className="plataforma-left">
-                    <button className="volver-btn" onClick={() => navigate('/admin/cursos')}>
-                        ← Volver
-                    </button>
                     <h1 className="plataforma-titulo">¡Pasa al siguiente nivel!</h1>
 
                     {/* Barra de progreso */}
@@ -162,7 +158,7 @@ function Dashboard() {
 
                 {/* Imagen del logo */}
                 <div className="plataforma-right">
-                    <img src={logo} alt="Logo" className="logo-img" />
+                    <img src={logo} alt="Logo" className="logo-plataforma" />
                 </div>
             </div>
 
@@ -202,11 +198,26 @@ function Dashboard() {
                                 <div className="item-header">
                                     <div className="numero">{index + 1}</div>
                                     <div className="info">
-                                        <div className="contenido-titulo">
+                                        <div
+                                            className="contenido-titulo"
+                                            onClick={() => {
+                                                const userData = JSON.parse(localStorage.getItem('user_data'));
+                                                const userType = userData?.type;
+
+                                                if (userType === 'usuario') {
+                                                    navigate(`/usuario/video/${item.id}`);
+                                                } else if (userType === 'admin') {
+                                                    navigate(`/admin/video/${item.id}`);
+                                                } else {
+                                                    console.error('Tipo de usuario no reconocido');
+                                                }
+                                            }}
+                                            style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                                        >
                                             {item.titulo}
                                             <span className={`tema-tipo tipo-${item.tipo?.toLowerCase()}`}>
-                                                {item.tipo}
-                                            </span>
+                                            {item.tipo}
+                                        </span>
                                         </div>
                                         {item.estado && (
                                             <div className={`estado ${item.estado === 'Completado' ? 'completado' : 'proceso'}`}>

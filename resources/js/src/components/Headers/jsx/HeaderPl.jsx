@@ -41,11 +41,27 @@ const HeaderPl = () => {
     };
   }, []);
 
+    const handleLogout = () => {
+        localStorage.removeItem('user_data'); // Elimina los datos del usuario
+        navigate('/inicio'); // Redirige a la página de inicio
+    };
+
   return (
     <header className="header">
-      <div className="logo" onClick={() => navigate('/admin/cursos')}>
-        <img src={adidas2} alt="Logo" className="logo-img" />
-      </div>
+        <div className="logo" onClick={() => {
+            const userData = JSON.parse(localStorage.getItem('user_data'));
+            const userType = userData?.type;
+
+            if (userType === 'admin') {
+                navigate('/admin/cursos');
+            } else if (userType === 'usuario') {
+                navigate('/usuario/cursos');
+            } else {
+                console.error('Tipo de usuario no reconocido');
+            }
+        }}>
+            <img src={adidas2} alt="Logo" className="logo-img" />
+        </div>
 
       <div className="right-section">
           <div
@@ -89,12 +105,38 @@ const HeaderPl = () => {
   />
   { dropdownOpen && (
     <div className="dropdown"> <ul>
-    <li><a href="/perfil">Mi Perfil</a></li>
-    <li><a href="/configuracion">Configuración</a></li>
-    <li><a href="/logout">Cerrar sesión</a></li>
+        <li>
+            <a
+                href="#"
+                onClick={() => {
+                    const userData = JSON.parse(localStorage.getItem('user_data'));
+                    const userType = userData?.type;
+
+                    if (userType === 'admin') {
+                        navigate('/admin/perfil');
+                    } else if (userType === 'usuario') {
+                        navigate('/usuario/perfil');
+                    } else {
+                        console.error('Tipo de usuario no reconocido');
+                    }
+                }}
+            >
+                Mi Perfil
+            </a>
+        </li>
+        <li>
+            <a
+                onClick={(e) => {
+                    e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+                    handleLogout();
+                }}
+            >
+                Cerrar sesión
+            </a>
+        </li>
   </ul> </div>
   ) }
-</div>
+  </div>
 
       </div>
     </header>

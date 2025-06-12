@@ -205,7 +205,7 @@ html, body {
 .faq-item li {
     list-style: none !important;
 }
-.header {
+.header-lista {
     display: flex;
     align-items: center;
     cursor: pointer;

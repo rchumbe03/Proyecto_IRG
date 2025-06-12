@@ -146,9 +146,9 @@ function FormLogin() {
             </div>
 
             {/* Botón de cambio de tema */}
-            <div className="mode-toggle">
+            <div className="theme-toggle">
                 <button
-                    className="mode-toggle-button"
+                    className="theme-toggle-button"
                     onClick={toggleDarkMode}
                     aria-label={darkMode ? 'Activar modo claro' : 'Activar modo oscuro'}
                 >

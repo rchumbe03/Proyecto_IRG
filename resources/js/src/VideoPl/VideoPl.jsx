@@ -7,7 +7,7 @@ import {
   FaCheckCircle,
   FaClock,
 } from 'react-icons/fa';
-import './LiveClass.css';
+import './VideoPl.css';
 import spotify from '../../../js/src/assets/logos/spotify.png';
 import Header from '../components/Headers/jsx/HeaderPl.jsx';
 import Footer from '../components/Footer/Footer.jsx';
