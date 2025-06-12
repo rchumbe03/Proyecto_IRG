@@ -72,7 +72,7 @@ const Inicio = () => {
 
             {/* Features Section */}
             <section className="features-section">
-                <h2 className="heading">Heading</h2>
+                <h2 className="heading">Crece profesionalmente con formación entretenida y de alta calidad para tu trabajo</h2>
                 <div className="features-list">
                     <div className="feature">
                         <FaTv className="feature-icon"/>

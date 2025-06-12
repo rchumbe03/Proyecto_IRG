@@ -196,7 +196,7 @@ function Dashboard() {
                         {contenidoFiltrado.map((item, index) => (
                             <li key={item.id} className={`contenido-item ${isDarkMode ? 'dark-theme' : ''}`}>
                                 <div className="item-header">
-                                    <div className="numero">{index + 1}</div>
+                                    <div className="numero-contenido">{index + 1}</div>
                                     <div className="info">
                                         <div
                                             className="contenido-titulo"

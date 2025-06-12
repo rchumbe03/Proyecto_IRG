@@ -48,20 +48,24 @@ html, body {
     margin: 0 auto; /* Centra el elemento */
 }
 .features-list {
-    margin-top: 40px;
+    margin-top: 90px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 40px;
+    gap: 60px;
 }
 .feature {
-    text-align: center;
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    width: 300px;
-    min-height: 200px;
+    text-align: center;
+    width: 350px;
+    min-height: 250px;
     padding: 20px;
     border-radius: 8px;
-    background-color: #F6F4E8;
+    background-color: rgba(230, 208, 10, 0.05);
 }
 .feature-icon {
     font-size: 50px;
@@ -69,8 +73,11 @@ html, body {
     margin-bottom: 15px;
 }
 .feature h3 {
-    font-size: 1.3em;
+    font-size: 1.8em;
     margin-bottom: 10px;
+}
+.text-placeholder.long {
+    font-size: 1.2em; /* Ajusta el tamaño según lo necesario */
 }
 .feature .btn {
     margin-top: 10px;
@@ -84,7 +91,7 @@ html, body {
     justify-content: center;
     align-items: center;
     min-height: 600px;
-    background-color: #8f8f8f4d;
+    background-color: #F3F3F5;
 }
 .titulo-comunidad {
     font-size: 45px;
@@ -183,7 +190,7 @@ html, body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #8f8f8f4d;
+    background-color: #F3F3F5;
 }
 .titulo {
     text-align: center;
@@ -243,76 +250,77 @@ html, body {
 }
 
 /* === MODO OSCURO === */
-body.dark-theme {
+body.dark-mode {
     background-color: #121212;
     color: #f0f0f0;
 }
 
-body.dark-theme .hero-section {
+body.dark-mode .hero-section {
+    background-color: #121212;
+    color: #f0f0f0;
+}
+
+body.dark-mode .features-section {
     background-color: #1e1e1e;
     color: #f0f0f0;
 }
 
-body.dark-theme .features-section {
-    background-color: #1e1e1e;
-    color: #f0f0f0;
+body.dark-mode .feature-icon {
+    color: #E6D00A;
 }
 
-body.dark-theme .feature {
+body.dark-mode .inicio-comunidad {
     background-color: #2a2a2a;
     color: #f0f0f0;
 }
 
-body.dark-theme .feature-icon {
+body.dark-mode .autor {
     color: #E6D00A;
 }
 
-body.dark-theme .inicio-comunidad {
-    background-color: #2a2a2a;
-    color: #f0f0f0;
-}
-
-body.dark-theme .autor {
-    color: #E6D00A;
-}
-
-body.dark-theme .contenedor {
+body.dark-mode .contenedor {
     background-color: #1e1e1e;
     color: #f0f0f0;
 }
 
-body.dark-theme .texto p {
+body.dark-mode .texto p {
     color: #f0f0f0;
 }
 
-body.dark-theme .boton {
+.dark-mode .course-card {
+    background: #1e1e1e; /* Fondo oscuro */
+    color: #f0f0f0; /* Texto claro */
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1); /* Sombra más tenue */
+    border: 1px solid #F3F3F5; /* Borde oscuro */
+}
+
+body.dark-mode .boton {
     background-color: #E6D00A;
     color: #000;
 }
 
-body.dark-theme .boton:hover {
+body.dark-mode .boton:hover {
     background-color: #ffde00;
 }
 
-body.dark-theme .preguntas-frecuentes {
+body.dark-mode .preguntas-frecuentes {
     background-color: #2a2a2a;
     color: #f0f0f0;
 }
 
-body.dark-theme .numero {
+body.dark-mode .numero {
     color: #E6D00A;
 }
 
-body.dark-theme .simbolo {
+body.dark-mode .simbolo {
     color: #E6D00A;
 }
 
-body.dark-theme .contenido {
-    background-color: #1e1e1e;
+body.dark-mode .contenido {
     color: #f0f0f0;
 }
 
-body.dark-theme .contenido ul li {
+body.dark-mode .contenido ul li {
     color: #f0f0f0;
 }
 
@@ -351,6 +359,7 @@ body.dark-theme .contenido ul li {
 .course-card {
     background: #fff;
     border-radius: 8px;
+    border: 1px solid #1e1e1e;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     width: 400px;
     text-align: left;
@@ -358,13 +367,18 @@ body.dark-theme .contenido ul li {
     padding: 0; /* Elimina el padding general */
 }
 .course-content {
-    padding: 24px;
-    padding-bottom: 40px; /* para que no quede pegado el botón */
+    margin-bottom: 30px;
+    padding: 0 20px;
 }
 .course-image {
     width: 100%;
     height: 300px;
     display: block;
+    border-bottom: 1px solid #1e1e1e;
+}
+
+body.dark-mode .course-image {
+    border-bottom: 2px solid #F3F3F5; /* Línea clara para modo noche */
 }
 
 .course-card h3 {
