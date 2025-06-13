@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import '../InformacionPersonal/InformacionPersonal.css'; // Estilos específicos para esta vista
+import '../Perfil/Perfil.css'; // Estilos específicos para esta vista
 import HeaderIn from '../components/Headers/jsx/HeaderIn.jsx'; // Encabezado personalizado
 import Footer from '../components/Footer/Footer.jsx'; // Pie de página
 import defaultAvatar from '../assets/avatars/avatarDefault.png'; // Imagen por defecto para el avatar
@@ -56,6 +56,7 @@ const InformacionPersonal = () => {
 
             const response = await axios.get(
                 'http://localhost:8000/api/perfil-usuario',
+                 updatedData,
                 config
             );
 

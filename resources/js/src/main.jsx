@@ -17,6 +17,8 @@ const PasarelaPago = lazy(() => import('./PasarelaPago/PasarelaPago.jsx'));
 const Inicio = lazy(() => import('./Inicio/Inicio.jsx'));
 const DetallesCurso = lazy(() => import('./DetallesCurso/DetallesCurso.jsx'));
 const InformacionPersonal = lazy(() => import('./InformacionPersonal/InformacionPersonal.jsx'));
+const Perfil = lazy(() => import('./Perfil/Perfil.jsx'));
+
 
 
 export const AppRoutes = () => (
@@ -40,7 +42,8 @@ export const AppRoutes = () => (
                         <Route path="detallescurso/:id" element={<DetallesCurso />} />
                         <Route path="contactanos" element={<Contactanos />} />
                         <Route path="informacionPersonal" element={<InformacionPersonal />} />      
-                                      
+                            
+
                     </Routes>
                 </ProtectedRoute>
             } />

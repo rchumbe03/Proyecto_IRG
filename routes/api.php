@@ -16,6 +16,9 @@ use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\InformacionUsuarioController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+
 
 // --- Controladores de administrador ---
 
@@ -53,9 +56,6 @@ Route::get('/expediente/{userId}', [ExpedienteController::class, 'show']);
 // RUTA: Temas por Curso (pública)
 // GET /api/cursos/{id}/temas
 // ==============================
-
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 
 Route::get('/temas-por-curso-fase', function (Request $request) {
     $curso_id = $request->query('curso_id');
@@ -106,9 +106,12 @@ Route::delete('/notificaciones/{id}', [NotificacionController::class, 'destroy']
 
 // Rutas protegidas para usuarios normales
 //                  auth:sanctum
+// En routes/api.php, dentro del grupo protegido
 Route::middleware(['auth.cookie'])->prefix('user')->group(function () {
-    // Perfil de usuario
-    Route::get('/perfil-usuario', [InformacionUsuarioController::class, 'index']);
-    Route::put('/perfil-usuario', [InformacionUsuarioController::class, 'update']);
+    Route::get('/perfil', [UsuarioController::class, 'getProfile']);
+    Route::put('/perfil', [UsuarioController::class, 'updateProfile']);
 });
+
+
+
 

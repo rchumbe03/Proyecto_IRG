@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import '../DetallesCurso/DetallesCurso.css';
 import Footer from '../components/Footer/Footer.jsx';
-import HeaderAd from '../components/Headers/jsx/HeaderAd.jsx';
+import HeaderAd from '../components/Headers/jsx/HeaderIn.jsx';
 import { FaClock, FaDesktop, FaDownload } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
-import inmobiliaria2 from '../assets/img/inmobiliaria2.png'
+import inmobiliaria2 from '../assets/img/inmobiliaria2.png';
 
 const fases = [
   { nombre: 'Base' },
@@ -13,30 +13,26 @@ const fases = [
   { nombre: 'Experto' },
 ];
 
+const tiposEjemplo = ['video', 'video', 'virtual', 'virtual', 'presencial']; // Ejemplo, puedes reemplazarlo por tema.tipo
+
 const DetallesCurso = () => {
   const [abierta, setAbierta] = useState(null);
   const [temasPorFase, setTemasPorFase] = useState({});
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
-  // Traer los temas por curso y fase
   useEffect(() => {
     const fetchTemasPorFase = async () => {
       setLoading(true);
       try {
-        // Por cada fase, pide los temas
         const promises = fases.map(async (fase) => {
           const res = await fetch(`http://localhost:8000/api/temas-por-curso-fase?curso_id=${id}&fase=${fase.nombre}`);
           const data = await res.json();
           return { [fase.nombre]: data };
         });
-
         const results = await Promise.all(promises);
-        // Junta los resultados en un solo objeto
         const obj = {};
-        results.forEach((item) => {
-          Object.assign(obj, item);
-        });
+        results.forEach((item) => Object.assign(obj, item));
         setTemasPorFase(obj);
       } catch {
         setTemasPorFase({});
@@ -51,9 +47,15 @@ const DetallesCurso = () => {
     setAbierta(abierta === index ? null : index);
   };
 
+  // Badge para el tipo de clase, puedes enlazarlo luego con el tipo real
+  const badgeClase = (tipo) => {
+    if (!tipo) return null;
+    return <span className={`badge-tema ${tipo}`}>{tipo}</span>;
+  };
+
   return (
     <>
-      {/*Primera parte*/}
+      {/*Parte superior*/}
       <div className="container dark-mode">
         <HeaderAd />
         <div className="contenedor-with-image">
@@ -62,9 +64,6 @@ const DetallesCurso = () => {
             <h3>Más de 100 cursos completos</h3>
             <div className="phrase-container">
               <p>
-                El sector inmobiliario ofrece oportunidades únicas para invertir y crecer profesionalmente. 
-                Aprenderás a gestionar propiedades, analizar el mercado y cerrar negociaciones exitosas. 
-                Conoce las mejores prácticas para destacar en el mundo de bienes raíces.
                 El sector inmobiliario ofrece oportunidades únicas para invertir y crecer profesionalmente. 
                 Aprenderás a gestionar propiedades, analizar el mercado y cerrar negociaciones exitosas. 
                 Conoce las mejores prácticas para destacar en el mundo de bienes raíces.
@@ -120,60 +119,46 @@ const DetallesCurso = () => {
         </div>
       </div>
 
-      {/*Segunda parte "Contenindo del curso"*/}
+      {/*Parte de contenidos*/}
       <div className="page-wrapper">
         <section className="contenido-curso">
           <h2 className="titulo">Contenido del curso</h2>
           <ul className="lista">
             {fases.map((fase, i) => (
               <li key={i} className="faq-item">
-                
-                {/*PREGUNTA DEL CONTENIDO */}
                 <div className="barra-seccion" onClick={() => togglePregunta(i)}>
-                  <span className="pregunta">{`Fase de formación: ${fase.nombre}`}</span>
-                  {/*SIMBOLO */}
+                  <span className="pregunta-nombre-tema">
+                    <span className="nombre-fase">Fase de formación: {fase.nombre}</span>
+                  </span>
                   <span className="simbolo">{abierta === i ? '-' : '+'}</span>
                 </div>
-                {/*RESPUESTA DEL CONTENIDO ABIERTO */}
                 <div
                   className={`contenido${abierta === i ? ' contenido-abierta' : ''}`}
-                  style={{ maxHeight: abierta === i ? '600px' : '0px' }}
+                  style={{ maxHeight: abierta === i ? '800px' : '0px' }}
                 >
-
-
-                  <ul>
-
-                    
+                  <div className="contenedor-temas-lista">
                     {loading ? (
-                      <li className="faq-linea">Cargando temas...</li>
+                      <div className="tema-item">Cargando temas...</div>
                     ) : (temasPorFase[fase.nombre] && temasPorFase[fase.nombre].length > 0 ? (
                       temasPorFase[fase.nombre].map((tema, idx) => (
-                        <div className='nombre-temas' key={tema.id}>
-                          <div className='numero-temas'>{idx + 1}</div>
-                          <li className="faq-linea">{tema.titulo}</li>
+                        <div className="tema-item" key={tema.id}>
+                          <span className="tema-num">{idx + 1}</span>
+                          <span className="tema-titulo">{tema.titulo}</span>
+                          {/* Badge: puedes cambiar el tipo por tema.tipo cuando lo tengas */}
+                          {badgeClase(
+                            // demo: alternando el badge para que veas el resultado visual
+                            idx === 0
+                              ? 'video'
+                              : idx === 1
+                              ? 'virtual'
+                              : 'presencial'
+                          )}
                         </div>
                       ))
                     ) : (
-                      <li className="faq-linea">No hay temas disponibles para esta fase.</li>
+                      <div className="tema-item">No hay temas disponibles para esta fase.</div>
                     ))}
-
-                    
-                    <div className="presencial">
-                      <div className='simbolo-presencial'>-</div>
-                       Presencial
-                    </div>
-                    
-                    <div className="presencial2">
-                      <div className='simbolo-presencial2'>-</div>
-                       Presencial
-                    </div>
-
-                    <div className="presencial3">
-                      <div className='simbolo-presencial3'>-</div>
-                       Presencial
-                    </div>
-
-                  </ul>
+                  </div>
                 </div>
               </li>
             ))}

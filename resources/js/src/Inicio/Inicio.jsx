@@ -143,7 +143,7 @@ const Inicio = () => {
                             {comentario.map(({ texto, autor }, idx) => (
                                 <div className="slide" key={idx}>
                                     <blockquote className="texto">{texto}</blockquote>
-                                    <p className="autor">— {autor}</p>
+                                    <p className="autor"> — {autor}</p>
                                 </div>
                             ))}
                         </div>
@@ -172,7 +172,7 @@ const Inicio = () => {
                 <ul className="lista">
                     {preguntas.map((item, i) => (
                         <li key={i} className="faq-item">
-                            <div className="header" onClick={() => togglePregunta(i)}>
+                            <div className="barra-pregunta" onClick={() => togglePregunta(i)}>
                                 <span className="numero">{String(i + 1).padStart(2, "0")}</span>
                                 <span className="pregunta"><b>{item.pregunta}</b></span>
                                 <span className="simbolo">{abierta === i ? "−" : "+"}</span>

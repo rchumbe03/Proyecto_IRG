@@ -55,10 +55,13 @@ html, body {
 .barra-seccion {
   display: flex;
   align-items: center;
-  gap: 18px;
   user-select: none;
   border-bottom: 3px solid black;
   cursor: pointer;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 21px;
+  margin-top: 10px;
 }
 
 .pregunta {
@@ -72,8 +75,9 @@ html, body {
   font-size: 24px;
   font-weight: bold;
   width: 32px;
-  text-align: center;
-  margin-right: auto;
+  text-align: right;
+  margin: 0;
+  margin-right: 10px;
 }
 
 /* === CONTENIDO DESPLEGABLE === */
@@ -93,7 +97,7 @@ html, body {
   padding: 13px 0 0 0px;
   width: 650px;
   display: grid;
-  grid-template-columns: repeat(3, 2fr);
+  grid-template-columns: repeat(1, 2fr);
   gap: 20px;
 }
 
@@ -559,3 +563,68 @@ body.dark-mode .image{
 }
 
 
+
+
+
+
+
+
+
+
+
+
+.contenido-abierta {
+  border-top: 1px solid #f4e8ad;
+  padding: 20px 20px 20px 32px;
+}
+
+.contenedor-temas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tema-item {
+  display: flex;
+  align-items: center;
+  background: #f8f8f8;
+  border-radius: 7px;
+  padding: 13px 20px;
+  font-size: 1.13em;
+  margin-bottom: 2px;
+  font-weight: 500;
+  color: #222;
+  box-shadow: 0 0 0.5px #eee;
+  gap: 16px;
+  position: relative;
+}
+
+.tema-num {
+  background: #ffe200;
+  color: #181818;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.tema-titulo {
+  flex: 1;
+  padding-left: 6px;
+}
+
+.badge-tema {
+  display: inline-block;
+  background: #ffe200;
+  color: #222;
+  border-radius: 15px;
+  padding: 3px 16px;
+  font-size: 0.97em;
+  font-weight: 600;
+  margin-left: 18px;
+  text-transform: lowercase;
+}
