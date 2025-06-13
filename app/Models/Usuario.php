@@ -14,20 +14,9 @@ class Usuario extends Model
     protected $table = 'usuarios';
 
     protected $fillable = [
-        'nombre',
-        'email',
-        'password',
-        'cv',
-        'foto_perfil',
-        'direccion',
-        'ciudad',
-        'pais',
-        'estado',
-        'codigo_postal',
-        'edad',
-        'dni',
-        'prefijo_telefono',
-        'telefono',
+        'nombre', 'email', 'password', 'direccion', 'ciudad',
+        'codigo_postal', 'pais', 'estado', 'prefijo_telefono',
+        'telefono', 'edad', 'dni', 'remember_token', 'foto_perfil', 'cv'
     ];
 
     protected $hidden = [

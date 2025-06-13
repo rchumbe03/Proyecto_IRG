@@ -3,13 +3,14 @@ import { loadStripe } from '@stripe/stripe-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Headers/jsx/HeaderIn.jsx';
 import Footer from '../components/Footer/Footer.jsx';
 import './PasarelaPago.css';
+import axios from 'axios';
 
 const stripePromise = loadStripe('pk_test_51RGlsjB2ttGnV711RTjFq0AoULWgpTuCeOLL4W0rsi6UTCx7TI85kOW0KIwMN0vHIgrgfVuxDb0t1hbyZjNd2sWd00je0sxh6D');
 
-// Componente reutilizable para los campos de entrada
 function InputField({ label, name, type = "text", value, onChange, required = true, placeholder, children }) {
     return (
         <div className="pasarela-input" style={{ position: 'relative' }}>
@@ -31,9 +32,10 @@ function InputField({ label, name, type = "text", value, onChange, required = tr
 function PaymentForm() {
     const stripe = useStripe();
     const elements = useElements();
+    const navigate = useNavigate();
     const [mostrarContrasena, setMostrarContrasena] = useState(false);
     const [mostrarConfirmar, setMostrarConfirmar] = useState(false);
-    const [prefijo, setPrefijo] = useState('+34'); // Por defecto España
+    const [prefijo, setPrefijo] = useState('+34');
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
@@ -46,6 +48,8 @@ function PaymentForm() {
         estado: '',
         codigoPostal: '',
         telefono: '',
+        edad: '',
+        dni: '',
     });
 
     const isFormValid = Object.values(formData).every(val => val.trim() !== '');
@@ -60,32 +64,56 @@ function PaymentForm() {
         if (!stripe || !elements) return;
         setLoading(true);
 
-        const { error } = await stripe.confirmPayment({
-            elements,
-            confirmParams: {
-                return_url: 'http://localhost:5173/confirmacion-pago',
-                payment_method_data: {
-                    billing_details: {
-                        address: {
-                            city: formData.ciudad,
-                            country: formData.pais,
-                            line1: formData.direccion,
-                            postal_code: formData.codigoPostal,
-                            state: formData.estado,
-                        },
-                        name: formData.nombreApellido,
-                        email: formData.email,
-                        phone: formData.telefono,
+        try {
+            // Guardar datos del usuario
+            const response = await axios.post('/api/guardar-datos-pago', {
+                nombre: formData.nombreApellido,
+                email: formData.email,
+                password: formData.contrasena,
+                direccion: formData.direccion,
+                ciudad: formData.ciudad,
+                pais: formData.pais,
+                estado: formData.estado,
+                codigo_postal: formData.codigoPostal,
+                prefijo_telefono: prefijo,
+                telefono: formData.telefono,
+                edad: formData.edad,
+                dni: formData.dni,
+            });
+
+            const userType = response.data.usuario.is_admin ? 'admin' : 'usuario';
+
+            // Confirmar pago
+            const { error } = await stripe.confirmPayment({
+                elements,
+                confirmParams: {
+                    return_url: 'http://localhost:8000/login',
+                    payment_method_data: {
+                        billing_details: {
+                            address: {
+                                city: formData.ciudad,
+                                country: formData.pais,
+                                line1: formData.direccion,
+                                postal_code: formData.codigoPostal,
+                                state: formData.estado,
+                            },
+                            name: formData.nombreApellido,
+                            email: formData.email,
+                            phone: `${prefijo}${formData.telefono}`,
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        if (error) {
-            console.error('Error en el pago:', error.message);
-        } else {
-            console.log('Pago exitoso');
+            if (error) {
+                console.error('Error en el pago:', error.message);
+            } else {
+                console.log('Pago exitoso');
+            }
+        } catch (err) {
+            console.error('Error al guardar datos o procesar el pago:', err.message);
         }
+
         setLoading(false);
     };
 
@@ -94,7 +122,6 @@ function PaymentForm() {
             <Header />
             <main className="pasarela-container">
                 <form className="pasarela-form" onSubmit={handleSubmit}>
-                    {/* Columna izquierda - Datos personales y dirección */}
                     <div className="columna">
                         <h2 className="pasarela-title">Datos personales</h2>
                         <InputField
@@ -112,6 +139,24 @@ function PaymentForm() {
                             onChange={handleChange}
                             placeholder="Correo electrónico"
                         />
+                        <div className="edad-dni-input-container">
+                            <div className="pasarela-input" style={{ width: '20%' }}>
+                                <label className="titulo">Edad</label>
+                                <input name="edad"
+                                       type="number"
+                                       value={formData.edad}
+                                       onChange={handleChange}
+                                       placeholder="Edad"/>
+                            </div>
+                            <div className="pasarela-input" style={{ width: '80%' }}>
+                                <label className="titulo">DNI</label>
+                                <input name="dni"
+                                       type="dni"
+                                       value={formData.dni}
+                                       onChange={handleChange}
+                                       placeholder="DNI"/>
+                            </div>
+                        </div>
                         <InputField
                             label="Contraseña"
                             name="contrasena"
@@ -129,7 +174,6 @@ function PaymentForm() {
                                 <FontAwesomeIcon icon={mostrarContrasena ? faEyeSlash : faEye} />
                             </button>
                         </InputField>
-
                         <InputField
                             label="Confirmar Contraseña"
                             name="confirmarContrasena"
@@ -147,7 +191,7 @@ function PaymentForm() {
                                 <FontAwesomeIcon icon={mostrarConfirmar ? faEyeSlash : faEye} />
                             </button>
                         </InputField>
-                        <h3 className="pasarela-title" style={{marginTop: '1rem'}}>Dirección de facturación</h3>
+                        <h3 className="pasarela-title" style={{ marginTop: '1rem' }}>Dirección de facturación</h3>
                         <InputField
                             label="Dirección"
                             name="direccion"
@@ -214,32 +258,11 @@ function PaymentForm() {
                             </div>
                         </div>
                     </div>
-
-                    {/* Columna derecha - Datos de pago */}
                     <div className="columna">
                         <h2 className="pasarela-title">Datos de compra</h2>
                         <div id="payment-element-container">
                             <label className="titulo">Metodo de pago</label>
                             <PaymentElement id="payment-element" />
-                            <div className="detalles-compra">
-                                <div className="detalles-compra-title">Resumen de compra</div>
-                                <div className="detalles-compra-item">
-                                    <span>Producto:</span>
-                                    <span>Curso React</span>
-                                </div>
-                                <div className="detalles-compra-item">
-                                    <span>Subtotal:</span>
-                                    <span>€20.00</span>
-                                </div>
-                                <div className="detalles-compra-item">
-                                    <span className="iva-label">IVA (21%):</span>
-                                    <span>€4.20</span>
-                                </div>
-                                <div className="detalles-compra-total">
-                                    <span>Total:</span>
-                                    <span>€24.20</span>
-                                </div>
-                            </div>
                             <button
                                 type="submit"
                                 className={`pagar-btn${isFormValid && !loading ? ' enabled' : ''}`}
@@ -264,7 +287,7 @@ export default function PasarelaPago() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                amount: 100, // Monto en centavos (ejemplo: 100 centavos = €1.00)
+                amount: 100,
             }),
         })
             .then(res => res.json())

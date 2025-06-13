@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ClaseController;
 use App\Http\Controllers\Admin\NotificacionController;
 use App\Http\Controllers\Admin\TemaController;
+use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\ExpedienteController;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 // CHECKOUT (Stripe)
 // ==============================
 Route::post('/create-payment-intent', [CheckoutController::class, 'createPaymentIntent']);
+Route::post('/guardar-datos-pago', [UsuarioController::class, 'guardarDatosPago']);
 
 // ==============================
 // AUTENTICACIÓN

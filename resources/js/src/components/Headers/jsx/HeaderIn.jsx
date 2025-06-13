@@ -46,7 +46,7 @@ export default function Header() {
             </div>
             <div className="right">
                 <nav className="tabs">
-                    <button className="icon-text-button" onClick={() => navigate('/')}>
+                    <button className="icon-text-button" onClick={() => navigate('/inicio')}>
                         <span>Inicio</span>
                         <FaHome />
                     </button>
@@ -54,7 +54,7 @@ export default function Header() {
                         <span>Cursos</span>
                         <FaBookOpen />
                     </button>
-                    <button className="icon-text-button">
+                    <button className="icon-text-button" onClick={() => navigate('/sobre-nosotros')}>
                         <span>Sobre Nosotros</span>
                         <FaBuilding />
                     </button>

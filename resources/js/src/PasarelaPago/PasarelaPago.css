@@ -94,6 +94,20 @@
     outline: none;
 }
 
+/* edad y DNI */
+.edad-dni-input-container {
+    display: flex;
+    gap: 8px;
+}
+.edad-dni-input-container .edad {
+    width: 15%; /* Ancho para el campo Edad */
+}
+
+.edad-dni-input-container .dni {
+    width: 85%; /* Ancho para el campo DNI */
+}
+
+/* Teléfono */
 .telefono-row {
     display: flex;
     flex-direction: column;

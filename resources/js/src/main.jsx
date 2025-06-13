@@ -7,6 +7,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
 
 // Lazy loading de componentes
 const Inicio = lazy(() => import('./Inicio/Inicio.jsx'));
+const SobreNosotros = lazy(() => import('./SobreNosotros/SobreNosotros.jsx'));
 const PasarelaPago = lazy(() => import('./PasarelaPago/PasarelaPago'));
 const FormLogin = lazy(() => import('./Login/FormLogin'));
 const ListaCursos = lazy(() => import('./ListaCursos/ListaCursos'));
@@ -21,6 +22,7 @@ export const AppRoutes = () => (
         <Routes>
             {/* Rutas públicas */}
             <Route path="/login" element={<FormLogin />} />
+            <Route path="/sobre-nosotros" element={<SobreNosotros />} />
             <Route path="/pasarela" element={<PasarelaPago />} />
             <Route path="/inicio" element={<Inicio />} />
 
