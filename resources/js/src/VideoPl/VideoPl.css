@@ -2,22 +2,27 @@
   --yellow: #E6D00A;
   --gray-light: #ccc;
   --gray-dark: #444;
+  --bg-light: #fff;
+  --text-light: #000;
 }
 
+/* ===== ESTRUCTURA GENERAL ===== */
 .live-class {
   display: flex;
   flex-direction: column;
   height: 100vh;
   font-family: Arial, sans-serif;
+  background: var(--bg-light);
+  color: var(--text-light);
 }
 
-/* Header */
+/* ===== HEADER ===== */
 .lc-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  background: white;
+  background: var(--bg-light);
   border-bottom: 1px solid var(--gray-light);
 }
 
@@ -40,17 +45,16 @@
   border-radius: 4px;
 }
 
-/* Body grid */
+/* ===== BODY GRID ===== */
 .lc-body {
   display: grid;
   grid-template-columns: 1fr 300px;
   width: 100%;
 }
 
-/* Main column */
+/* ===== COLUMNA PRINCIPAL ===== */
 .lc-main {
   padding: 24px;
-  /* ✂️ Eliminar esta línea si la tenías: overflow-y: auto; */
 }
 
 .lc-title {
@@ -74,7 +78,7 @@
   width: 0;
 }
 
-/* Video + overlay logo */
+/* ===== VIDEO + LOGO ===== */
 .lc-image-container {
   position: relative;
   margin-bottom: 24px;
@@ -82,7 +86,7 @@
 
 .video-container {
   width: 100%;
-  padding-top: 56.25%; /* Relación 16:9 */
+  padding-top: 56.25%; /* 16:9 */
   border-radius: 8px;
   overflow: hidden;
   position: relative;
@@ -90,23 +94,19 @@
 
 .lc-video {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   border: none;
 }
 
 .lc-logo-overlay {
   position: absolute;
-  bottom: 12px;
-  left: 12px;
+  bottom: 12px; left: 12px;
   width: 64px;
-  height: auto;
   opacity: 0.8;
 }
 
-/* Tabs */
+/* ===== TABS ===== */
 .lc-tabs {
   display: flex;
   border-bottom: 2px solid var(--gray-light);
@@ -127,7 +127,7 @@
   color: var(--yellow);
 }
 
-/* Tab content */
+/* ===== CONTENIDO TAB ===== */
 .lc-tab-content p,
 .lc-tab-content ul {
   margin-bottom: 12px;
@@ -135,7 +135,7 @@
   line-height: 1.5;
 }
 
-/* Comments */
+/* ===== COMENTARIOS ===== */
 .lc-comments-section {
   margin-top: 32px;
 }
@@ -152,8 +152,7 @@
 }
 
 .lc-avatar {
-  width: 32px;
-  height: 32px;
+  width: 32px; height: 32px;
   background: var(--yellow);
   border-radius: 50%;
   display: flex;
@@ -175,20 +174,23 @@
   line-height: 1.4;
 }
 
-/* Sidebar */
+/* ===== SIDEBAR ===== */
 .lc-sidebar {
   background: #f9f9f9;
   padding: 24px 16px;
-  max-height: 113vh; /* o lo que necesites */
+  max-height: 113vh;
   overflow-y: auto;
 }
+
 .lc-sidebar::-webkit-scrollbar {
   width: 6px;
 }
+
 .lc-sidebar::-webkit-scrollbar-thumb {
   background: var(--gray-dark);
   border-radius: 3px;
 }
+
 .lc-lesson-item {
   display: flex;
   align-items: center;
@@ -196,15 +198,14 @@
 }
 
 .lc-lesson-circle {
-  width: 32px;
-  height: 32px;
+  width: 32px; height: 32px;
   border-radius: 50%;
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
   color: white;
+  position: relative;
 }
 
 .lc-lesson-circle.completed {
@@ -215,21 +216,117 @@
   background: var(--gray-light);
 }
 
-.lc-lesson-circle.completed svg,
-.lc-lesson-circle.in-progress svg {
+.lc-lesson-circle svg {
   position: absolute;
   font-size: 12px;
 }
-
-.lc-lesson-circle span {
-  position: relative;
-  z-index: 1;
-}
-
 
 .lc-lesson-status {
   font-size: 12px;
   color: var(--gray-dark);
   padding: 2px 4px;
 }
+/* ==================== MODO OSCURO ==================== */
+
+body.dark-mode {
+  --bg: #000;
+  --text: #f5f6fa;
+  --gray-light: #333;
+  --gray-dark: #888;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Contenedor general */
+body.dark-mode .live-class {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Header */
+body.dark-mode .lc-header {
+  background: var(--bg);
+  border-bottom-color: var(--gray-light);
+}
+body.dark-mode .lc-back,
+body.dark-mode .lc-nav button {
+  color: var(--text);
+}
+
+/* Botones nav */
+body.dark-mode .lc-nav button {
+  background: var(--yellow);
+}
+
+/* Body y main */
+body.dark-mode .lc-body,
+body.dark-mode .lc-main {
+  background: var(--bg);
+}
+
+/* Título y tabs */
+body.dark-mode .lc-title,
+body.dark-mode .lc-tabs button {
+  color: var(--text);
+}
+body.dark-mode .lc-tabs {
+  border-bottom-color: var(--gray-light);
+}
+body.dark-mode .lc-tabs .active {
+  color: var(--yellow);
+  border-color: var(--yellow);
+}
+
+/* Barra de progreso */
+body.dark-mode .lc-progress-bar {
+  background: var(--gray-light);
+}
+body.dark-mode .lc-progress {
+  background: var(--yellow);
+}
+
+/* Video */
+body.dark-mode .video-container {
+  background: var(--gray-light);
+}
+
+/* Sidebar */
+body.dark-mode .lc-sidebar {
+  background: #111;
+}
+body.dark-mode .lc-sidebar::-webkit-scrollbar-thumb {
+  background: var(--gray-dark);
+}
+
+/* Lista de lecciones */
+body.dark-mode .lc-lesson-circle.completed {
+  background: var(--yellow);
+}
+body.dark-mode .lc-lesson-circle.in-progress {
+  background: var(--gray-light);
+}
+body.dark-mode .lc-lesson-status {
+  color: var(--text);
+}
+
+/* Contenido de tabs y comentarios */
+body.dark-mode .lc-tab-content p,
+body.dark-mode .lc-tab-content ul,
+body.dark-mode .lc-no-comments {
+  color: var(--text);
+}
+
+/* Comentarios input */
+body.dark-mode .lc-comment-input input {
+  background: #222;
+  color: var(--text);
+  border-color: var(--gray-light);
+}
+
+/* Avatar */
+body.dark-mode .lc-avatar {
+  background: var(--yellow);
+  color: #000;
+}
+
 
