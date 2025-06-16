@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import './Perfil.css';
-import Header from '../components/Headers/jsx/HeaderPl.jsx';
-import Footer from '../components/Footer/Footer.jsx';
-import defaultAvatar from '../assets/avatars/avatarDefault.png';
-import axios from 'axios';
-import { FaSave } from 'react-icons/fa';
+import '../Perfil/Perfil.css'; // Estilos específicos para esta vista
+import HeaderIn from '../components/Headers/jsx/HeaderIn.jsx'; // Encabezado personalizado
+import Footer from '../components/Footer/Footer.jsx'; // Pie de página
+import defaultAvatar from '../assets/avatars/avatarDefault.png'; // Imagen por defecto para el avatar
+import axios from 'axios'; // Cliente HTTP para llamadas API
+import { FaSave } from 'react-icons/fa'; // Icono de guardar
 
-const Perfil = () => {
+const InformacionPersonal = () => {
+    // Estados para almacenar datos del usuario, modo de edición, formulario, carga y errores
     const [userData, setUserData] = useState(null);
     const [editMode, setEditMode] = useState(false);
     const [formData, setFormData] = useState({
@@ -27,7 +28,7 @@ const Perfil = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Configuración de axios
+    // Configuración base para las solicitudes Axios
     const config = {
         withCredentials: true,
         headers: {
@@ -36,7 +37,7 @@ const Perfil = () => {
         }
     };
 
-    // Obtener token CSRF
+    // Función para obtener el token CSRF antes de hacer solicitudes seguras al backend
     const getCsrfToken = async () => {
         try {
             await axios.get('http://localhost:8000/sanctum/csrf-cookie', {
@@ -48,31 +49,32 @@ const Perfil = () => {
         }
     };
 
-    // Obtener datos del usuario
+    // Obtener los datos del usuario desde la API y actualizar el estado
     const fetchUserData = async () => {
         try {
             await getCsrfToken();
 
             const response = await axios.get(
                 'http://localhost:8000/api/perfil-usuario',
+                 updatedData,
                 config
             );
 
             if (response.data) {
-                const parsedData = parseUserData(response.data);
-                setUserData(response.data);
-                setFormData(parsedData);
+                const parsedData = parseUserData(response.data); // Procesar datos
+                setUserData(response.data); // Guardar en estado original
+                setFormData(parsedData); // Guardar en estado editable
                 setError(null);
             }
         } catch (error) {
             console.error('Error al obtener datos:', error);
             setError('Error al cargar información del usuario');
         } finally {
-            setLoading(false);
+            setLoading(false); // Finaliza la carga
         }
     };
 
-    // Parsear datos de la base de datos al formato del formulario
+    // Función para dividir y organizar los datos del usuario
     const parseUserData = (data) => {
         if (!data) return formData;
 
@@ -112,7 +114,7 @@ const Perfil = () => {
         };
     };
 
-    // Manejar cambios en los inputs
+    // Maneja los cambios en los inputs del formulario
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -121,7 +123,7 @@ const Perfil = () => {
         });
     };
 
-    // Guardar los cambios
+    // Guarda los cambios del formulario al backend
     const handleSave = async () => {
         try {
             await getCsrfToken();
@@ -143,9 +145,9 @@ const Perfil = () => {
             );
 
             if (response.data) {
-                setUserData(response.data);
-                setEditMode(false);
-                setError(null);
+                setUserData(response.data); // Actualizar datos del usuario
+                setEditMode(false); // Salir del modo edición
+                setError(null); // Limpiar errores
             }
         } catch (error) {
             console.error('Error al actualizar:', error);
@@ -153,21 +155,22 @@ const Perfil = () => {
         }
     };
 
+    // Ejecutar fetch al montar el componente
     useEffect(() => {
         fetchUserData();
     }, []);
 
+    // Mostrar pantalla de carga
     if (loading) {
-        return (
-            <div className="contenedor-carga">
-                <p>Cargando información personal...</p>
-            </div>
-        );
+        return <div className="contenedor-carga"><p>Cargando información personal...</p></div>;
     }
+
+    // Aquí continúa la renderización del JSX del componente (omitido para brevedad)
+
 
     return (
         <>
-            <Header />
+            <HeaderIn />
             <section className="contenedor-informacion-personal">
                 <div className="informacion-personal">
                     <div className="cabecera-perfil">

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Usuario;
+use App\Http\Controllers\Controller;
+use App\Models\User; // Asegúrate que el modelo User está bien configurado
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -10,7 +12,7 @@ use Illuminate\Support\Str;
 class UsuarioController extends Controller
 {
     /**
-     * Obtener datos del perfil del usuario
+     * Obtener datos del perfil del usuario autenticado.
      */
     public function getProfile()
     {
@@ -21,8 +23,18 @@ class UsuarioController extends Controller
             return response()->json(['error' => 'Usuario no autenticado'], 401);
         }
 
-        return response()->json($user);
-    }
+    return response()->json([
+        'id' => $user->id,
+        'nombre' => $user->nombre,
+        'email' => $user->email,
+        'foto_perfil' => $user->foto_perfil,
+        'direccion' => $user->direccion,
+        'edad' => $user->edad,
+        'dni' => $user->dni,
+        'telefono' => $user->telefono,
+        'cv' => $user->cv,
+    ]);
+}
 
     /**
      * Agregar nuevo usuario
@@ -66,9 +78,5 @@ class UsuarioController extends Controller
             'edad' => 'sometimes|string',
             'cv' => 'sometimes|url|max:255',
         ]);
-
-        $user->update($validatedData);
-
-        return response()->json($user);
     }
 }

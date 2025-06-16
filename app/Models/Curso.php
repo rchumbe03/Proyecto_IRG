@@ -23,4 +23,9 @@ class Curso extends Model
     {
         return $this->belongsTo(Admin::class, foreignKey: 'id_admin');
     }
+
+    public function temas()
+{
+    return $this->hasMany(Tema::class, 'id_curso');
+}
 }

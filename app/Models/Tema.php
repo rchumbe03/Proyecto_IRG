@@ -26,4 +26,9 @@ class Tema extends Model
     {
         return $this->hasMany(Clase::class, 'id_tema');
     }
+
+    public function curso()
+{
+    return $this->belongsTo(Curso::class, 'id_curso');
+}
 }

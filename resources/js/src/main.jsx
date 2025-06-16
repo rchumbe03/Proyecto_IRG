@@ -8,6 +8,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
 // Lazy loading de componentes
 const Inicio = lazy(() => import('./Inicio/Inicio.jsx'));
 const SobreNosotros = lazy(() => import('./SobreNosotros/SobreNosotros.jsx'));
+const Contactanos = lazy(() => import('./Contactanos/Contactanos.jsx'));
 const PasarelaPago = lazy(() => import('./PasarelaPago/PasarelaPago'));
 const FormLogin = lazy(() => import('./Login/FormLogin'));
 const ListaCursos = lazy(() => import('./ListaCursos/ListaCursos'));
@@ -15,6 +16,7 @@ const Dashboard = lazy(() => import('./Dashboard/./Dashboard'));
 const VideoTema = lazy(() => import('./VideoPl/VideoPl'));
 const NotificacionesAd = lazy(() => import('./Notificaciones/NotificacionesAd'));
 const NotificacionesU = lazy(() => import('./Notificaciones/NotificacionesU'));
+const DetallesCurso = lazy(() => import('./DetallesCurso/DetallesCurso.jsx'));
 const Perfil = lazy(() => import('./Perfil/Perfil.jsx'));
 
 export const AppRoutes = () => (
@@ -25,6 +27,8 @@ export const AppRoutes = () => (
             <Route path="/sobre-nosotros" element={<SobreNosotros />} />
             <Route path="/pasarela" element={<PasarelaPago />} />
             <Route path="/inicio" element={<Inicio />} />
+            <Route path="/detallescurso/:id" element={<DetallesCurso />} />
+
 
             {/* Rutas protegidas de administrador */}
             <Route path="/admin/*" element={
@@ -35,6 +39,8 @@ export const AppRoutes = () => (
                         <Route path="cursos" element={<ListaCursos />} />
                         <Route path="video/:id" element={<VideoTema />} />
                         <Route path="perfil" element={<Perfil />} />
+                        <Route path="detallescurso/:id" element={<DetallesCurso />} />
+                        <Route path="contactanos" element={<Contactanos />} />
                     </Routes>
                 </ProtectedRoute>
             } />
@@ -46,8 +52,8 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesU />} />
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="cursos" element={<ListaCursos />} />
-                        <Route path="video/:id" element={<VideoTema />} />
-                        <Route path="perfil" element={<Perfil />} />
+                        <Route path="detallescurso/:id" element={<DetallesCurso />} />
+                        <Route path="contactanos" element={<Contactanos />} />
                     </Routes>
                 </ProtectedRoute>
             } />
