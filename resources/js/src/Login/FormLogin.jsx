@@ -31,6 +31,7 @@ function FormLogin() {
     const [mostrarContrasena, setMostrarContrasena] = useState(false);
     const [error, setError] = useState('');
     const [darkMode, setDarkMode] = useState(false);
+    const [recuerdame, setRecuerdame] = useState(false);
 
     // ------------------------------
     // HOOKS
@@ -51,18 +52,18 @@ function FormLogin() {
         e.preventDefault();
         setError('');
         try {
-            // Obtener token CSRF
             await axios.get('/sanctum/csrf-cookie');
-            // Intento de inicio de sesión
             const response = await axios.post('/api/login', {
                 email,
-                password: contrasena
+                password: contrasena,
+                remember: recuerdame,
             });
             const { data } = response;
+            console.log(data); // Depurar la respuesta del backend
             if (data.user) {
+                console.log(data.user.type); // Depurar el tipo de usuario
                 localStorage.setItem('user_data', JSON.stringify(data.user));
                 localStorage.setItem('theme', data.user.theme || 'light');
-                // Redirección según tipo de usuario
                 if (data.user.type === 'admin') {
                     navigate('/admin/cursos', { replace: true });
                 } else if (data.user.type === 'usuario') {
@@ -70,8 +71,6 @@ function FormLogin() {
                 } else {
                     setError('Tipo de usuario no reconocido');
                 }
-            } else {
-                setError('Error: No se recibieron datos del usuario');
             }
         } catch (error) {
             setError(error.response?.status === 401
@@ -134,6 +133,18 @@ function FormLogin() {
                                 <FontAwesomeIcon icon={mostrarContrasena ? faEyeSlash : faEye} />
                             </button>
                         </div>
+                    </div>
+
+                    {/* Checkbox "Recuerdame" */}
+                    <div className="form-group">
+                        <label className="form-label">
+                            <input
+                                type="checkbox"
+                                checked={recuerdame}
+                                onChange={(e) => setRecuerdame(e.target.checked)}
+                            />
+                            Recuérdame
+                        </label>
                     </div>
 
                     {/* Mensaje de error */}

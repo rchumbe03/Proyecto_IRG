@@ -139,7 +139,7 @@
 
 .telefono-input {
     flex: 1;
-    padding: 12px;
+    padding: 18px 12px;
     border-radius: 6px;
     border: 1.5px solid #CBD2E0;
     font-size: 15px;
@@ -235,4 +235,10 @@ div#payment-element-container {
         width: 100%;
         text-align: center;
     }
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 0.5rem;
 }

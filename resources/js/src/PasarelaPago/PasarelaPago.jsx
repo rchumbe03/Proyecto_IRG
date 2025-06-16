@@ -3,7 +3,6 @@ import { loadStripe } from '@stripe/stripe-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { useNavigate } from 'react-router-dom';
 import Header from '../components/Headers/jsx/HeaderIn.jsx';
 import Footer from '../components/Footer/Footer.jsx';
 import './PasarelaPago.css';
@@ -32,7 +31,6 @@ function InputField({ label, name, type = "text", value, onChange, required = tr
 function PaymentForm() {
     const stripe = useStripe();
     const elements = useElements();
-    const navigate = useNavigate();
     const [mostrarContrasena, setMostrarContrasena] = useState(false);
     const [mostrarConfirmar, setMostrarConfirmar] = useState(false);
     const [prefijo, setPrefijo] = useState('+34');
@@ -51,22 +49,86 @@ function PaymentForm() {
         edad: '',
         dni: '',
     });
-
-    const isFormValid = Object.values(formData).every(val => val.trim() !== '');
+    const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+        validateField(name, value);
     };
+
+    const validateField = (name, value) => {
+        let error = '';
+        switch (name) {
+            case 'nombreApellido':
+                if (/[^a-zA-Z\s]/.test(value)) {
+                    error = 'El nombre no debe contener números ni símbolos.';
+                }
+                break;
+            case 'email':
+                if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+                    error = 'El correo electrónico debe ser válido.';
+                }
+                break;
+            case 'edad':
+                if (!/^\d+$/.test(value)) {
+                    error = 'La edad debe ser solo números.';
+                } else if (value.length > 3) {
+                    error = 'La edad no puede tener más de 3 caracteres.';
+                }
+                break;
+            case 'dni':
+                if (!/^[a-zA-Z0-9]{9}$/.test(value)) {
+                    error = 'El DNI debe tener exactamente 9 caracteres.';
+                }
+                break;
+            case 'codigoPostal':
+                if (!/^\d{5}$/.test(value)) {
+                    error = 'El código postal debe tener exactamente 5 dígitos.';
+                }
+                break;
+            case 'direccion':
+                if (value.trim() === '') {
+                    error = 'La dirección no puede estar vacía.';
+                }
+                break;
+            case 'ciudad':
+                if (value.trim() === '') {
+                    error = 'La ciudad no puede estar vacía.';
+                }
+                break;
+            case 'pais':
+                if (value.trim() === '') {
+                    error = 'El país no puede estar vacío.';
+                }
+                break;
+            case 'estado':
+                if (value.trim() === '') {
+                    error = 'El estado no puede estar vacío.';
+                }
+                break;
+            case 'telefono':
+                if (!/^\d{7,15}$/.test(value)) {
+                    error = 'El número de teléfono debe contener entre 7 y 15 dígitos.';
+                }
+                break;
+            default:
+                break;
+        }
+        setErrors(prev => ({ ...prev, [name]: error }));
+    };
+
+    const isFormValid = Object.values(formData).every(val => val.trim() !== '') &&
+        Object.values(errors).every(err => err === '') &&
+        formData.contrasena === formData.confirmarContrasena;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!stripe || !elements) return;
+        if (!stripe || !elements || !isFormValid) return;
         setLoading(true);
 
         try {
-            // Guardar datos del usuario
-            const response = await axios.post('/api/guardar-datos-pago', {
+            await axios.post('/api/guardar-datos-pago', {
                 nombre: formData.nombreApellido,
                 email: formData.email,
                 password: formData.contrasena,
@@ -81,9 +143,6 @@ function PaymentForm() {
                 dni: formData.dni,
             });
 
-            const userType = response.data.usuario.is_admin ? 'admin' : 'usuario';
-
-            // Confirmar pago
             const { error } = await stripe.confirmPayment({
                 elements,
                 confirmParams: {
@@ -131,6 +190,7 @@ function PaymentForm() {
                             onChange={handleChange}
                             placeholder="Nombre y Apellido"
                         />
+                        {errors.nombreApellido && <p className="error-message">{errors.nombreApellido}</p>}
                         <InputField
                             label="Correo Electrónico"
                             name="email"
@@ -139,24 +199,7 @@ function PaymentForm() {
                             onChange={handleChange}
                             placeholder="Correo electrónico"
                         />
-                        <div className="edad-dni-input-container">
-                            <div className="pasarela-input" style={{ width: '20%' }}>
-                                <label className="titulo">Edad</label>
-                                <input name="edad"
-                                       type="number"
-                                       value={formData.edad}
-                                       onChange={handleChange}
-                                       placeholder="Edad"/>
-                            </div>
-                            <div className="pasarela-input" style={{ width: '80%' }}>
-                                <label className="titulo">DNI</label>
-                                <input name="dni"
-                                       type="dni"
-                                       value={formData.dni}
-                                       onChange={handleChange}
-                                       placeholder="DNI"/>
-                            </div>
-                        </div>
+                        {errors.email && <p className="error-message">{errors.email}</p>}
                         <InputField
                             label="Contraseña"
                             name="contrasena"
@@ -191,7 +234,33 @@ function PaymentForm() {
                                 <FontAwesomeIcon icon={mostrarConfirmar ? faEyeSlash : faEye} />
                             </button>
                         </InputField>
-                        <h3 className="pasarela-title" style={{ marginTop: '1rem' }}>Dirección de facturación</h3>
+                        {formData.contrasena !== formData.confirmarContrasena && (
+                            <p className="error-message">Las contraseñas no coinciden.</p>
+                        )}
+                        <div className="edad-dni-input-container">
+                            <div className="pasarela-input" style={{ width: '20%' }}>
+                                <label className="titulo">Edad</label>
+                                <input
+                                    name="edad"
+                                    type="number"
+                                    value={formData.edad}
+                                    onChange={handleChange}
+                                    placeholder="Edad"
+                                />
+                                {errors.edad && <p className="error-message">{errors.edad}</p>}
+                            </div>
+                            <div className="pasarela-input" style={{ width: '80%' }}>
+                                <label className="titulo">DNI</label>
+                                <input
+                                    name="dni"
+                                    type="text"
+                                    value={formData.dni}
+                                    onChange={handleChange}
+                                    placeholder="DNI"
+                                />
+                                {errors.dni && <p className="error-message">{errors.dni}</p>}
+                            </div>
+                        </div>
                         <InputField
                             label="Dirección"
                             name="direccion"
@@ -199,63 +268,77 @@ function PaymentForm() {
                             onChange={handleChange}
                             placeholder="Dirección"
                         />
+                        {errors.direccion && <p className="error-message">{errors.direccion}</p>}
                         <div className="input-row">
-                            <InputField
-                                label="Ciudad"
-                                name="ciudad"
-                                value={formData.ciudad}
-                                onChange={handleChange}
-                                placeholder="Ciudad"
-                            />
-                            <InputField
-                                label="Código Postal"
-                                name="codigoPostal"
-                                value={formData.codigoPostal}
-                                onChange={handleChange}
-                                placeholder="Código Postal"
-                            />
+                            <div className="pasarela-input">
+                                <label className="titulo">Ciudad</label>
+                                <input
+                                    name="ciudad"
+                                    type="text"
+                                    value={formData.ciudad}
+                                    onChange={handleChange}
+                                    placeholder="Ciudad"
+                                />
+                                {errors.ciudad && <p className="error-message">{errors.ciudad}</p>}
+                            </div>
+                            <div className="pasarela-input">
+                                <label className="titulo">Código Postal</label>
+                                <input
+                                    name="codigoPostal"
+                                    type="text"
+                                    value={formData.codigoPostal}
+                                    onChange={handleChange}
+                                    placeholder="Código Postal"
+                                />
+                                {errors.codigoPostal && <p className="error-message">{errors.codigoPostal}</p>}
+                            </div>
                         </div>
                         <div className="input-row">
-                            <InputField
-                                label="País"
-                                name="pais"
-                                value={formData.pais}
-                                onChange={handleChange}
-                                placeholder="País"
-                            />
-                            <InputField
-                                label="Estado/Provincia"
-                                name="estado"
-                                value={formData.estado}
-                                onChange={handleChange}
-                                placeholder="Estado/Provincia"
-                            />
+                            <div className="pasarela-input">
+                                <label className="titulo">País</label>
+                                <input
+                                    name="pais"
+                                    type="text"
+                                    value={formData.pais}
+                                    onChange={handleChange}
+                                    placeholder="País"
+                                />
+                                {errors.pais && <p className="error-message">{errors.pais}</p>}
+                            </div>
+                            <div className="pasarela-input">
+                                <label className="titulo">Estado/Provincia</label>
+                                <input
+                                    name="estado"
+                                    type="text"
+                                    value={formData.estado}
+                                    onChange={handleChange}
+                                    placeholder="Estado/Provincia"
+                                />
+                                {errors.estado && <p className="error-message">{errors.estado}</p>}
+                            </div>
                         </div>
-                        <div className="pasarela-input telefono-row">
+                        <div className="telefono-row">
                             <label className="titulo">Teléfono</label>
                             <div className="telefono-input-container">
                                 <select
-                                    name="prefijo"
-                                    value={prefijo}
-                                    onChange={e => setPrefijo(e.target.value)}
                                     className="telefono-prefijo"
-                                    required
+                                    value={prefijo}
+                                    onChange={(e) => setPrefijo(e.target.value)}
                                 >
                                     <option value="+34">+34</option>
                                     <option value="+1">+1</option>
                                     <option value="+44">+44</option>
-                                    <option value="+33">+33</option>
                                 </select>
                                 <input
+                                    className="telefono-input"
                                     name="telefono"
-                                    type="tel"
+                                    type="text"
                                     value={formData.telefono}
                                     onChange={handleChange}
                                     placeholder="Número de teléfono"
-                                    className="telefono-input"
-                                    required
                                 />
                             </div>
+                            {errors.telefono && <p className="error-message">{errors.telefono}</p>}
                         </div>
                     </div>
                     <div className="columna">

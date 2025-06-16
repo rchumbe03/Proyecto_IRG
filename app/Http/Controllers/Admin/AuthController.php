@@ -19,11 +19,18 @@ class AuthController extends Controller
                 'password' => 'required'
             ]);
 
-            // Primero buscar en la tabla de administradores
+            $remember = $request->input('remember', false); // Recibir el parámetro "remember"
+
+            // Buscar en la tabla de administradores
             $admin = Admin::where('email', $credentials['email'])->first();
 
             if ($admin && Hash::check($credentials['password'], $admin->password)) {
                 $token = $admin->createToken('auth-token')->plainTextToken;
+
+                if ($remember) {
+                    $admin->remember_token = $token; // Guardar el token en la base de datos
+                    $admin->save();
+                }
 
                 $userData = [
                     'id' => $admin->id,
@@ -36,11 +43,16 @@ class AuthController extends Controller
                 return $this->createSuccessResponse($userData, $token);
             }
 
-            // Si no es admin, buscar en la tabla de usuarios
+            // Buscar en la tabla de usuarios
             $usuario = Usuario::where('email', $credentials['email'])->first();
 
             if ($usuario && Hash::check($credentials['password'], $usuario->password)) {
                 $token = $usuario->createToken('auth-token')->plainTextToken;
+
+                if ($remember) {
+                    $usuario->remember_token = $token; // Guardar el token en la base de datos
+                    $usuario->save();
+                }
 
                 $userData = [
                     'id' => $usuario->id,
