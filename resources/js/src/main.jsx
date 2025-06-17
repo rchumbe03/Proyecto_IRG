@@ -27,6 +27,7 @@ export const AppRoutes = () => (
             <Route path="/sobre-nosotros" element={<SobreNosotros />} />
             <Route path="/pasarela" element={<PasarelaPago />} />
             <Route path="/inicio" element={<Inicio />} />
+            <Route path="/contactanos" element={<Contactanos />} />
             <Route path="/detallescurso/:id" element={<DetallesCurso />} />
 
 
@@ -39,8 +40,6 @@ export const AppRoutes = () => (
                         <Route path="cursos" element={<ListaCursos />} />
                         <Route path="video/:id" element={<VideoTema />} />
                         <Route path="perfil" element={<Perfil />} />
-                        <Route path="detallescurso/:id" element={<DetallesCurso />} />
-                        <Route path="contactanos" element={<Contactanos />} />
                     </Routes>
                 </ProtectedRoute>
             } />
@@ -52,8 +51,8 @@ export const AppRoutes = () => (
                         <Route path="notificaciones" element={<NotificacionesU />} />
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="cursos" element={<ListaCursos />} />
-                        <Route path="detallescurso/:id" element={<DetallesCurso />} />
-                        <Route path="contactanos" element={<Contactanos />} />
+                        <Route path="video/:id" element={<VideoTema />} />
+                        <Route path="perfil" element={<Perfil />} />
                     </Routes>
                 </ProtectedRoute>
             } />

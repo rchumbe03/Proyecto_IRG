@@ -109,7 +109,6 @@ const ListaCursos = () => {
                                 <p className="course-developer">{course.desarrollador}</p>
                                 {/* Botones de acción */}
                                 <div className="button-group">
-                                    <button className="course-button">Detalles</button>
                                       <button
                                          className="course-button"
                                          onClick={() => navigate(`/${userType }/dashboard`)}

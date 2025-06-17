@@ -58,7 +58,7 @@ export default function Header() {
                         <span>Sobre Nosotros</span>
                         <FaBuilding />
                     </button>
-                    <button className="icon-text-button">
+                    <button className="icon-text-button" onClick={() => navigate('/contactanos')}>
                         <span>Contacto</span>
                         <FaEnvelope />
                     </button>

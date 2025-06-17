@@ -112,7 +112,7 @@
 .button-group {
     display: flex;
     gap: 10px;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     max-width: 297px;
     margin-top: auto;

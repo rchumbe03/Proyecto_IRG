@@ -1,6 +1,6 @@
 import React from "react";
 import '../Contactanos/Contactanos.css'
-import Header from '../components/Headers/jsx/HeaderPl.jsx'
+import Header from '../components/Headers/jsx/HeaderIn.jsx'
 import Footer from '../components/Footer/Footer.jsx'
 import llamada from '../assets/logos/llamada.png'
 import mensaje from '../assets/logos/mensaje.png'
@@ -21,19 +21,19 @@ const Contactanos = () =>{
             </div>
         </div>
         <div className="contenedor-contenido">
-            
+
             <div className="consultas-sede">
                 <div className="consultas">
                     <div className="informacion-consultas">
                         <p>Consulta más información</p>
                         <p className="enviar">Envianos tus consultas</p>
                     </div>
-                    
+
                     <div className="correo-telefono">
                         <div className="logo-email">
                             <img src={mensaje} alt="logo de email" /> correo@correo.com
                         </div>
-                        
+
                         <div className="logo-llamada">
                             <img src={llamada} alt="logo de llamada" /> +34 123 456 789
                         </div>

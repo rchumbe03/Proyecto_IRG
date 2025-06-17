@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Inicio.css';
 import edificio from '../assets/img/edificio.png';
 import Header from '../components/Headers/jsx/HeaderIn.jsx';
@@ -6,6 +7,8 @@ import { FaTv, FaBriefcase, FaStar } from 'react-icons/fa';
 import Footer from '../components/Footer/Footer.jsx';
 
 const Inicio = () => {
+    const navigate = useNavigate();
+
     const comentario = [
         { texto: '“La plataforma ha transformado mi forma de aprender. ¡Recomendada al 100%!”', autor: 'Juan Pérez' },
         { texto: '“Excelente contenido y atención, he crecido como profesional en meses.”', autor: 'Yorch Ascuy' },
@@ -161,7 +164,7 @@ const Inicio = () => {
                         <div className="texto">
                             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi veniam modi fuga eum voluptates dolorem culpa velit repellat placeat tempore odio nisi iste repudiandae expedita laboriosam, minus ut reiciendis dicta.</p>
                         </div>
-                        <button className="boton">Entrar</button>
+                        <button className="boton" onClick={() => navigate('/contactanos')}>Entrar</button>
                     </div>
                 </div>
             </section>

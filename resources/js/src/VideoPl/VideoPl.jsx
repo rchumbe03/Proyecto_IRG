@@ -59,7 +59,6 @@ export default function LiveClass() {
                 className="lc-video"
                 src={claseActual.url}
                 title={claseActual.titulo}
-                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
