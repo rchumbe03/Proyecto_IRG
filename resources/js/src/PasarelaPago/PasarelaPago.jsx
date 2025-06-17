@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
+import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import Header from '../components/Headers/jsx/HeaderIn.jsx';
 import Footer from '../components/Footer/Footer.jsx';
 import './PasarelaPago.css';
@@ -33,7 +33,7 @@ function PaymentForm() {
     const elements = useElements();
     const [mostrarContrasena, setMostrarContrasena] = useState(false);
     const [mostrarConfirmar, setMostrarConfirmar] = useState(false);
-    const [prefijo, setPrefijo] = useState('+34'); // Por defecto España
+    const [prefijo, setPrefijo] = useState('+34');
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
@@ -147,7 +147,7 @@ function PaymentForm() {
                                 <FontAwesomeIcon icon={mostrarConfirmar ? faEyeSlash : faEye} />
                             </button>
                         </InputField>
-                        <h3 className="pasarela-title" style={{marginTop: '1rem'}}>Dirección de facturación</h3>
+                        <h3 className="pasarela-title" style={{ marginTop: '1rem' }}>Dirección de facturación</h3>
                         <InputField
                             label="Dirección"
                             name="direccion"
@@ -258,25 +258,55 @@ function PaymentForm() {
 
 export default function PasarelaPago() {
     const [clientSecret, setClientSecret] = useState('');
+    const [appearance, setAppearance] = useState({
+        theme: 'stripe'
+    });
 
     useEffect(() => {
         fetch('/api/create-payment-intent', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                amount: 100, // Monto en centavos (ejemplo: 100 centavos = €1.00)
+                amount: 100,
             }),
         })
             .then(res => res.json())
             .then(data => setClientSecret(data.clientSecret));
     }, []);
 
-    const appearance = {
-        theme: 'stripe',
-        variables: {
-            colorPrimaryText: '#262626',
-        },
-    };
+    useEffect(() => {
+        const setAppearanceByTheme = () => {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            setAppearance(isDarkMode
+                ? {
+                    theme: 'night',
+                    variables: {
+                        colorBackground: '#2C2C2C',
+                        colorText: '#ffffff',
+                        colorPrimaryText: '#E6D00A',
+                        colorBorder: '#444',
+                        colorIcon: '#ffffff'
+                    }
+                }
+                : {
+                    theme: 'stripe',
+                    variables: {
+                        colorBackground: '#ffffff',
+                        colorText: '#111827',
+                        colorPrimaryText: '#111827',
+                        colorBorder: '#CBD2E0',
+                        colorIcon: '#111827'
+                    }
+                });
+        };
+
+        setAppearanceByTheme();
+
+        const observer = new MutationObserver(setAppearanceByTheme);
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+        return () => observer.disconnect();
+    }, []);
 
     return (
         clientSecret ? (

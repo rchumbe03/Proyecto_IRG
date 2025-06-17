@@ -206,6 +206,49 @@ div#payment-element-container {
     display: flex;
     flex-direction: column;
 }
+/* modo oscuro */
+body.dark-mode .pasarela-container {
+    background-color: #000;
+    color: #f9fafb;
+}
+body.dark-mode .pasarela-form {
+    background-color: #000;
+}
+body.dark-mode .pasarela-input input {
+    background-color: #2C2C2C;
+    border: 1.5px solid #CBD2E0;
+}
+body.dark-mode .pasarela-input label {
+    color: #f9fafb;
+}
+body.dark-mode .detalles-compra {
+    background-color: #2C2C2C;
+    color: #f9fafb;
+}
+body.dark-mode .detalles-compra-item {
+    color: #f9fafb;
+}
+body.dark-mode .detalles-compra-title {
+    color: #f9fafb;
+}
+body.dark-mode .detalles-compra-total {
+    color: #f9fafb;
+}
+body.dark-mode .pagar-btn {
+    background-color: #E6D00A;
+    color: #111827;
+}
+body.dark-mode .pagar-btn:hover {
+    background-color: #d1bd00;
+}
+body.dark-mode .telefono-prefijo,
+body.dark-mode .telefono-input {
+    background-color: #2C2C2C;
+    border: 1.5px solid #CBD2E0;
+    color: #f9fafb;
+}
+
+
 
 /* Responsive para móviles */
 @media (max-width: 768px) {
