@@ -9,7 +9,9 @@ export default function Header() {
     const [darkMode, setDarkMode] = useState(false);
     const profileRef = useRef(null);
     const navigate = useNavigate();
+    const [isSpinning, setIsSpinning] = useState(false);
     const toggleDarkMode = () => {
+        setIsSpinning(true); // activar clase 'spin'
         setDarkMode(prevMode => {
             const newMode = !prevMode;
             if (newMode) {
@@ -19,6 +21,7 @@ export default function Header() {
             }
             return newMode;
         });
+        setTimeout(() => setIsSpinning(false), 500);
     };
 
     useEffect(() => {
@@ -63,7 +66,7 @@ export default function Header() {
                         <FaEnvelope />
                     </button>
                 </nav>
-                <div className="mode-toggle" onClick={toggleDarkMode}>
+                <div className={`mode-toggle ${isSpinning ? 'spin' : ''}`} onClick={toggleDarkMode}>
                     {darkMode ? <FaSun className="mode-icon" /> : <FaMoon className="mode-icon" />}
                 </div>
                 <div className="login-header" onClick={() => navigate('/login')}>

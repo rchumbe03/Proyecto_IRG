@@ -65,7 +65,7 @@ const HeaderPl = () => {
 
       <div className="right-section">
           <div
-              className="icon-text-button"
+              className="notification-section icon-text-button"
               onClick={() => {
                   const userData = JSON.parse(localStorage.getItem('user_data'));
                   const userType = userData?.type;
@@ -79,8 +79,8 @@ const HeaderPl = () => {
                   }
               }}
           >
-              <span>Notificaciones</span>
-              <FaBell />
+              <FaBell className="icon" />
+              <span className="icon-label">Notificaciones</span>
           </div>
 
         {/* Modo Oscuro */}
@@ -126,6 +126,7 @@ const HeaderPl = () => {
         </li>
         <li>
             <a
+                style={{ cursor: 'pointer' }}
                 onClick={(e) => {
                     e.preventDefault(); // Evita el comportamiento predeterminado del enlace
                     handleLogout();
