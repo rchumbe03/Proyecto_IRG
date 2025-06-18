@@ -69,7 +69,21 @@ export default function Header() {
                 <div className={`mode-toggle ${isSpinning ? 'spin' : ''}`} onClick={toggleDarkMode}>
                     {darkMode ? <FaSun className="mode-icon" /> : <FaMoon className="mode-icon" />}
                 </div>
-                <div className="login-header" onClick={() => navigate('/login')}>
+                <div
+                    className="login-header"
+                    onClick={() => {
+                        const userData = JSON.parse(localStorage.getItem('user_data'));
+                        const userType = userData?.type;
+
+                        if (userType === 'admin') {
+                            navigate('/admin/cursos');
+                        } else if (userType === 'usuario') {
+                            navigate('/usuario/cursos');
+                        } else {
+                            alert('Debes iniciar sesión para acceder a los cursos.');
+                        }
+                     }}
+                >
                     <span className="login-text">Iniciar Sesión</span>
                 </div>
             </div>
