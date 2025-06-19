@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../css/HeaderPl.css';
 import { useNavigate } from 'react-router-dom';
-import { FaBell, FaMoon, FaSun } from 'react-icons/fa';
+import { FaHome, FaBell, FaMoon, FaSun } from 'react-icons/fa';
 import adidas2 from '../../../assets/logos/adidas2.png';
 import defaultAvatar from '../../../assets/avatars/avatarDefault.png';
 
@@ -66,6 +66,13 @@ const HeaderPl = () => {
       <div className="right-section">
           <div
               className="notification-section icon-text-button"
+              onClick={() => navigate('/inicio')}
+              >
+                <span className="icon-label">Inicio</span>
+                <FaHome className="icon" />
+          </div>
+          <div
+              className="notification-section icon-text-button"
               onClick={() => {
                   const userData = JSON.parse(localStorage.getItem('user_data'));
                   const userType = userData?.type;
@@ -79,10 +86,9 @@ const HeaderPl = () => {
                   }
               }}
           >
-              <FaBell className="icon" />
               <span className="icon-label">Notificaciones</span>
+              <FaBell className="icon" />
           </div>
-
         {/* Modo Oscuro */}
          <div
          className={`icon-with-label darkmode-section ${isSpinning ? 'spin' : ''}`}
