@@ -112,6 +112,3 @@ Route::middleware(['auth.cookie'])->prefix('user')->group(function () {
     Route::put('/perfil', [UsuarioController::class, 'updateProfile']);
 });
 
-
-
-
