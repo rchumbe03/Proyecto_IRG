@@ -8,21 +8,22 @@ use Illuminate\Support\Facades\Auth;
 class InformacionUsuarioController extends Controller
 {
     public function index()
-    {
-        $user = Auth::user();
+{
+    $user = Auth::user();
 
-        return response()->json([
-            'id' => $user->id,
-            'nombre' => $user->nombre,
-            'email' => $user->email,
-            'foto_perfil' => $user->foto_perfil,
-            'direccion' => $user->direccion,
-            'edad' => $user->edad,
-            'dni' => $user->dni,
-            'telefono' => $user->telefono,
-            'cv' => $user->cv,
-        ]);
-    }
+    return response()->json([
+        'id'          => $user->id,
+        'nombre'      => $user->nombre,
+        'email'       => $user->email,
+        'foto_perfil' => $user->foto_perfil,
+        'direccion'   => $user->direccion,
+        'edad'        => $user->edad,
+        'dni'         => $user->dni,
+        'telefono'    => $user->telefono,
+        'cv'          => $user->cv,
+    ]);
+}
+
 
     public function update(Request $request)
     {

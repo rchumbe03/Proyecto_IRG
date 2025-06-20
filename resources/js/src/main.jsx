@@ -6,6 +6,10 @@ import LoadingSpinner from './components/common/LoadingSpinner.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute.jsx';
 import Contactanos from './Contactanos/Contactanos.jsx'
 
+// Configuración global de Axios
+import axios from 'axios';
+axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.withCredentials = true;
 
 // Lazy loading de componentes
 const FormLogin = lazy(() => import('./Login/FormLogin'));
@@ -16,7 +20,6 @@ const NotificacionesU = lazy(() => import('./Notificaciones/NotificacionesU'));
 const PasarelaPago = lazy(() => import('./PasarelaPago/PasarelaPago.jsx'));
 const Inicio = lazy(() => import('./Inicio/Inicio.jsx'));
 const DetallesCurso = lazy(() => import('./DetallesCurso/DetallesCurso.jsx'));
-const InformacionPersonal = lazy(() => import('./InformacionPersonal/InformacionPersonal.jsx'));
 const Perfil = lazy(() => import('./Perfil/Perfil.jsx'));
 
 
@@ -29,6 +32,7 @@ export const AppRoutes = () => (
             <Route path="/pasarela" element={<PasarelaPago />} />
             <Route path="/inicio" element={<Inicio />} />
             <Route path="/detallescurso/:id" element={<DetallesCurso />} />
+            <Route path="/perfil" element={<Perfil />} />  
 
 
             {/* Rutas protegidas de administrador */}
@@ -41,7 +45,6 @@ export const AppRoutes = () => (
                         <Route path="inicio" element={<Inicio />} />
                         <Route path="detallescurso/:id" element={<DetallesCurso />} />
                         <Route path="contactanos" element={<Contactanos />} />
-                        <Route path="informacionPersonal" element={<InformacionPersonal />} />      
                             
 
                     </Routes>

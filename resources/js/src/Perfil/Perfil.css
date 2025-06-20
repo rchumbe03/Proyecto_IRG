@@ -14,6 +14,7 @@
     border: 1.5px solid #CBD2E0 !important;
     box-shadow: none !important;
     outline: none;
+    padding-left: 10px;
 }
 
 .informacion-personal h1 {
@@ -96,7 +97,7 @@
 }
 
 .barra-pais2 {
-    margin-left: 175px;
+    margin-left: 90px;
     width: 170px !important;
 }
 
@@ -153,7 +154,7 @@
 }
 
 .dato-telefono input{
-    margin-left: 50px;
+        margin: 0px !important;
 }
 
 .boton-cv button{
@@ -161,12 +162,16 @@
 }
 
 .dato-cv{
-    margin: 30px 0px 0px 55px;
+    margin: 30px 230px 0px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 100px;
 }
 
-.dato-cv label{
-    margin-left: 900px;
-}
 
 .dato-cv button{
     margin-left: 730px;
@@ -196,6 +201,10 @@
     margin: 0 0 0 110px;
 }
 
+.dato-fase-actual input{
+    margin-left: 40px;
+}
+
 .dato-progreso input{
     margin-left: 130px;
 }
@@ -212,19 +221,23 @@
     margin: 0 0 0 140px;
 }
 
+.dato-notas input{
+  margin-left: 55px;
+}
+
 .dato-jornadas input{
     margin-left: 45px;
 }
 
 .dato-cuenta input{
-    margin-left: 10px !important;
+    margin-left: 20px ;
 }
 
 .grupo-jornadas-cuenta{
     margin-bottom: 100px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 760px) {
 
     .informacion-personal{
     padding-left: 25px;
@@ -251,9 +264,12 @@
     margin-left: 10px;
     }
 
-  .dato-telefono input{
-    margin-top: 20px;
-  }
+    .grupo-direccion2{
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: baseline;
+    }
 
   .grupo-telefono-cv{
     display: flex;
@@ -264,21 +280,32 @@
 
   .boton-cambios {
     width: 300px !important;
+    margin-right: 20px;
   }
 
   .campo-telefono-completo{
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: baseline;
     gap: 5px;
+    margin-top: 20px;
+    margin-right: 50px;
   }
 
   .campo-telefono-completo .select-prefijo {
     height: 50px;
+    margin-left: 35px;
   }
 
+  .dato-tiempo{
+    margin-right: 200px;
+  }
+
+  .input-cv{
+    width: 300px !important;
+  }
   .campo-telefono-completo .input-telefono {
-    width: 100px;
+    width: 150px;
     height: 50px;
   }
 
@@ -298,10 +325,14 @@
     } 
 
     .dato-expediente, .grupo-id-fase, .grupo-progreso-tema, .grupo-tiempo-notas, .grupo-jornadas-cuenta{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-top: 10px;
+            display: flex
+;
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+        align-items: baseline;
+        align-content: center;
     }
 
     .dato-expediente input{

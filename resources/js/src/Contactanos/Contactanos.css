@@ -1,5 +1,7 @@
 /**PANTALLAS GRANDES**/
-
+body{
+  font-family: Arial, sans-serif; 
+}
 
 .contenedor-encabezado{
     text-align: center;
